@@ -11,7 +11,7 @@ import { Product } from '../model/product';
 export class ProductService {
 
   apiUrl: string = environment.apiUrl;
-  endPoint: string = 'products';
+  endPoint: string = 'product';
 
   constructor(
     private http: HttpClient
