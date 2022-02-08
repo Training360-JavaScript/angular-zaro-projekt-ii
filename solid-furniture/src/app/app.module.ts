@@ -13,6 +13,7 @@ import { EditOrdersComponent } from './page/edit-orders/edit-orders.component';
 import { EditBillsComponent } from './page/edit-bills/edit-bills.component';
 import { TestComponent } from './page/test/test.component';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
