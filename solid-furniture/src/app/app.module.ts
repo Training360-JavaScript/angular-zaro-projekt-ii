@@ -12,6 +12,7 @@ import { EditCustomersComponent } from './page/edit-customers/edit-customers.com
 import { EditOrdersComponent } from './page/edit-orders/edit-orders.component';
 import { EditBillsComponent } from './page/edit-bills/edit-bills.component';
 import { TestComponent } from './page/test/test.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -27,8 +28,9 @@ import { TestComponent } from './page/test/test.component';
     TestComponent
   ],
   imports: [
+    FormsModule,
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
