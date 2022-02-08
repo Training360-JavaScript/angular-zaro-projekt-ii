@@ -19,5 +19,4 @@ export class TestComponent implements OnInit {
 
   allCategory$: Observable<Category[]> = this.categoryService.getAll();
 
-
 }
