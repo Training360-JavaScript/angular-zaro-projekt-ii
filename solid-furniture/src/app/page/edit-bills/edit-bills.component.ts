@@ -7,9 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EditBillsComponent implements OnInit {
 
-  constructor(
-    private categoryService: CategoryService,
-  ) { }
+  constructor() { }
 
   ngOnInit(): void {
   }
