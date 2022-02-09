@@ -1,7 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-
+import { catchError, Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Product } from '../model/product';
 
@@ -42,26 +41,26 @@ export class ProductService {
     return this.http.get<Product>(`${this.apiUrl}${this.endPoint}/${id}`)
   }
 
-/*
-  update(category: Category): Observable<Category> {
-    return this.http.patch<Category>(`${this.apiUrl}${this.endPoint}/${category.id}`, category)
+  update(Product: Product): Observable<Product> {
+    return this.http.patch<Product>(`${this.apiUrl}${this.endPoint}/${Product.id}`, Product)
   }
 
 
-  delete(id: number): Observable<Category> {
+  delete(id: number): Observable<Product> {
     const url = `${this.apiUrl}${this.endPoint}/${id}`;
-    return this.http.delete<Category>(url)
+    return this.http.delete<Product>(url)
   }
 
 
-  create(category: Category): Observable<Category> {
+  create(Product: Product): Observable<Product> {
+
     console.log('create working...');
 
     const url = `${this.apiUrl}${this.endPoint}`;
 
-    return this.http.post<any>(url, category, this.httpOptions).pipe(
+    return this.http.post<any>(url, Product, this.httpOptions).pipe(
       catchError(this.handleError<any>('create', []))
     )
   }
-*/
+
 }

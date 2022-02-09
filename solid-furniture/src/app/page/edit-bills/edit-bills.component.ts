@@ -10,9 +10,7 @@ import { CategoryService } from 'src/app/service/category.service';
 })
 export class EditBillsComponent implements OnInit {
 
-  constructor(
-    private categoryService: CategoryService,
-  ) { }
+  constructor() { }
 
   ngOnInit(): void {
   }
