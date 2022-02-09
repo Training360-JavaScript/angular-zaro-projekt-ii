@@ -1,6 +1,6 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Product } from '../model/product';
 
@@ -41,7 +41,6 @@ export class ProductService {
     return this.http.get<Product>(`${this.apiUrl}${this.endPoint}/${id}`)
   }
 
-
   update(Product: Product): Observable<Product> {
     return this.http.patch<Product>(`${this.apiUrl}${this.endPoint}/${Product.id}`, Product)
   }
@@ -54,6 +53,7 @@ export class ProductService {
 
 
   create(Product: Product): Observable<Product> {
+
     console.log('create working...');
 
     const url = `${this.apiUrl}${this.endPoint}`;
@@ -62,6 +62,5 @@ export class ProductService {
       catchError(this.handleError<any>('create', []))
     )
   }
-
 
 }
