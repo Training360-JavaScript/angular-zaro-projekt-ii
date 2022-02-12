@@ -16,7 +16,8 @@ import { OrdersComponent } from './page/orders/orders.component';
 import { CustomersComponent } from './page/customers/customers.component';
 import { ProductsComponent } from './page/products/products.component';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from "@angular/common/http"
+import { HttpClientModule } from "@angular/common/http";
+import { FilterPipe } from './pipe/filter.pipe'
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { HttpClientModule } from "@angular/common/http"
     BillsComponent,
     OrdersComponent,
     CustomersComponent,
-    ProductsComponent
+    ProductsComponent,
+    FilterPipe
   ],
   imports: [
     BrowserModule,

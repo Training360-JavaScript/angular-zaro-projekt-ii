@@ -7,6 +7,10 @@ import { BillsComponent } from './page/bills/bills.component';
 import { OrdersComponent } from './page/orders/orders.component';
 import { CustomersComponent } from './page/customers/customers.component';
 import { ProductsComponent } from './page/products/products.component';
+import { EditProductsComponent } from './page/edit-products/edit-products.component';
+import { EditCustomersComponent } from './page/edit-customers/edit-customers.component';
+import { EditOrdersComponent } from './page/edit-orders/edit-orders.component';
+import { EditBillsComponent } from './page/edit-bills/edit-bills.component';
 
 const routes: Routes = [
   {
@@ -30,9 +34,25 @@ const routes: Routes = [
     component: BillsComponent,
   },
   {
+    path: 'edit-products',
+    component: EditProductsComponent,
+  },
+  {
+    path: 'edit-bills',
+    component: EditBillsComponent,
+  },
+  {
+    path: 'edit-orders',
+    component: EditOrdersComponent,
+  },
+  {
+    path: 'edit-customers',
+    component: EditCustomersComponent,
+  },
+  {
     path: 'test',
     component: TestComponent,
-  }
+  },
 ];
 
 @NgModule({
