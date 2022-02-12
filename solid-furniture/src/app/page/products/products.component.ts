@@ -15,8 +15,15 @@ export class ProductsComponent implements OnInit {
   ) { }
 
   allProducts$: Observable<Product[]> = this.pService.getAll();
+  searchCategory: string = ''
+  keyword: string = ''
 
   ngOnInit(): void {
+  }
+
+  onDelete(product: Product): void {
+    if (!confirm('Are you sure?')) { return } //confirm ablakkal könnyen megvalósítható a biztonsági kérdés
+    this.pService.delete(product.id)
   }
 
 }
