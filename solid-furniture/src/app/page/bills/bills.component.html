@@ -1,1 +1,45 @@
-<p>bills works!</p>
+<h2 class="text-center text-primary font-weight-bold">Bills</h2>
+<button class="btn btn-primary" (click)="createBill()">Create Bill</button>
+<div *ngIf="allBills$" class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-primary">
+            <h4 class="card-title">Bills</h4>
+            <p class="card-category">All bills listed here</p>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead class="text-primary">
+                  <th>#</th>
+                  <th>OrderID</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th></th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let bill of allBills$ | async">
+                    <td>{{ bill.id }}</td>
+                    <td>{{ bill.orderID }}</td>
+                    <td>{{ bill.amount }}</td>
+                    <td>{{ bill.status }}</td>
+                    <td>
+                      <button
+                        class="btn btn-danger"
+                        (click)="deleteBill(bill.id)"
+                      >
+                        Delete Bill
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

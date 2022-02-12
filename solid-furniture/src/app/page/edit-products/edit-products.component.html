@@ -1,1 +1,126 @@
-<p>edit-products works!</p>
+<div class="row">
+  <div class="col-6 offset-3">
+    <form
+      #formForProducts="ngForm"
+      (ngSubmit)="onUpdate()"
+      [formGroup]="productForm"
+    >
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input
+          id="name"
+          formControlName="name"
+          class="form-control"
+          type="text"
+        />
+        <div
+          *ngIf="name?.invalid && name?.touched"
+          class="alert alert-danger mt-1"
+        >
+          Name required. Minimum 5, maximum 25 characters are allowed.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="type">Type</label>
+        <input
+          id="type"
+          name="type"
+          type="text"
+          class="form-control"
+          formControlName="type"
+        />
+        <div
+          *ngIf="type?.invalid && type?.touched"
+          class="alert alert-danger mt-1"
+        >
+          Type required. 25 characters are allowed.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="">catID</label>
+        <input
+          name="catID"
+          type="number"
+          class="form-control"
+          formControlName="catID"
+          [attr.disabled]="disabled ? '' : null"
+        />
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          class="form-control"
+          formControlName="description"
+        ></textarea>
+        <div
+          *ngIf="description?.invalid && description?.touched"
+          class="alert alert-danger mt-1"
+        >
+          Description required. 250 characters are allowed.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="price">Price</label>
+        <input
+          id="price"
+          name="price"
+          type="number"
+          class="form-control"
+          formControlName="price"
+        />
+        <div
+          *ngIf="price?.invalid && price?.touched"
+          class="alert alert-danger mt-1"
+        >
+          Price required. Please enter a number!
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="featured">Featured</label><br />
+        <div class="form-check">
+          <label class="form-check-label">
+            <input
+              id="featured"
+              name="featured"
+              formControlName="featured"
+              class="form-check-input"
+              type="checkbox"
+              value="true"
+            />
+            Yes
+            <span class="form-check-sign">
+              <span class="check"></span>
+            </span>
+          </label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="active">Active</label><br />
+        <div class="form-check">
+          <label class="form-check-label">
+            <input
+              id="active"
+              name="active"
+              formControlName="active"
+              class="form-check-input"
+              type="checkbox"
+              value="true"
+            />
+            Active
+            <span class="form-check-sign">
+              <span class="check"></span>
+            </span>
+          </label>
+        </div>
+      </div>
+      <button
+        [disabled]="formForProducts.invalid"
+        type="submit"
+        class="btn btn-primary btn-block btn-lg"
+      >
+        <i class="fa fa-save"></i>
+      </button>
+    </form>
+  </div>
+</div>

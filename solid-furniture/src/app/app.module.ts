@@ -1,46 +1,35 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule, routerComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './common/sidebar/sidebar.component';
-import { HomeComponent } from './page/home/home.component';
 import { HeaderComponent } from './common/header/header.component';
-import { EditProductsComponent } from './page/edit-products/edit-products.component';
-import { EditCustomersComponent } from './page/edit-customers/edit-customers.component';
-import { EditOrdersComponent } from './page/edit-orders/edit-orders.component';
-import { EditBillsComponent } from './page/edit-bills/edit-bills.component';
-import { TestComponent } from './page/test/test.component';
-import { BillsComponent } from './page/bills/bills.component';
-import { OrdersComponent } from './page/orders/orders.component';
-import { CustomersComponent } from './page/customers/customers.component';
-import { ProductsComponent } from './page/products/products.component';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from "@angular/common/http"
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
+    routerComponents,
     AppComponent,
     SidebarComponent,
-    HomeComponent,
     HeaderComponent,
-    EditProductsComponent,
-    EditCustomersComponent,
-    EditOrdersComponent,
-    EditBillsComponent,
-    TestComponent,
-    BillsComponent,
-    OrdersComponent,
-    CustomersComponent,
-    ProductsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule,
+    CommonModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

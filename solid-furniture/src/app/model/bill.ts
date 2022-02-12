@@ -1,5 +1,4 @@
 export class Bill {
-
   // Bill (id, orderID, amount, status: new|paid)
 
   // https://nettuts.hu/jms/hgtucdpt/bill
@@ -12,5 +11,4 @@ export class Bill {
   amount: number = 0;
   // status: string = 'new' || 'paid';
   status: string = '';
-
 }

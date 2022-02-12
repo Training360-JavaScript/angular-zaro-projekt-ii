@@ -5,62 +5,44 @@ import { environment } from 'src/environments/environment';
 import { Product } from '../model/product';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductService {
-
   apiUrl: string = environment.apiUrl;
   endPoint: string = 'product';
 
-  constructor(
-    private http: HttpClient
-  ) { }
-
+  constructor(private http: HttpClient) {}
 
   httpOptions = {
-    headers: new HttpHeaders(
-      {'Content-Type': 'application/json'}
-    )
-  }
-
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  };
 
   private handleError<T>(operation: string = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);
       return of(result as T);
-    }
+    };
   }
 
+  url = `${this.apiUrl}${this.endPoint}`;
 
   getAll(): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.apiUrl}${this.endPoint}`)
+    return this.http.get<Product[]>(this.url);
   }
-
 
   get(id: number): Observable<Product> {
-    return this.http.get<Product>(`${this.apiUrl}${this.endPoint}/${id}`)
+    return this.http.get<Product>(`${this.url}/${id}`);
   }
 
-  update(Product: Product): Observable<Product> {
-    return this.http.patch<Product>(`${this.apiUrl}${this.endPoint}/${Product.id}`, Product)
+  update(product: Product): Observable<Product> {
+    return this.http.patch<Product>(`${this.url}/${product.id}`, product);
   }
-
 
   delete(id: number): Observable<Product> {
-    const url = `${this.apiUrl}${this.endPoint}/${id}`;
-    return this.http.delete<Product>(url)
+    return this.http.delete<Product>(`${this.url}/${id}`);
   }
 
-
-  create(Product: Product): Observable<Product> {
-
-    console.log('create working...');
-
-    const url = `${this.apiUrl}${this.endPoint}`;
-
-    return this.http.post<any>(url, Product, this.httpOptions).pipe(
-      catchError(this.handleError<any>('create', []))
-    )
+  create(product: Product): Observable<Product> {
+    return this.http.post<Product>(this.url, product);
   }
-
 }

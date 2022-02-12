@@ -1,45 +1,57 @@
 <div class="sidebar" data-color="purple" data-background-color="white">
   <div class="logo">
-    <a routerLink="/" class="simple-text logo-mini">
-      SOLID Furniture
-    </a>
+    <a routerLink="/" class="simple-text logo-mini"> SOLID Furniture </a>
   </div>
   <div class="sidebar-wrapper">
     <ul class="nav">
-      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">
+      <li
+        class="nav-item"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
         <a class="nav-link" routerLink="">
           <i class="material-icons">dashboard</i>
           <p>Dashboard</p>
         </a>
       </li>
-      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">
+      <li
+        class="nav-item"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
         <a class="nav-link" routerLink="products">
           <i class="fa fa-bed" aria-hidden="true"></i>
           <p>Products</p>
         </a>
       </li>
-      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">
+      <li
+        class="nav-item"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
         <a class="nav-link" routerLink="customers">
           <i class="fa fa-address-card-o" aria-hidden="true"></i>
           <p>Customers</p>
         </a>
       </li>
-      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">
+      <li
+        class="nav-item"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
         <a class="nav-link" routerLink="orders">
           <i class="fa fa-book" aria-hidden="true"></i>
           <p>Orders</p>
         </a>
       </li>
-      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">
+      <li
+        class="nav-item"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
         <a class="nav-link" routerLink="bills">
           <i class="fa fa-file-text-o" aria-hidden="true"></i>
           <p>Bills</p>
-        </a>
-      </li>
-      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]= "{exact: true}">
-        <a class="nav-link bg-info" routerLink="test">
-          <i class="fa fa-eye text-dark" aria-hidden="true"></i>
-          <p>Test Page</p>
         </a>
       </li>
     </ul>

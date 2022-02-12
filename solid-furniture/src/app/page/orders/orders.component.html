@@ -1,1 +1,53 @@
-<p>orders works!</p>
+<h2 class="text-center text-primary font-weight-bold">Orders</h2>
+<button class="btn btn-primary" (click)="createOrder()">Create Order</button>
+<div *ngIf="allOrders$" class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-primary">
+            <h4 class="card-title">Orders</h4>
+            <p class="card-category">All orders listed here</p>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead class="text-primary">
+                  <th>#</th>
+                  <th>Customer ID</th>
+                  <th>Product ID</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th></th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let order of allOrders$ | async">
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.customerID }}</td>
+                    <td>{{ order.productID }}</td>
+                    <td>{{ order.amount }}</td>
+                    <td>{{ order.status }}</td>
+                    <td>
+                      <button
+                        class="btn btn-danger"
+                        (click)="deleteOrder(order.id)"
+                      >
+                        Delete Order
+                      </button>
+                      <button
+                        class="btn btn-success"
+                        (click)="editOrder(order.id)"
+                      >
+                        Edit Order
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

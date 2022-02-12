@@ -1,19 +1,19 @@
 <h2 class="text-center text-primary font-weight-bold">Products</h2>
-
+<button class="btn btn-primary" (click)="addProduct()">Create Product</button>
 <div class="content">
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-primary">
-            <h4 class="card-title ">Products</h4>
-            <p class="card-category">All available product listed here</p>
+            <h4 class="card-title">Products</h4>
+            <p class="card-category">All available products listed here</p>
           </div>
           <div class="card-body">
             <div class="table-responsive">
               <table class="table">
-                <thead class=" text-primary">
-                  <th>ID</th>
+                <thead class="text-primary">
+                  <th>#</th>
                   <th>Name</th>
                   <th>Type</th>
                   <th>Category ID</th>
@@ -21,6 +21,7 @@
                   <th>Price</th>
                   <th>Featured</th>
                   <th>Active</th>
+                  <th></th>
                 </thead>
                 <tbody>
                   <tr *ngFor="let product of allProducts$ | async">
@@ -32,6 +33,14 @@
                     <td>{{ product.price }}</td>
                     <td>{{ product.featured }}</td>
                     <td>{{ product.active }}</td>
+                    <td>
+                      <button
+                        (click)="deleteProduct(product.id)"
+                        class="btn btn-danger"
+                      >
+                        Del
+                      </button>
+                    </td>
                   </tr>
                 </tbody>
               </table>

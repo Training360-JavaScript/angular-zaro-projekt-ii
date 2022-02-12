@@ -1,1 +1,69 @@
-<p>edit-orders works!</p>
+<div class="row">
+  <div class="col-6 offset-3">
+    <form
+      #formForOrders="ngForm"
+      (ngSubmit)="onUpdate()"
+      [formGroup]="orderForm"
+    >
+      <div class="form-group">
+        <label for="customerID">Customer ID</label>
+        <input
+          name="customerID"
+          id="customerID"
+          type="text"
+          formControlName="customerID"
+          class="form-control"
+          [attr.disabled]="disabled ? '' : null"
+        />
+      </div>
+      <div class="form-group">
+        <label for="productID">Product ID</label>
+        <input
+          name="productID"
+          id="productID"
+          type="text"
+          formControlName="productID"
+          class="form-control"
+          [attr.disabled]="disabled ? '' : null"
+        />
+      </div>
+      <div class="form-group">
+        <label for="amount">Amount</label>
+        <input
+          id="amount"
+          name="amount"
+          type="number"
+          class="form-control"
+          formControlName="amount"
+        />
+        <div
+          *ngIf="amount?.invalid && amount?.touched"
+          class="alert alert-danger mt-1"
+        >
+          Amount required. Please enter a number!
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="status">Status</label><br />
+        <select
+          name="status"
+          id="status"
+          class="form-control"
+          formControlName="status"
+        >
+          <option value="new">New</option>
+          <option value="paid">Paid</option>
+          <option value="shipped">Shipped</option>
+        </select>
+      </div>
+
+      <button
+        [disabled]="formForOrders.invalid"
+        type="submit"
+        class="btn btn-primary btn-block btn-lg"
+      >
+        <i class="fa fa-save"></i>
+      </button>
+    </form>
+  </div>
+</div>

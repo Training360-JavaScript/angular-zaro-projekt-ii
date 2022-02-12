@@ -5,62 +5,43 @@ import { environment } from 'src/environments/environment';
 import { Bill } from '../model/bill';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BillService {
-
   apiUrl: string = environment.apiUrl;
   endPoint: string = 'bill';
+  url = `${this.apiUrl}${this.endPoint}`;
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
 
   httpOptions = {
-    headers: new HttpHeaders(
-      {'Content-Type': 'application/json'}
-    )
-  }
-
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  };
 
   private handleError<T>(operation: string = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);
       return of(result as T);
-    }
+    };
   }
-
 
   getAll(): Observable<Bill[]> {
-    return this.http.get<Bill[]>(`${this.apiUrl}${this.endPoint}`)
+    return this.http.get<Bill[]>(this.url);
   }
-
 
   get(id: number): Observable<Bill> {
-    return this.http.get<Bill>(`${this.apiUrl}${this.endPoint}/${id}`)
+    return this.http.get<Bill>(`${this.url}/${id}`);
   }
-
 
   update(Bill: Bill): Observable<Bill> {
-    return this.http.patch<Bill>(`${this.apiUrl}${this.endPoint}/${Bill.id}`, Bill)
+    return this.http.patch<Bill>(`${this.url}/${Bill.id}`, Bill);
   }
-
 
   delete(id: number): Observable<Bill> {
-    const url = `${this.apiUrl}${this.endPoint}/${id}`;
-    return this.http.delete<Bill>(url)
+    return this.http.delete<Bill>(`${this.url}/${id}`);
   }
 
-
-  create(Bill: Bill): Observable<Bill> {
-    console.log('create working...');
-
-    const url = `${this.apiUrl}${this.endPoint}`;
-
-    return this.http.post<any>(url, Bill, this.httpOptions).pipe(
-      catchError(this.handleError<any>('create', []))
-    )
+  create(bill: Bill): Observable<Bill> {
+    return this.http.post<Bill>(this.url, bill);
   }
-
-
 }

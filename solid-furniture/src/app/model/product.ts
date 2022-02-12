@@ -1,5 +1,4 @@
 export class Product {
-
   // Product (id, name, type, catID, description, price, featured, active)
 
   // https://nettuts.hu/jms/hgtucdpt/product
