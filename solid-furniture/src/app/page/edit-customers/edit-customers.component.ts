@@ -23,25 +23,28 @@ export class EditCustomersComponent implements OnInit {
     id: [''],
     firstName: [
       '',
-      [Validators.required, Validators.minLength(5), Validators.maxLength(25)],
+      [Validators.required, Validators.minLength(3), Validators.maxLength(25)],
     ],
     lastName: [
       '',
-      [Validators.required, Validators.minLength(5), Validators.maxLength(25)],
+      [Validators.required, Validators.minLength(3), Validators.maxLength(25)],
     ],
     email: ['', [Validators.required, Validators.email]],
     address: [
       '',
-      [Validators.required, Validators.minLength(5), Validators.maxLength(25)],
+      [Validators.required, Validators.minLength(5), Validators.maxLength(100)],
     ],
     active: [true],
   });
+
+  isDelHidden: boolean = true;
 
   ngOnInit(): void {
     this.activatedRoute.params
       .pipe(
         switchMap((params) => {
           if (params['id'] !== '0') {
+            this.isDelHidden = false;
             return this.customerService.get(params['id']);
           } else {
             return EMPTY;
@@ -49,6 +52,18 @@ export class EditCustomersComponent implements OnInit {
         })
       )
       .subscribe((customer) => this.customerForm.setValue(customer));
+  }
+
+  onDelete() {
+    let id = this.customerForm.value.id;
+    if (id) {
+      this.customerService.delete(id).subscribe(() => {
+        this.router.navigate(['/customers']);
+        this.toastr.success('Customer has been removed!', 'Success', {
+          timeOut: 3000,
+        });
+      });
+    }
   }
 
   onUpdate() {
@@ -67,6 +82,9 @@ export class EditCustomersComponent implements OnInit {
         });
       });
     }
+  }
+  goBack() {
+    this.router.navigate(['/customers']);
   }
   get firstName() {
     return this.customerForm.get('firstName');

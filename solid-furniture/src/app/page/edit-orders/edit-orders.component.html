@@ -57,13 +57,30 @@
         </select>
       </div>
 
-      <button
-        [disabled]="formForOrders.invalid"
-        type="submit"
-        class="btn btn-primary btn-block btn-lg"
-      >
-        <i class="fa fa-save"></i>
-      </button>
+      <div class="container d-flex">
+        <button
+          [disabled]="formForOrders.invalid"
+          type="submit"
+          class="btn btn-primary btn-block btn-lg mr-3"
+        >
+          <i class="fa fa-save"></i>
+        </button>
+        <button
+          type="button"
+          (click)="onDelete()"
+          class="btn btn-danger btn-block btn-lg"
+          [attr.hidden]="isDelHidden ? '' : null"
+        >
+          <i class="fa fa-trash"></i>
+        </button>
+        <button
+          type="button"
+          (click)="goBack()"
+          class="btn btn-secondary btn-block btn-lg ml-3"
+        >
+          <i class="fa fa-arrow-left"></i>
+        </button>
+      </div>
     </form>
   </div>
 </div>

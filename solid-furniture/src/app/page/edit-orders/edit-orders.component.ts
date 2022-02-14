@@ -1,9 +1,8 @@
-import { Order } from './../../model/order';
 import { OrderService } from './../../service/order.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
-import { of, switchMap } from 'rxjs';
+import { EMPTY, switchMap } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -22,30 +21,42 @@ export class EditOrdersComponent implements OnInit {
 
   orderForm = this.formBuilder.group({
     id: [''],
-    customerID: [''],
-    productID: [''],
+    customerID: [this.generateID()],
+    productID: [this.generateID()],
     amount: ['', [Validators.required, Validators.pattern(/^[1-9][0-9]*$/)]],
-    status: ['', [Validators.required]],
+    status: ['new', [Validators.required]],
   });
 
   disabled: boolean = true;
+  isDelHidden: boolean = true;
 
   ngOnInit(): void {
     this.activatedRoute.params
       .pipe(
         switchMap((params) => {
-          if (params['id'] === '0') {
-            const order = new Order();
-            order.customerID = this.generateID();
-            order.productID = this.generateID();
-            order.status = 'new';
-            return of(order);
-          } else {
+          if (params['id'] !== '0') {
+            this.isDelHidden = false;
             return this.orderService.get(params['id']);
+          } else {
+            return EMPTY;
           }
         })
       )
-      .subscribe((order) => this.orderForm.setValue(order));
+      .subscribe((bill) => {
+        this.orderForm.setValue(bill);
+      });
+  }
+
+  onDelete() {
+    let id = this.orderForm.value.id;
+    if (id) {
+      this.orderService.delete(id).subscribe(() => {
+        this.router.navigate(['/orders']);
+        this.toastr.success('Order has been removed!', 'Success', {
+          timeOut: 3000,
+        });
+      });
+    }
   }
 
   onUpdate() {
@@ -64,6 +75,9 @@ export class EditOrdersComponent implements OnInit {
         });
       });
     }
+  }
+  goBack() {
+    this.router.navigate(['/orders']);
   }
   generateID() {
     return Math.floor(Math.random() * 10e10);

@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class EditProductsComponent implements OnInit {
   disabled: boolean = true;
-
+  isDelHidden: boolean = true;
   constructor(
     private productService: ProductService,
     private activatedRoute: ActivatedRoute,
@@ -25,7 +25,7 @@ export class EditProductsComponent implements OnInit {
     id: [''],
     name: [
       '',
-      [Validators.required, Validators.minLength(5), Validators.maxLength(25)],
+      [Validators.required, Validators.minLength(3), Validators.maxLength(25)],
     ],
     type: ['', [Validators.required, Validators.maxLength(25)]],
     catID: [Math.floor(Math.random() * 10e10)],
@@ -40,6 +40,7 @@ export class EditProductsComponent implements OnInit {
       .pipe(
         switchMap((params) => {
           if (params['id'] !== '0') {
+            this.isDelHidden = false;
             return this.productService.get(params['id']);
           } else {
             return EMPTY;
@@ -49,6 +50,18 @@ export class EditProductsComponent implements OnInit {
       .subscribe((product) => {
         this.productForm.setValue(product);
       });
+  }
+
+  onDelete() {
+    let id = this.productForm.value.id;
+    if (id) {
+      this.productService.delete(id).subscribe(() => {
+        this.router.navigate(['/products']);
+        this.toastr.success('Product has been removed!', 'Success', {
+          timeOut: 3000,
+        });
+      });
+    }
   }
 
   onUpdate() {
@@ -68,6 +81,10 @@ export class EditProductsComponent implements OnInit {
       });
     }
   }
+  goBack() {
+    this.router.navigate(['/products']);
+  }
+
   get name() {
     return this.productForm.get('name');
   }

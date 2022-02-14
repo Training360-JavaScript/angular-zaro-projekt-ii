@@ -26,4 +26,7 @@ export class BillsComponent implements OnInit {
       this.allBills$ = this.billService.getAll();
     });
   }
+  editBill(id: number) {
+    this.router.navigate(['/bills', id]);
+  }
 }

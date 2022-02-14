@@ -17,7 +17,7 @@
           *ngIf="name?.invalid && name?.touched"
           class="alert alert-danger mt-1"
         >
-          Name required. Minimum 5, maximum 25 characters are allowed.
+          Name required. Minimum 3, maximum 25 characters are allowed.
         </div>
       </div>
       <div class="form-group">
@@ -114,13 +114,30 @@
           </label>
         </div>
       </div>
-      <button
-        [disabled]="formForProducts.invalid"
-        type="submit"
-        class="btn btn-primary btn-block btn-lg"
-      >
-        <i class="fa fa-save"></i>
-      </button>
+      <div class="container d-flex">
+        <button
+          [disabled]="formForProducts.invalid"
+          type="submit"
+          class="btn btn-primary btn-block btn-lg mr-3"
+        >
+          <i class="fa fa-save"></i>
+        </button>
+        <button
+          type="button"
+          (click)="onDelete()"
+          class="btn btn-danger btn-block btn-lg"
+          [attr.hidden]="isDelHidden ? '' : null"
+        >
+          <i class="fa fa-trash"></i>
+        </button>
+        <button
+          type="button"
+          (click)="goBack()"
+          class="btn btn-secondary btn-block btn-lg ml-3"
+        >
+          <i class="fa fa-arrow-left"></i>
+        </button>
+      </div>
     </form>
   </div>
 </div>
