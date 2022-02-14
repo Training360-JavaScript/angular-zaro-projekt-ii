@@ -27,7 +27,7 @@ export class ProductsComponent implements OnInit {
     this.router.navigate(['/edit-products', 0]);
   }
   CORRESPONDING HTML SNIPPET
-  (click)="createOrder()
+  (click)="createProduct()
 
   deleteProduct(id: number) {
     this.pService.delete(id).subscribe(() => {
