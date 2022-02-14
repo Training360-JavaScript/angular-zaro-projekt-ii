@@ -26,12 +26,17 @@ export class ProductsComponent implements OnInit {
   addProduct() {
     this.router.navigate(['/edit-products', 0]);
   }
+  CORRESPONDING HTML SNIPPET
+  (click)="createOrder()
 
   deleteProduct(id: number) {
     this.pService.delete(id).subscribe(() => {
       this.allProducts$ = this.pService.getAll();
     });
   }
+  CORRESPONDING HTML SNIPPET
+   <button (click)="deleteProduct(product.id)"
+   Edit button is the same
   */
 
   onDelete(product: Product): void {
