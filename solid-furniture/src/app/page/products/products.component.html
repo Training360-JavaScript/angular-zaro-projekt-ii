@@ -54,14 +54,16 @@
               <table class="table">
                 <thead class=" text-primary text-center">
                   <tr class="sticky-top bg-white">
-                  <th *ngFor="let key of productKeys">{{ key | titlecase }}</th>
+                  <th *ngFor="let key of productKeys" (click)="sorting(key)">
+                    {{ key | titlecase}}
+                  </th>
                   <th>
                     <button routerLink="/edit-products/0" class="btn btn-success btn-block"><i class="fa fa-plus"></i></button>
                   </th>
                 </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let product of allProducts$ | async | filter:keyword:keywordMin:keywordMax:searchKey">
+                  <tr *ngFor="let product of allProducts$ | async | filter: keyword:keywordMin:keywordMax:searchKey | sorter: sortKey:sortDirection">
                     <td>{{ product.id }}</td>
                     <td>{{ product.name }}</td>
                     <td>{{ product.type }}</td>

@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { FilterPipe } from './pipe/filter.pipe';
 import { ToastrModule } from 'ngx-toastr';
+import { SorterPipe } from './pipe/sorter.pipe';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { ToastrModule } from 'ngx-toastr';
     HeaderComponent,
     TestComponent,
     FilterPipe,
+    SorterPipe,
   ],
   imports: [
     BrowserModule,
