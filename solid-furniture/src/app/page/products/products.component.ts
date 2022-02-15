@@ -19,43 +19,52 @@ export class ProductsComponent implements OnInit {
   keywordMax: string = ''
 
   constructor(
-    private pService: ProductService, private router: Router) { }
+    private pService: ProductService, private router: Router) {
+      this.sumPrice()
+      this.countID()
+    }
 
   ngOnInit(): void { }
 
-
-  icon: number = 0;
   sortKey: string = '';
   sortDirection: string = 'A...Z';
   clickCounter: number = 0;
 
-  sorting(key: string):void {
-    if (key) {console.log(key)}
+  sorting(key: string): void {
     (key === this.sortKey) ? this.clickCounter++ : this.clickCounter = 0;
     this.sortDirection = (this.clickCounter % 2) ? 'Z...A' : 'A...Z';
     this.sortKey = key;
-
-    if (key === 'name') this.icon = (this.sortDirection === 'A...Z') ? 1 : 2;
-    if (key === 'stock') this.icon = (this.sortDirection === 'A...Z') ? 3 : 4;
-    if (key === 'price') this.icon = (this.sortDirection === 'A...Z') ? 5 : 6;
-
-  }
-
-
-  console(): void {
-    console.log(this.searchKey)
-    console.log(this.keywordMin)
-    console.log(this.keywordMax)
   }
 
   clearKeyword(): void {
     this.keyword = ''
-    this.console()
   }
 
   clearKeywordMinMax(): void {
     this.keywordMin = ''
     this.keywordMax = ''
+  }
+
+  sumPriceCounter: number = 0
+  sumPrice(): void {
+    this.allProducts$.subscribe(
+      products => {
+        products.forEach(product => {
+          this.sumPriceCounter += product.price
+        })
+      }
+    )
+  }
+
+  IDCounter: number = 0
+  countID(): void {
+    this.allProducts$.subscribe(
+      products => {
+        products.forEach(product => {
+          this.IDCounter ++
+        })
+      }
+    )
   }
 
   onDelete(productID: number): void {

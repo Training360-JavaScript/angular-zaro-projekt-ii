@@ -40,6 +40,7 @@ export class CustomerService {
   }
 
   create(Customer: Customer): Observable<Customer> {
+    console.log(Customer)
     return this.http.post<any>(this.url, Customer, this.httpOptions)
   }
 
