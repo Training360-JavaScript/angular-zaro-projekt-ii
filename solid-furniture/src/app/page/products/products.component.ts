@@ -10,10 +10,7 @@ import { Product } from 'src/app/model/product';
   styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent implements OnInit {
-  constructor(
-    private pService: ProductService,
-    private router: Router //GERGO ADDED
-  ) {}
+  constructor(private pService: ProductService, private router: Router) {}
 
   allProducts$: Observable<Product[]> = this.pService.getAll();
   searchCategory: string = '';
