@@ -28,26 +28,27 @@ export class ProductsComponent implements OnInit {
 
   }
 
-  console():void {
+  console(): void {
     console.log(this.searchKey)
     console.log(this.keywordMin)
     console.log(this.keywordMax)
   }
 
-  clearKeyword():void {
+  clearKeyword(): void {
     this.keyword = ''
     this.console()
   }
 
-  clearKeywordMinMax():void {
+  clearKeywordMinMax(): void {
     this.keywordMin = ''
     this.keywordMax = ''
+  }
 
   //How ID nav works GERGO ADDED
   /*
   addProduct() {
     this.router.navigate(['/edit-products', 0]);
-    
+
   }
   CORRESPONDING HTML SNIPPET
   (click)="createProduct()
@@ -62,10 +63,12 @@ export class ProductsComponent implements OnInit {
    Edit button is the same
   */
 
-  onDelete(product: Product): void {
-    if (!confirm('Are you sure?')) {
-      return;
-    } //confirm ablakkal könnyen megvalósítható a biztonsági kérdés
-    this.pService.delete(product.id);
+  onDelete(productID: number): void {
+    if (!confirm('Are you sure?')) { return }
+
+    this.pService.delete(productID).subscribe(() => {
+      this.allProducts$ = this.pService.getAll()
+    })
   }
+
 }

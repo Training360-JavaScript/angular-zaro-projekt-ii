@@ -8,14 +8,14 @@ import { AppComponent } from './app.component';
 import { SidebarComponent } from './common/sidebar/sidebar.component';
 import { HeaderComponent } from './common/header/header.component';
 import { TestComponent } from './page/test/test.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { FilterPipe } from './pipe/filter.pipe';
 import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
-    routerComponents
+    routerComponents,
     AppComponent,
     SidebarComponent,
     HeaderComponent,
@@ -30,6 +30,7 @@ import { ToastrModule } from 'ngx-toastr';
     CommonModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent],
