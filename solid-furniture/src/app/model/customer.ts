@@ -1,5 +1,16 @@
-import { Address } from './address';
+import { Address } from "./address";
+export class Customer {
+  [key: string]: any;
+  id: number = 0;
+  firstName: string = '';
+  lastName: string = '';
+  email: string = '';
+  // address: Address = new Address();
+  address: string = '';
+  active: boolean = false;
+}
 
+/*
 export class Customer {
   // Customer (id, firstName, lastName, email, address: Address, active)
 
@@ -13,4 +24,4 @@ export class Customer {
   // address: Address = new Address();
   address: string = '';
   active: boolean = false;
-}
+}*/

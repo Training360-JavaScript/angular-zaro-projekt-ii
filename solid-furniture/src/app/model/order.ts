@@ -1,4 +1,14 @@
 export class Order {
+  [key: string]: any;
+  id: number = 0;
+  customerID: number = 0;
+  productID: number = 0;
+  amount: number = 0;
+  status: string = '';
+}
+
+/*
+export class Order {
   // Order (id, customerID, productID, amount, status: new|shipped|paid)
 
   // https://nettuts.hu/jms/hgtucdpt/order
@@ -13,3 +23,4 @@ export class Order {
   //new || shipped || paid
   status: string = '';
 }
+*/
