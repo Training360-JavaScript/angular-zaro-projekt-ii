@@ -1,3 +1,80 @@
+<div class="row text-primary">
+  <div class="col-6">
+    <h2 class="text-center font-weight-bold">Products</h2>
+  </div>
+  <div class="col-3">
+    <p class="text-right font-weight-bold pt-4">Search product:</p>
+  </div>
+  <div class="col-1">
+    <!-- [(ngmodel)]="searchCategory" -->
+    <select class="form-control mt-2 text-center" required>
+      <option product.id searchCategory="id">ID</option>
+      <option product.name searchCategory="name" selected>Name</option>
+      <option product.id searchCategory="type">Type</option>
+      <option product.id searchCategory="description">Description</option>
+      <option product.id searchCategory="price">Price</option>
+    </select>
+    </div>
+    <div class="col-2">
+    <input type="text" class="form-control mt-2" [(ngModel)]="keyword">
+  </div>
+</div>
+
+
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-primary">
+            <h4 class="card-title ">Products</h4>
+            <p class="card-category">All available product listed here</p>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead class=" text-primary text-center">
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Type</th>
+                  <th>Category</th>
+                  <th>Description</th>
+                  <th>Price</th>
+                  <th>Featured</th>
+                  <th>Active</th>
+                  <th>
+                    <button routerLink="/edit-products" class="btn btn-success btn-block"><i
+                        class="fa fa-plus"></i></button>
+                    <!-- <button routerLink="/edit-products/0" class="btn btn-info"><i class="fa fa-plus"></i></button> -->
+                  </th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let product of allProducts$ | async | filter:keyword:'name' ">
+                    <td>{{ product.id }}</td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.type }}</td>
+                    <td>{{ product.catID }}</td>
+                    <td>{{ product.description }}</td>
+                    <td>{{ product.price }}</td>
+                    <td>{{ product.featured }}</td>
+                    <td>{{ product.active }}</td>
+                    <td>
+                      <div class="btn-group">
+                        <button routerLink="/edit-products" class="btn btn-info"><i class="fa fa-pencil"></i></button>
+                        <!-- <button [routerLink]="['/edit-products', product.id]" class="btn btn-info"><i class="fa fa-pencil"></i></button> -->
+                        <button (click)="onDelete(product)" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- <h2 class="text-center text-primary font-weight-bold">Products</h2>
 <button class="btn btn-primary" (click)="addProduct()">Create Product</button>
 <div class="content">
