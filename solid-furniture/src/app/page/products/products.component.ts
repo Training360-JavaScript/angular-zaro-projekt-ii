@@ -1,8 +1,8 @@
 import { Router } from '@angular/router';
 import { ProductService } from './../../service/product.service';
+import { Product } from 'src/app/model/product';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Product } from 'src/app/model/product';
 
 @Component({
   selector: 'app-products',
@@ -10,18 +10,44 @@ import { Product } from 'src/app/model/product';
   styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent implements OnInit {
-  constructor(private pService: ProductService, private router: Router) {}
 
-  allProducts$: Observable<Product[]> = this.pService.getAll();
-  searchCategory: string = '';
-  keyword: string = '';
+  constructor(
+    private pService: ProductService, private router: Router
+  ) {
+  }
 
-  ngOnInit(): void {}
+  allProducts$: Observable<Product[]> = this.pService.getAll()
+  productKeys: string[] = Object.keys(new Product())
+
+  searchKey: string = 'name'
+  keyword: string = ''
+  keywordMin: string = ''
+  keywordMax: string = ''
+
+  ngOnInit(): void {
+
+  }
+
+  console():void {
+    console.log(this.searchKey)
+    console.log(this.keywordMin)
+    console.log(this.keywordMax)
+  }
+
+  clearKeyword():void {
+    this.keyword = ''
+    this.console()
+  }
+
+  clearKeywordMinMax():void {
+    this.keywordMin = ''
+    this.keywordMax = ''
 
   //How ID nav works GERGO ADDED
   /*
   addProduct() {
     this.router.navigate(['/edit-products', 0]);
+    
   }
   CORRESPONDING HTML SNIPPET
   (click)="createProduct()
