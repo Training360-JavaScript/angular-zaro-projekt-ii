@@ -34,19 +34,19 @@ const routes: Routes = [
     component: BillsComponent,
   },
   {
-    path: 'edit-products',
+    path: 'edit-products/:id',
     component: EditProductsComponent,
   },
   {
-    path: 'edit-bills',
+    path: 'edit-bills/:id',
     component: EditBillsComponent,
   },
   {
-    path: 'edit-orders',
+    path: 'edit-orders/:id',
     component: EditOrdersComponent,
   },
   {
-    path: 'edit-customers',
+    path: 'edit-customers/:id',
     component: EditCustomersComponent,
   },
   {
@@ -57,6 +57,18 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
+
+export const routerComponents = [
+  HomeComponent,
+  ProductsComponent,
+  CustomersComponent,
+  OrdersComponent,
+  BillsComponent,
+  EditBillsComponent,
+  EditProductsComponent,
+  EditCustomersComponent,
+  EditOrdersComponent,
+];
