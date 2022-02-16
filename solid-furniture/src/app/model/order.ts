@@ -1,3 +1,6 @@
+import { Customer } from "./customer";
+import { Product } from "./product";
+
 export class Order {
   [key: string]: any;
   id: number = 0;
@@ -5,4 +8,7 @@ export class Order {
   productID: number = 0;
   amount: number = 0;
   status: string = '';
+
+  customer?: Customer = new Customer();
+  product?: Product = new Product();
 }

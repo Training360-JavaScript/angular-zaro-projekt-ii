@@ -1,47 +1,77 @@
+import { BaseService } from './base.service';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
 import { Customer } from '../model/customer';
+import { Address } from '../model/address';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CustomerService {
-
-  apiUrl: string = environment.apiUrl;
-  endPoint: string = 'customer';
-
-  url: string = `${this.apiUrl}${this.endPoint}`;
+export class CustomerService extends BaseService<Customer> {
 
   constructor(
-    private http: HttpClient
-  ) { }
-
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    public override http: HttpClient
+  ) {
+    super(http);
+    this.entityName = 'customer';
   }
 
-  getAll(): Observable<Customer[]> {
-    return this.http.get<Customer[]>(this.url)
+  createAddress(customer: Customer): Customer {
+    if (typeof customer.address === 'string') {
+      const addressParts = String(customer.address).split('|-|');
+      customer.address = new Address();
+      ['zip', 'country', 'city', 'street', 'notes'].forEach((key, i) => customer.address[key] = addressParts[i])
+      return customer;
+    }
+    return customer;
   }
 
-  get(id: number): Observable<Customer> {
-    return this.http.get<Customer>(`${this.url}/${id}`)
+
+  override getAll(): Observable<Customer[]> {
+    return super.getAll().pipe(
+      map(list => {
+        return list.map(customer => this.createAddress(customer));
+      }),
+    );
   }
 
-  update(Customer: Customer): Observable<Customer> {
-    return this.http.patch<Customer>(`${this.url}/${Customer.id}`, Customer)
+
+  override get(id: number): Observable<Customer> {
+    return super.get(id).pipe(
+      map(customer => this.createAddress(customer)),
+      catchError(error => {
+        return of(new Customer());
+      }),
+    );
   }
 
-  delete(id: number): Observable<Customer> {
-    const url = `${this.url}/${id}`;
-    return this.http.delete<Customer>(url)
+
+  createCustomerObject(customer: any): Customer {
+    const address = [
+      customer.address.zip,
+      customer.address.country,
+      customer.address.city,
+      customer.address.street,
+      customer.address.notes,
+    ].join('|-|');
+    customer.address = new String();
+    customer.address = ((address).length > 12) ? address : '';
+    return customer
   }
 
-  create(Customer: Customer): Observable<Customer> {
-    console.log(Customer)
-    return this.http.post<any>(this.url, Customer, this.httpOptions)
+
+  override update(customer: Customer): Observable<Customer> {
+    const newCustomer = this.createCustomerObject(customer);
+    return super.update(newCustomer);
   }
+
+
+  override create(customer: Customer): Observable<Customer> {
+    const newCustomer = this.createCustomerObject(customer);
+    return super.create(newCustomer);
+  }
+
 
 }

@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 export class ProductsComponent implements OnInit {
 
   allProducts$: Observable<Product[]> = this.pService.getAll()
-  productKeys: string[] = Object.keys(new Product())
+  productKeys: string[] = Object.keys(new Product())  // Inkább manuálisan vidd be, mert van egy új ?-es kúlcs is a Product()-ban, amit nem kellene megjeleníteni. És a catID helyett most a kategórianevek szerepelnek.
   searchKey: string = 'name'
   keyword: string = ''
   keywordMin: string = ''
@@ -24,7 +24,10 @@ export class ProductsComponent implements OnInit {
       this.countID()
     }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.productKeys[3] = 'category name';
+    this.productKeys.length = 8;
+  }
 
   sortKey: string = '';
   sortDirection: string = 'A...Z';

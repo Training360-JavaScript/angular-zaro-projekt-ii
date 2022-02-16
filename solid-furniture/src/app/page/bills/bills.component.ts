@@ -25,7 +25,9 @@ export class BillsComponent implements OnInit {
       this.countID()
     }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.billKeys.length = 4;
+  }
 
   sortKey: string = '';
   sortDirection: string = 'A...Z';

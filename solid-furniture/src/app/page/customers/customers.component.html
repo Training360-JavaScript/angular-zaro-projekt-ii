@@ -66,7 +66,7 @@
                     <td>{{ customer.firstName }}</td>
                     <td>{{ customer.lastName }}</td>
                     <td>{{ customer.email }}</td>
-                    <td>{{ customer.address }}</td>
+                    <td>{{ customer.address.full }}</td>
                     <td class="text-center"><i *ngIf="customer.active" style="color: rgb(48, 180, 48)!important;"
                         class="fa fa-check"></i><i *ngIf="!customer.active" style="color: red!important"
                         class="fa fa-times"></i></td>

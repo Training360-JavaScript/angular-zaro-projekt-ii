@@ -25,7 +25,9 @@ export class OrdersComponent implements OnInit {
       this.countID()
     }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.orderKeys.length = 5;
+   }
 
   sortKey: string = '';
   sortDirection: string = 'A...Z';

@@ -1,3 +1,614 @@
 <p>test works!</p>
 
+<style>
+  .form-control {
+    background-color: white;
+  }
+
+</style>
+
+
+
+
+<div class="row">
+  <form [formGroup]="group">
+    <input formControlName="id" type="text">
+    <div class="form-group">
+      <label for="">Name</label>
+      <input formControlName="name" type="text">
+    </div>
+    <div class="form-group">
+      <label for="">catID</label>
+      <input formControlName="catID" type="text">
+    </div>
+    <div class="form-group">
+      <label for="">categoryName</label>
+      <input formControlName="categoryName" type="text">
+    </div>
+  </form>
+</div>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <table class="table-bordered">
+        <thead>
+          <tr>
+            <th></th>
+            <th></th>
+            <th>összetett</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="oneCustomer$ | async as customer">
+            <td>{{customer.id}}</td>
+            <td>{{customer.firstName}}</td>
+            <td>{{customer.address?.['city']}}</td>
+            <td>{{customer.address.show()}}</td>
+
+            <td></td>
+          </tr>
+          <tr *ngIf="oneProduct$ | async as product">
+            <td>{{product.id}}</td>
+            <td>{{product.name}}</td>
+            <td>{{product.category?.['name'] }}</td>
+            <td>{{valtozo}}</td>
+
+            <td></td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- <pre>{{listOrder$ |async | json}}</pre> -->
+
+<hr>
+<section >
+
+  <h4 style="color: green;">Category edit</h4>
+
+
+  <div class="form-group col-md-4">
+    <label for="inputState">categori.id</label>
+    <select name="id" id="select_catId" class="form-control" [(ngModel)]="selectedCategoryID"
+      (change)="onUpdateCategoryForm(selectedCategoryID)">
+      <option *ngFor="let cat of listCategory$ | async" [ngValue]="cat.id">
+        {{cat.id}}
+      </option>
+    </select>
+  </div>
+
+
+  <div class="col-8" *ngIf="selectedCategory$ | async as category" style="border: 1px solid green">
+    <form action="" #categoryForm="ngForm">
+
+      <div class="container form-row">
+
+        <div class="form-group" style="max-width: 3.2rem;">
+          <label for="">#id</label>
+          <input [(ngModel)]="category.id" id="" name='id' type="text" class="form-control text-center" readonly>
+        </div>
+
+        <div class="form-group col-sm">
+          <label for="input_firstName">name</label>
+          <input [(ngModel)]="category.name" id="input_categoryName" name="name" type="text" class="form-control"
+            required>
+        </div>
+
+        <div class="form-group col-sm">
+          <label for="input_description">description</label>
+          <input [(ngModel)]="category.description" id="input_descriptiony" name="description" type="text"
+            class="form-control" required>
+        </div>
+
+      </div>
+
+      <div class="col-6 col-md-12 mt-md-2 col-xl-6 mt-lg-2 mt-xl-0">
+        <button class="btn btn-success" type="button" (click)="onUpdateCategory(categoryForm.value)">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i>
+          Save
+        </button>
+      </div>
+
+      <p>{{categoryForm.value | json}}</p>
+
+    </form>
+
+  </div>
+
+</section>
+
+
+<hr class="mt-4">
+<section >
+
+  <h4 style="color: purple;">Customer edit</h4>
+
+  <div class="form-group col-md-4">
+    <label for="inputState">customer.id</label>
+    <select name="id" id="select_catId" class="form-control" [(ngModel)]="selectedCustomerID"
+      (change)="onUpdateCustomerForm(selectedCustomerID)">
+      <option *ngFor="let cat of listCustomer$ | async" [ngValue]="cat.id">
+        {{cat.id}}
+      </option>
+    </select>
+  </div>
+
+  <!-- {{oneCustomer$ | async | json }} -->
+
+  <fieldset>
+
+    <div class="row">
+      <div class="col-8" *ngIf="selectedCustomer$ | async as customer" style="border: 1px solid purple">
+        <form action="" #customerForm="ngForm">
+
+          <div class="container form-row">
+
+            <div class="form-group" style="max-width: 3.2rem;">
+              <label for="">#id</label>
+              <input [(ngModel)]="customer.id" id="" id name="id" type="text" class="form-control text-center" readonly>
+            </div>
+
+            <div class="form-group col-sm">
+              <label for="input_firstName">firstName</label>
+              <input [(ngModel)]="customer.firstName" id="input_firstName" name="firstName" type="text"
+                class="form-control" required>
+            </div>
+
+            <div class="form-group col-sm">
+              <label for="input_lastName">lastName</label>
+              <input [(ngModel)]="customer.lastName" id="input_lastName" name="lastName" type="text"
+                class="form-control" required>
+            </div>
+
+            <div class="form-group col-sm">
+              <label for="input_email">email</label>
+              <input [(ngModel)]="customer.email" id="input_email" name="email" type="email" class="form-control"
+                required>
+            </div>
+
+          </div>
+
+          <fieldset style="border: 1px solid purple">
+
+            <div class="container form-row">
+
+              <div class="form-group col-sm">
+                <label for="input_address">address</label>
+                <input id="input_address" [value]='customer.address.full' name="address" type="text"
+                  class="form-control" readonly>
+              </div>
+
+            </div>
+
+
+            <div class="container form-row">
+
+              <input id="input_address" [(ngModel)]='customer.address' name="address" type="text" class="form-control"
+                readonly hidden>
+
+              <div class="form-group col-sm" style="max-width: 4rem;">
+                <label for="input_address.zip">Zip</label>
+                <input id="input_address.zip" [(ngModel)]='customer.address.zip' name="address.zip" type="text"
+                  class="form-control" [ngModelOptions]="{standalone: true}">
+              </div>
+
+              <div class="form-group col-sm">
+                <label for="input_address.country">Country</label>
+                <input id="input_address.country" [(ngModel)]='customer.address.country' name="address.country"
+                  type="text" class="form-control" [ngModelOptions]="{standalone: true}">
+              </div>
+
+              <div class="form-group col-sm">
+                <label for="input_address.city">City</label>
+                <input id="input_address.city" [(ngModel)]='customer.address.city' name="address.city" type="text"
+                  class="form-control" [ngModelOptions]="{standalone: true}">
+              </div>
+
+              <div class="form-group col-sm">
+                <label for="input_address.street">Street</label>
+                <input id="input_address.street" [(ngModel)]='customer.address.street' name="address.street" type="text"
+                  class="form-control" [ngModelOptions]="{standalone: true}">
+              </div>
+
+            </div>
+
+            <div class="form-group col-sm">
+              <label for="input_address.notes">Notes</label>
+              <input id="input_address.notes" [(ngModel)]='customer.address.notes' name="address.notes" type="text"
+                class="form-control" [ngModelOptions]="{standalone: true}">
+            </div>
+            <!--
+        <div class="form-group col-sm">
+          <label for="input_active">active</label>
+          <input [(ngModel)]="customer.active" id="input_active" name="active" type="active" class="form-control" required>
+        </div> -->
+
+          </fieldset>
+
+          <div class="col-6 col-md-12 mt-md-2 col-xl-6 mt-lg-2 mt-xl-0">
+            <button class="btn btn-primary" type="button" (click)="onUpdateCustomer(customerForm.value)">
+              <i class="fa fa-floppy-o" aria-hidden="true"></i>
+              Save
+            </button>
+          </div>
+
+
+          <p>{{customerForm.value | json}}</p>
+
+
+        </form>
+
+      </div>
+    </div>
+  </fieldset>
+
+
+
+</section>
+
+
+<hr>
+<section>
+
+  <h4 style="color: blue;">Product edit</h4>
+
+
+
+
+  <div class="form-group col-md-4">
+    <label for="inputState">product.id</label>
+    <select name="id" id="select_catId" class="form-control" [(ngModel)]="selectedProductID"
+      (change)="onUpdateProductForm(selectedProductID)">
+      <option *ngFor="let cat of listProduct$ | async" [ngValue]="cat.id">
+        {{cat.id}}
+      </option>
+    </select>
+  </div>
+
+
+  <div class="col-8" *ngIf="selectedProduct$ | async as product" style="border: 1px solid blue">
+    <form action="" #productForm="ngForm">
+
+      <!-- {{product | json}} -->
+
+      <div class="container form-row">
+
+        <div class="form-group" style="max-width: 3.2rem;">
+          <label for="">#id</label>
+          <input [(ngModel)]="product.id" id="" name='id' type="text" class="form-control text-center" readonly>
+        </div>
+
+        <div class="form-group col-sm">
+          <label for="input_productName">name</label>
+          <input [(ngModel)]="product.name" id="input_productName" name="name" type="text" class="form-control"
+            required>
+        </div>
+
+        <div class="form-group col-sm">
+          <label for="input_productType">type</label>
+          <input [(ngModel)]="product.type" id="input_productType" name="type" type="text" class="form-control"
+            required>
+        </div>
+
+
+        <div class="form-group col-md-4">
+          <label for="inputState">CATEGORY</label>
+          <select name="catID" id="select_catID" class="form-control" [(ngModel)]="product.catID">
+            <option *ngFor="let cat of listCategory$ | async" [selected]="cat.id === product.catID" [value]="cat.id">
+              {{cat.name}}
+            </option>
+          </select>
+        </div>
+
+
+
+
+
+      </div>
+      <div class="container form-row">
+
+
+
+        <div class="form-group col-sm">
+          <label for="input_description">description</label>
+          <textarea class="form-control" rows="4" id="text_featured" name="description"
+            [(ngModel)]="product.description"></textarea>
+          <!-- <input [(ngModel)]="product.description" id="input_descriptiony" name="description" type="text"
+            class="form-control" required> -->
+        </div>
+
+
+        <div>
+          <div class="form-group col-sm-6 col-md">
+            <label>Price</label>
+            <div class="input-group">
+              <input [(ngModel)]="product.price" name="price" type="text" class="form-control" required>
+              <div class="input-group-append">
+                <span class="input-group-text">$</span>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="form-check">
+            <label class="form-check-label">
+              <input class="form-check-input" type="checkbox" value="" name="featured" [(ngModel)]="product.featured">
+              Featured
+              <span class="form-check-sign">
+                <span class="check"></span>
+              </span>
+            </label>
+          </div>
+
+          <div class="form-check">
+            <label class="form-check-label">
+              <input class="form-check-input" type="checkbox" value="" name="active" [(ngModel)]="product.active">
+              Active
+              <span class="form-check-sign">
+                <span class="check"></span>
+              </span>
+            </label>
+          </div>
+
+
+
+        </div>
+
+
+      </div>
+
+
+      <div class="col-6 col-md-12 mt-md-2 col-xl-6 mt-lg-2 mt-xl-0">
+        <button class="btn btn-info" type="button" (click)="onUpdateProduct(productForm.value)">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i>
+          Save
+        </button>
+      </div>
+
+      <div class="col-6 col-md-12 mt-md-2 col-xl-6 mt-lg-2 mt-xl-0">
+        <button class="btn btn-warning" type="button" (click)="onCreateProduct(productForm.value)">
+          <i class="fa fa-floppy-o" aria-hidden="true"></i>
+          Create
+        </button>
+      </div>
+
+      <p>{{productForm.value | json}}</p>
+
+    </form>
+
+  </div>
+
+</section>
+
+
+
+
+<hr>
+<section>
+
+  <h4 style="color: orange;">Order edit</h4>
+
+
+  <div class="form-group col-md-4">
+    <label for="inputState">order.id</label>
+    <select name="id" id="select_catId" class="form-control" [(ngModel)]="selectedOrderID"
+      (change)="onUpdateOrderForm(selectedOrderID)">
+      <option *ngFor="let cat of listOrder$ | async" [ngValue]="cat.id">
+        {{cat.id}}
+      </option>
+    </select>
+  </div>
+
+  <!-- <pre>{{selectedOrder$ | async | json }}</pre> -->
+
+  <div class="col-8" *ngIf="selectedOrder$ | async as order" style="border: 1px solid orange">
+    <form action="" #orderForm="ngForm">
+
+      <div class="container form-row">
+
+        <div class="form-group" style="max-width: 3.2rem;">
+          <label for="">#id</label>
+          <input [(ngModel)]="order.id" id="" name='id' type="text" class="form-control text-center" readonly>
+        </div>
+
+        <div class="form-group" style="max-width: 3.2rem;">
+          <label for="">customerID</label>
+          <input [(ngModel)]="order.customerID" id="" name='customerID' type="text" class="form-control text-center">
+        </div>
+
+        <div class="form-group" style="max-width: 3.2rem;">
+          <label for="">productID</label>
+          <input [(ngModel)]="order.productID" id="" name='productID' type="text" class="form-control text-center">
+        </div>
+
+        <div class="form-group" style="max-width: 3.2rem;">
+          <label for="">amount</label>
+          <input [(ngModel)]="order.amount" id="" name='amount' type="text" class="form-control text-center">
+        </div>
+
+        <div class="form-group" style="max-width: 3.2rem;">
+          <label for="">status</label>
+          <input [(ngModel)]="order.status" id="" name='status' type="text" class="form-control text-center">
+        </div>
+
+      </div>
+
+      <!-- {{order | json}} -->
+
+      <div class="continer">
+
+        <fieldset style="border: 1px solid purple">
+          Belső objektumadatok:
+          <table class="table-bordered">
+            <tbody>
+              <tr>
+                <td style="color: green;">Customer adatai:</td>
+              </tr>
+              <tr>
+                <td>customer.id </td>
+                <td>{{order.customer?.id}}</td>
+              </tr>
+              <tr>
+                <td>customer.name (összevont)</td>
+                <td>{{order.customer?.show('firstName', 'lastName')}}</td>
+              </tr>
+              <tr>
+                <td>customer.email </td>
+                <td>{{order.customer?.email}}</td>
+              </tr>
+              <tr>
+                <td>customer.address (full) </td>
+                <td>{{order.customer?.address?.full}}</td>
+              </tr>
+              <tr>
+                <td>customer.address.city </td>
+                <td>{{order.customer?.address?.city}}</td>
+              </tr>
+              <tr>
+                <td style="color: blue;">Product adatai:</td>
+              </tr>
+              <tr>
+                <td>product.id </td>
+                <td>{{order.product?.id}}</td>
+              </tr>
+              <tr>
+                <td>product.name </td>
+                <td>{{order.product?.name}}</td>
+              </tr>
+              <tr>
+                <td>product.category.id </td>
+                <td>{{order.product?.category?.id}}</td>
+              </tr>
+              <tr>
+                <td>product.category.name </td>
+                <td>{{order.product?.category?.name}}</td>
+              </tr>
+              <tr>
+                <td>product.type </td>
+                <td>{{order.product?.type}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+        </fieldset>
+
+      </div>
+
+
+
+
+      <div class="continer col-4 d-flex flex-row">
+
+        <div class="col-6 col-md-12 mt-md-2 col-xl-6 mt-lg-2 mt-xl-0">
+          <button class="btn btn-info" type="button" (click)="onUpdateOrder(orderForm.value)">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i>
+            Save
+          </button>
+        </div>
+
+        <div class="col-6 col-md-12 mt-md-2 col-xl-6 mt-lg-2 mt-xl-0">
+          <button class="btn btn-danger" type="button" (click)="onDeleteOrder(orderForm.value)">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i>
+            DEL
+          </button>
+        </div>
+
+        <div class="col-6 col-md-12 mt-md-2 col-xl-6 mt-lg-2 mt-xl-0">
+          <button class="btn btn-warning" type="button" (click)="onCreateOrder(orderForm.value)">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i>
+            Create
+          </button>
+        </div>
+
+      </div>
+
+      <p>{{orderForm.value | json}}</p>
+
+    </form>
+
+  </div>
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
+<input type="text" class="form-control" #search (keyup)="0">
+<p> {{ search.value}} </p>
+<!-- <input #box type="text" (keyup)="onKey(box.value)">
+<p> {{box.value}} </p> -->
+
+<!-- {{ one | async | json }} -->
+
+<!-- {{ oneCategory$ | async | json }} -->
+<!-- {{ listCategory$ | async | json }} -->
+<!-- {{ oneAddress$ | async | json }} -->
+<!-- {{ listAddress$ | async | json }} -->
+
+
+
+<pre>
+  <!-- {{ listProduct$ | async | json }} -->
+    {{ oneProduct$ | async | json }}
+ </pre>
+
+
+
+<p>.show(...) metódus alkalmazása</p>
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <table class="table-bordered">
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>address.full</th>
+            <th>zip + country + city</th>
+            <th>zip</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let customer of listCustomer$ | async | slice:0:3">
+            <td>{{ customer.id }}</td>
+            <td>{{ customer.address.show() }}</td>
+            <td>{{ customer.address.show('zip', 'country', 'city') }}</td>
+            <td>{{ customer.address.zip }}</td>
+            <!-- <td>{{ customer.firstName }}</td>
+            <td>{{ customer.lastName }}</td>
+            <td>{{ customer.email }}</td>
+            <td>{{ customer.address.zip }}</td> -->
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- <pre>
+  {{ list$ | async | json }}
+</pre> -->
+
+
 
