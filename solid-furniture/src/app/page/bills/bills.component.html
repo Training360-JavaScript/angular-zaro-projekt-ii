@@ -10,7 +10,7 @@
     <p class="text-right font-weight-bold pt-4">Search bills:</p>
   </div>
   <div class="col-1">
-    <select class="form-control mt-2 text-center" required [(ngModel)]="searchKey" (change)="clearKeyword()">
+    <select class="form-control mt-2 text-center" required [(ngModel)]="searchKey" (change)="clearKeyword()" (change)="clearKeywordMinMax()">
       <option *ngFor="let key of billKeys" [value]="key">{{key | titlecase}}</option>
     </select>
   </div>

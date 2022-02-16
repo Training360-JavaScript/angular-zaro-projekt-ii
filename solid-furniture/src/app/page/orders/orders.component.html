@@ -10,7 +10,7 @@
     <p class="text-right font-weight-bold pt-4">Search orders:</p>
   </div>
   <div class="col-1">
-    <select class="form-control mt-2 text-center" required [(ngModel)]="searchKey" (change)="clearKeyword()">
+    <select class="form-control mt-2 text-center" required [(ngModel)]="searchKey" (change)="clearKeyword()" (change)="clearKeywordMinMax()">
       <option *ngFor="let key of orderKeys" [value]="key">{{key | titlecase}}</option>
     </select>
   </div>
@@ -70,8 +70,8 @@
                   <tr
                     *ngFor="let order of allOrders$ | async | filter: searchKey:keyword:keywordMin:keywordMax | sorter: sortKey:sortDirection">
                     <td class="text-center">{{ order.id }}</td>
-                    <td class="text-center">{{ order.customer.show('firstName', 'lastName') }}</td>
-                    <td class="text-center">{{ order.productID }}</td>
+                    <td class="text-center">{{ order.customerID }} ({{ order.customer.show('firstName', 'lastName') }})</td>
+                    <td class="text-center">{{ order.productID }} ({{ order.product.name }})</td>
                     <td class="text-center">{{ order.amount }}</td>
                     <td class="text-center">
                       <p *ngIf="order.status == 'new'" class="font-weight-bold pt-3" style="color: dodgerblue!important;">New</p>
