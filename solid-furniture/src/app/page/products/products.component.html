@@ -70,7 +70,7 @@
                     <td class="text-center">{{ product.id }}</td>
                     <td>{{ product.name }}</td>
                     <td>{{ product.type }}</td>
-                    <td>{{ product.catID }}</td> <!-- EHELYETT LESZ A CATEGORY NAME -->
+                    <td>{{ product.category.name }}</td> <!-- EHELYETT LESZ A CATEGORY NAME -->
                     <td>{{ product.description }}</td>
                     <td class="text-center">{{ product.price }}</td>
                     <td class="text-center"><i *ngIf="product.featured" style="color: rgb(48, 180, 48)!important;" class="fa fa-check"></i><i *ngIf="!product.featured" style="color: red!important" class="fa fa-times"></i></td>

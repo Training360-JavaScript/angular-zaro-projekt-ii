@@ -1,46 +1,64 @@
+import { BaseService } from './base.service';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { forkJoin, map, Observable, switchMap } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Bill } from '../model/bill';
+import { OrderService } from './order.service';
+
 
 @Injectable({
   providedIn: 'root'
 })
-export class BillService {
+export class BillService extends BaseService<Bill> {
 
-  apiUrl: string = environment.apiUrl;
-  endPoint: string = 'bill';
+  // apiUrl: string = environment.apiUrl;
+  // endPoint: string = 'bill';
 
-  url: string = `${this.apiUrl}${this.endPoint}`;
+  // url: string = `${this.apiUrl}${this.endPoint}`;
 
   constructor(
-    private http: HttpClient
-  ) { }
+    public override http: HttpClient,
+    private orderService: OrderService,
 
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  ) {
+    super(http);
+    this.entityName = 'bill';
   }
 
-  getAll(): Observable<Bill[]> {
-    return this.http.get<Bill[]>(this.url)
+
+  override get(id: number): Observable<Bill> {
+    const bill$ = super.get(id).pipe(
+      switchMap(bill => {
+        return this.orderService.get(bill.orderID).pipe(
+          map(order => {
+            bill.order = order;
+            return bill;
+          })
+        )
+      })
+    )
+    return bill$;
   }
 
-  get(id: number): Observable<Bill> {
-    return this.http.get<Bill>(`${this.url}/${id}`)
+
+  override getAll(): Observable<Bill[]> {
+    const allBill$ = super.getAll();
+    const allOrder$ = this.orderService.getAll();
+
+    const allFullBill$ = forkJoin([allBill$, allOrder$]).pipe(
+
+      map(([billList, orderList]) => {
+        billList.map(bill => {
+          const order = orderList.find(order => order.id === bill.orderID);
+          bill.order = order;
+        })
+        return billList;
+      })
+    )
+
+    return allFullBill$;
   }
 
-  update(Bill: Bill): Observable<Bill> {
-    return this.http.patch<Bill>(`${this.url}/${Bill.id}`, Bill)
-  }
-
-  delete(id: number): Observable<Bill> {
-    const url = `${this.url}/${id}`;
-    return this.http.delete<Bill>(url)
-  }
-
-  create(Bill: Bill): Observable<Bill> {
-    return this.http.post<any>(this.url, Bill, this.httpOptions)
-  }
 
 }

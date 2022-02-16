@@ -70,7 +70,7 @@
                   <tr
                     *ngFor="let order of allOrders$ | async | filter: searchKey:keyword:keywordMin:keywordMax | sorter: sortKey:sortDirection">
                     <td class="text-center">{{ order.id }}</td>
-                    <td class="text-center">{{ order.customerID }}</td>
+                    <td class="text-center">{{ order.customer.show('firstName', 'lastName') }}</td>
                     <td class="text-center">{{ order.productID }}</td>
                     <td class="text-center">{{ order.amount }}</td>
                     <td class="text-center">

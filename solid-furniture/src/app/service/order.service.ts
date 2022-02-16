@@ -1,46 +1,105 @@
+import { Customer } from 'src/app/model/customer';
+import { ProductService } from 'src/app/service/product.service';
+import { CustomerService } from './customer.service';
+import { BaseService } from './base.service';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { forkJoin, Observable, switchMap, map, catchError, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Order } from '../model/order';
+import { Product } from '../model/product';
+
 
 @Injectable({
   providedIn: 'root'
 })
-export class OrderService {
+export class OrderService extends BaseService<Order> {
 
-  apiUrl: string = environment.apiUrl;
-  endPoint: string = 'order';
-
-  url: string = `${this.apiUrl}${this.endPoint}`;
 
   constructor(
-    private http: HttpClient
-  ) { }
-
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    public override http: HttpClient,
+    private customerService: CustomerService,
+    private productService: ProductService,
+  ) {
+    super(http);
+    this.entityName = 'order';
   }
 
-  getAll(): Observable<Order[]> {
-    return this.http.get<Order[]>(this.url)
+
+  override get(id: number): Observable<Order> {
+    const order$ = super.get(id).pipe(
+      switchMap(order => {
+        return this.productService.get(order.productID).pipe(
+          map(product => {
+            order.product = product || new Product();
+            return order
+          })
+        )
+      }),
+      switchMap(order => {
+        return this.customerService.get(order.customerID).pipe(
+          map(customer => {
+            order.customer = new Customer(customer);
+            order.customerID = order.customerID * 1;
+            order.productID = order.productID * 1;
+            return order
+          })
+        )
+      }),
+
+    );
+
+    return order$;
   }
 
-  get(id: number): Observable<Order> {
-    return this.http.get<Order>(`${this.url}/${id}`)
+
+  override getAll(): Observable<Order[]> {
+    const allOrder$ = super.getAll();
+    const allCustomer$ = this.customerService.getAll();
+    const allProduct$ = this.productService.getAll();
+
+    const allFullOrder$ = forkJoin([allOrder$, allProduct$, allCustomer$]).pipe(
+
+      map(([orderList, productList, customerList]) => {
+        orderList.map(order => {
+          const product = productList.find(product => product.id === order.productID) || new Product();
+          const customer = customerList.find(customer => customer.id === order.customerID) || new Customer();
+          order.product = product;
+          order.customer = customer;
+          order.customerID = order.customerID * 1;
+          order.productID = order.productID * 1;
+        })
+        return orderList;
+      })
+    )
+
+    return allFullOrder$;
   }
 
-  update(Order: Order): Observable<Order> {
-    return this.http.patch<Order>(`${this.url}/${Order.id}`, Order)
+
+  createOrderObject(order: Order): Order {
+    const newOrder = new Order();
+    delete newOrder.customer;
+    delete newOrder.product;
+    for (const key of Object.keys(newOrder)) {
+      newOrder[key] = order[key];
+    }
+    newOrder.customerID = newOrder.customerID * 1;
+    newOrder.productID = newOrder.productID * 1;
+    return newOrder;
   }
 
-  delete(id: number): Observable<Order> {
-    const url = `${this.url}/${id}`;
-    return this.http.delete<Order>(url)
+
+  override update(entity: Order): Observable<Order> {
+    const newOrder = this.createOrderObject(entity);
+    return super.update(newOrder);
   }
 
-  create(Order: Order): Observable<Order> {
-    return this.http.post<any>(this.url, Order, this.httpOptions)
+
+  override create(entity: Order): Observable<Order> {
+    const newOrder = this.createOrderObject(entity);
+    return this.http.patch<Order>(`${this.apiUrl}${this.entityName}/${entity.id}`, newOrder);
   }
+
 
 }
