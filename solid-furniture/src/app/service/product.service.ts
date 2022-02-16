@@ -46,14 +46,15 @@ export class ProductService extends BaseService<Product> {
       .pipe(
         switchMap(product => {
           return this.categoryService.get(product.catID).pipe(
-            map(order => {
-              product.category = order || new Category();
+            map(category => {
+              product.category = category || new Category();
+              //console.log(product)
               return product;
             })
           )
         }),
         catchError(error => {
-          //console.log(error);
+          // console.log('error ProductService');
           return of(new Product());
         }),
       )

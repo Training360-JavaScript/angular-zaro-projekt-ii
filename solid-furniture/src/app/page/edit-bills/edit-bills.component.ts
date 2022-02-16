@@ -43,6 +43,7 @@ export class EditBillsComponent implements OnInit {
         })
       )
       .subscribe((bill) => {
+        delete bill.order
         this.billForm.setValue(bill);
       });
   }
