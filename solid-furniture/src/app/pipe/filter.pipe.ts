@@ -46,10 +46,16 @@ export class FilterPipe implements PipeTransform {
 
     //search in string types
     phrase = phrase.toLowerCase();
+    if (key === 'firstName') {
+      return value.filter(item => {
+        const data = String(item['firstName']).toLowerCase().concat(' ', String(item['lastName']).toLowerCase())
+        return data.includes(String(phrase));
+      })
+    }
     return value.filter(item => {
       const data = String(item[key]).toLowerCase();
       return data.includes(String(phrase));
-    });
+    })
   }
 
 }

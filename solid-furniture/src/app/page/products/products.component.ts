@@ -22,6 +22,7 @@ export class ProductsComponent implements OnInit {
     private pService: ProductService, private router: Router) {
       this.sumPrice()
       this.countID()
+      console.log(this.productKeys)
     }
 
   ngOnInit(): void {
@@ -50,11 +51,70 @@ export class ProductsComponent implements OnInit {
 
   sumPriceCounter: number = 0
   sumPrice(): void {
+
+    /*
+    // Select the node that will be observed for mutations
+const targetNode = document.getElementById('some-id');
+
+// Options for the observer (which mutations to observe)
+const config = { attributes: true, childList: true, subtree: true };
+
+// Callback function to execute when mutations are observed
+const callback = function(mutationsList, observer) {
+    // Use traditional 'for loops' for IE 11
+    for(const mutation of mutationsList) {
+        if (mutation.type === 'childList') {
+            console.log('A child node has been added or removed.');
+        }
+        else if (mutation.type === 'attributes') {
+            console.log('The ' + mutation.attributeName + ' attribute was modified.');
+        }
+    }
+};
+
+    let observer = new MutationObserver((mutations) => {
+      console.log(observer)
+      mutations.forEach((mutation) => {
+        console.log(observer)
+        if (!mutation.addedNodes) return
+
+        for (let i = 0; i < mutation.addedNodes.length; i++) {
+          let node = mutation.addedNodes[i]
+          console.log(observer)
+          console.log(node)
+        }
+      })
+    })
+*/
+
+/*
+return new Promise((resolve, reject) => {
+  let el = document.querySelector(selector);
+  if (el) {
+    resolve(el);
+    return
+  }
+  new MutationObserver((mutationRecords, observer) => {
+    // Query for elements matching the specified selector
+    Array.from(document.querySelectorAll(selector)).forEach((element) => {
+      resolve(element);
+      //Once we have resolved we don't need the observer anymore.
+      observer.disconnect();
+    });
+  })
+    .observe(document.documentElement, {
+      childList: true,
+      subtree: true
+    })
+})
+*/
+
     this.allProducts$.subscribe(
       products => {
-        products.forEach(product => {
-          this.sumPriceCounter += product.price
-        })
+
+        let priceTds = document.querySelectorAll('#price')
+        console.log(priceTds)
+
       }
     )
   }

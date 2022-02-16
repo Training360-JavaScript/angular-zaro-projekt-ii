@@ -20,7 +20,7 @@ export class Customer {
 
   show(...arg: string[]): any {
     if (arg.length != 0) {
-      const result = arg.map(key => (this[key]) ? this[key] : '').join(', ')
+      const result = arg.map(key => (this[key]) ? this[key] : '').join(' ')
       return result;
     }
     return this.full;
