@@ -63,7 +63,7 @@
                   <tr
                     *ngFor="let customer of allCustomers$ | async | filter: searchKey:keyword | sorter: sortKey:sortDirection">
                     <td class="text-center">{{ customer.id }}</td>
-                    <td>{{ customer.firstName }}</td>
+                    <td>{{ customer.show('firstName', 'lastName') }}</td>
                     <td>{{ customer.lastName }}</td>
                     <td>{{ customer.email }}</td>
                     <td>{{ customer.address.full }}</td>

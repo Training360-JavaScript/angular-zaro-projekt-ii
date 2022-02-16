@@ -19,6 +19,7 @@ export class CustomerService extends BaseService<Customer> {
   }
 
   createAddress(customer: Customer): Customer {
+    customer = new Customer(customer);
     if (typeof customer.address === 'string') {
       const addressParts = String(customer.address).split('|-|');
       customer.address = new Address();
