@@ -43,6 +43,8 @@ export class EditOrdersComponent implements OnInit {
         })
       )
       .subscribe((bill) => {
+        delete bill.customer;
+        delete bill.product;
         this.orderForm.setValue(bill);
       });
   }

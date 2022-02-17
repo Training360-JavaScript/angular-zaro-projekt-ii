@@ -39,14 +39,18 @@ export class OrderService extends BaseService<Order> {
       switchMap(order => {
         return this.customerService.get(order.customerID).pipe(
           map(customer => {
-            order.customer = new Customer(customer);
+            // order.customer = new Customer(customer);
+            order.customer = customer || new Customer();
             order.customerID = order.customerID * 1;
             order.productID = order.productID * 1;
             return order
           })
         )
       }),
-
+      catchError(error => {
+        // console.log('error OrderService');
+        return of(new Order());
+      }),
     );
 
     return order$;
@@ -62,12 +66,13 @@ export class OrderService extends BaseService<Order> {
 
       map(([orderList, productList, customerList]) => {
         orderList.map(order => {
-          const product = productList.find(product => product.id === order.productID) || new Product();
-          const customer = customerList.find(customer => customer.id === order.customerID) || new Customer();
-          order.product = product;
-          order.customer = customer;
-          order.customerID = order.customerID * 1;
-          order.productID = order.productID * 1;
+          const product = productList.find(product => product.id === order.productID * 1) || new Product();
+          const customer = customerList.find(customer => customer.id === order.customerID * 1) || new Customer();
+          order.product = new Product(product);
+          order.customer = new Customer(customer);
+          //order.customerID = order.customerID * 1;
+          //order.productID = order.productID * 1;
+          //console.log(order);
         })
         return orderList;
       })

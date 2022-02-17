@@ -48,6 +48,7 @@ export class EditProductsComponent implements OnInit {
         })
       )
       .subscribe((product) => {
+        delete product.category;
         this.productForm.setValue(product);
       });
   }

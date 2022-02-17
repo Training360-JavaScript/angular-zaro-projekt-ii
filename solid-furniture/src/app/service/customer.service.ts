@@ -43,6 +43,7 @@ export class CustomerService extends BaseService<Customer> {
     return super.get(id).pipe(
       map(customer => this.createAddress(customer)),
       catchError(error => {
+        // console.log('error cutomerService');
         return of(new Customer());
       }),
     );
