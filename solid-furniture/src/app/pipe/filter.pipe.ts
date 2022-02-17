@@ -10,6 +10,8 @@ export class FilterPipe implements PipeTransform {
       return value;
     }
 
+    if (key === 'category name') key = 'catID'
+
     //search in every category
     if (!key) {
       return value.filter(

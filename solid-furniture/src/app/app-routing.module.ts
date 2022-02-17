@@ -19,10 +19,12 @@ const routes: Routes = [
   },
   {
     path: 'products',
-    component: ProductsComponent,
+    //loadChildren: () => import('../app/page/products/products.component').then(m => m.ProductsComponent),
+    component: ProductsComponent
   },
   {
     path: 'customers',
+    //loadChildren: () => import('../app/page/customers/customers.component').then(m => m.CustomersComponent),
     component: CustomersComponent,
   },
   {

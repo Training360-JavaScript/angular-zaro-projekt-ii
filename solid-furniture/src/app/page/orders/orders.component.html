@@ -70,8 +70,10 @@
                   <tr
                     *ngFor="let order of allOrders$ | async | filter: searchKey:keyword:keywordMin:keywordMax | sorter: sortKey:sortDirection">
                     <td class="text-center">{{ order.id }}</td>
-                    <td class="text-center">{{ order.customerID }} ({{ order.customer.show('firstName', 'lastName') }})</td>
-                    <td class="text-center">{{ order.productID }} ({{ order.product.name }})</td>
+                    <td *ngIf="order.customer.firstName" class="text-center">{{ order.customerID }} ({{ order.customer.show('firstName', 'lastName') }})</td>
+                    <td *ngIf="!order.customer.firstName" class="text-center">{{ order.customerID }} (Not found)</td>
+                    <td *ngIf=" order.product.name" class="text-center">{{ order.productID }} ({{ order.product.name }})</td>
+                    <td *ngIf=" !order.product.name" class="text-center">{{ order.productID }} (Not found)</td>
                     <td class="text-center">{{ order.amount }}</td>
                     <td class="text-center">
                       <p *ngIf="order.status == 'new'" class="font-weight-bold pt-3" style="color: dodgerblue!important;">New</p>
