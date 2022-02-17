@@ -42,6 +42,7 @@ export class ProductsComponent implements OnInit {
 
   clearKeyword(): void {
     this.keyword = ''
+    console.log(this.productKeys)
   }
 
   clearKeywordMinMax(): void {
