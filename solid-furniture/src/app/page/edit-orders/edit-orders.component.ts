@@ -50,6 +50,9 @@ export class EditOrdersComponent implements OnInit {
   }
 
   onDelete() {
+    if (!confirm('Are you sure?')) {
+      return;
+    }
     let id = this.orderForm.value.id;
     if (id) {
       this.orderService.delete(id).subscribe(() => {

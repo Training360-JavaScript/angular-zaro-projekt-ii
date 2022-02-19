@@ -1,8 +1,9 @@
+import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { ProductService } from './../../service/product.service';
 import { Product } from 'src/app/model/product';
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 @Component({
   selector: 'app-products',
@@ -10,20 +11,39 @@ import { Observable } from 'rxjs';
   styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent implements OnInit {
+  scrollObserver: IntersectionObserver | undefined;
+  loadedElements: number = 10;
+  searchKey: string = 'name';
+  keyword: string = '';
+  keywordMin: string = '';
+  keywordMax: string = '';
+  IDCounter: number = 0;
 
-  allProducts$: Observable<Product[]> = this.pService.getAll()
-  productKeys: string[] = Object.keys(new Product())  // Inkább manuálisan vidd be, mert van egy új ?-es kúlcs is a Product()-ban, amit nem kellene megjeleníteni. És a catID helyett most a kategórianevek szerepelnek.
-  searchKey: string = 'name'
-  keyword: string = ''
-  keywordMin: string = ''
-  keywordMax: string = ''
+  allProducts$: Observable<Product[]> = this.productService.getAll().pipe(
+    tap((products) => {
+      products.forEach((product) => {
+        this.IDCounter = products.length;
+      });
+
+      this.scrollObserver = new IntersectionObserver(
+        ([entry]: IntersectionObserverEntry[]) => {
+          if (entry.isIntersecting) {
+            this.loadedElements = this.loadedElements + 10;
+          }
+          if (this.loadedElements > products.length) {
+            this.scrollObserver?.disconnect();
+          }
+        }
+      );
+      this.scrollObserver.observe(document.querySelector('#scrollAnchor')!);
+    })
+  );
+  productKeys: string[] = Object.keys(new Product()); // Inkább manuálisan vidd be, mert van egy új ?-es kúlcs is a Product()-ban, amit nem kellene megjeleníteni. És a catID helyett most a kategórianevek szerepelnek.
 
   constructor(
-    private pService: ProductService, private router: Router) {
-      this.sumPrice()
-      this.countID()
-      console.log(this.productKeys)
-    }
+    private productService: ProductService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.productKeys[3] = 'category name';
@@ -35,24 +55,23 @@ export class ProductsComponent implements OnInit {
   clickCounter: number = 0;
 
   sorting(key: string): void {
-    (key === this.sortKey) ? this.clickCounter++ : this.clickCounter = 0;
-    this.sortDirection = (this.clickCounter % 2) ? 'Z...A' : 'A...Z';
+    key === this.sortKey ? this.clickCounter++ : (this.clickCounter = 0);
+    this.sortDirection = this.clickCounter % 2 ? 'Z...A' : 'A...Z';
     this.sortKey = key;
   }
 
   clearKeyword(): void {
-    this.keyword = ''
-    console.log(this.productKeys)
+    this.keyword = '';
+    console.log(this.productKeys);
   }
 
   clearKeywordMinMax(): void {
-    this.keywordMin = ''
-    this.keywordMax = ''
+    this.keywordMin = '';
+    this.keywordMax = '';
   }
 
-  sumPriceCounter: number = 0
+  sumPriceCounter: number = 0;
   sumPrice(): void {
-
     /*
     // Select the node that will be observed for mutations
 const targetNode = document.getElementById('some-id');
@@ -88,7 +107,7 @@ const callback = function(mutationsList, observer) {
     })
 */
 
-/*
+    /*
 return new Promise((resolve, reject) => {
   let el = document.querySelector(selector);
   if (el) {
@@ -110,53 +129,22 @@ return new Promise((resolve, reject) => {
 })
 */
 
-    this.allProducts$.subscribe(
-      products => {
-
-        let priceTds = document.querySelectorAll('#price')
-        console.log(priceTds)
-
-      }
-    )
-  }
-
-  IDCounter: number = 0
-  countID(): void {
-    this.allProducts$.subscribe(
-      products => {
-        products.forEach(product => {
-          this.IDCounter ++
-        })
-      }
-    )
+    this.allProducts$.subscribe((products) => {
+      let priceTds = document.querySelectorAll('#price');
+      console.log(priceTds);
+    });
   }
 
   onDelete(productID: number): void {
-    if (!confirm('Are you sure?')) { return }
+    if (!confirm('Are you sure?')) {
+      return;
+    }
 
-    this.pService.delete(productID).subscribe(() => {
-      this.allProducts$ = this.pService.getAll()
-    })
+    this.productService.delete(productID).subscribe(() => {
+      this.toastr.success('Product has been removed!', 'Success', {
+        timeOut: 3000,
+      });
+      this.allProducts$ = this.productService.getAll();
+    });
   }
-
 }
-
-
-  //How ID nav works GERGO ADDED
-/*
-addProduct() {
-  this.router.navigate(['/edit-products', 0]);
-
-}
-CORRESPONDING HTML SNIPPET
-(click)="createProduct()
-
-deleteProduct(id: number) {
-  this.pService.delete(id).subscribe(() => {
-    this.allProducts$ = this.pService.getAll();
-  });
-}
-CORRESPONDING HTML SNIPPET
- <button (click)="deleteProduct(product.id)"
- Edit button is the same
-*/

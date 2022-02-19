@@ -4,23 +4,20 @@ import { Inject, Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class BaseService<T extends {id?: number, }> {
-
+export class BaseService<T extends { id?: number }> {
   apiUrl: string = environment.apiUrl;
   entityName: string = '';
 
-  constructor(
-    public http: HttpClient,
-    ) { }
+  constructor(public http: HttpClient) {}
 
   getAll(): Observable<T[]> {
     return this.http.get<T[]>(`${this.apiUrl}${this.entityName}`);
   }
 
   get(id: number): Observable<T> {
-    return this.http.get<T>(`${this.apiUrl}${this.entityName}/${id}`)
+    return this.http.get<T>(`${this.apiUrl}${this.entityName}/${id}`);
   }
 
   create(entity: T): Observable<T> {
@@ -28,12 +25,13 @@ export class BaseService<T extends {id?: number, }> {
   }
 
   update(entity: T): Observable<T> {
-    return this.http.patch<T>(`${this.apiUrl}${this.entityName}/${entity.id}`, entity);
+    return this.http.patch<T>(
+      `${this.apiUrl}${this.entityName}/${entity.id}`,
+      entity
+    );
   }
 
   delete(id: number): Observable<T> {
-    return this.http.delete<T>(`${this.apiUrl}${this.entityName}/${id}`)
+    return this.http.delete<T>(`${this.apiUrl}${this.entityName}/${id}`);
   }
-
 }
-
