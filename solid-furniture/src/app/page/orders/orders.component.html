@@ -17,7 +17,7 @@
   <div
     *ngIf="searchKey === 'id' || searchKey === 'customerID' || searchKey === 'productID'"
     class="col-2 mt-1">
-    <input type="text" class="form-control mt-2" [(ngModel)]="keyword" placeholder="Search">
+    <input type="text" class="form-control mt-2" [(ngModel)]="keyword" placeholder="Search" (keydown)="total()">
   </div>
   <div *ngIf="searchKey === 'amount'" class="col-2 mt-2">
     <input style="width: 25%" type="text" class="form-control float-left" [(ngModel)]="keyword" placeholder="Search"
@@ -28,7 +28,7 @@
       placeholder="Max" (keydown)="clearKeyword()">
   </div>
   <div *ngIf="searchKey === 'status'" class="col-2">
-    <select class="form-control mt-2 text-center" [(ngModel)]="keyword">
+    <select class="form-control mt-2 text-center" [(ngModel)]="keyword" (change)="total()">
       <option [value]="'new'">New</option>
       <option [value]="'paid'">Paid</option>
       <option [value]="'shipped'">Shipped</option>
@@ -74,7 +74,7 @@
                     <td *ngIf="!order.customer.firstName" class="text-center">{{ order.customerID }} (Not found)</td>
                     <td *ngIf=" order.product.name" class="text-center">{{ order.productID }} ({{ order.product.name }})</td>
                     <td *ngIf=" !order.product.name" class="text-center">{{ order.productID }} (Not found)</td>
-                    <td class="text-center">{{ order.amount }}</td>
+                    <td class="text-center amount">{{ order.amount }}</td>
                     <td class="text-center">
                       <p *ngIf="order.status == 'new'" class="font-weight-bold pt-3" style="color: dodgerblue!important;">New</p>
                       <p *ngIf="order.status == 'paid'" class="font-weight-bold pt-3" style="color: darkgoldenrod!important;">Paid</p>

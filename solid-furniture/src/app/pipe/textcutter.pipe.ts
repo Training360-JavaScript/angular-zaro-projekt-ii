@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TextcutterPipe implements PipeTransform {
 
-  transform(text: string | null, prefix: number): string | null {
+  transform(text: string | any, prefix: number): string | null {
     if (!prefix || prefix === 0) return text;
     if (typeof(text) != 'string') return text;
     if (String(text).length < prefix) return text;

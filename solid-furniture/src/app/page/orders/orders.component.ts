@@ -21,13 +21,24 @@ export class OrdersComponent implements OnInit {
 
   constructor(
     private oService: OrderService, private router: Router) {
-      this.sumAmount()
-      this.countID()
-    }
+    this.sumAmount()
+    this.countID()
+  }
 
   ngOnInit(): void {
     this.orderKeys.length = 5;
-   }
+    //total numbers in initialization
+    this.allOrders$.subscribe(
+      orders => {
+        orders.forEach(order => {
+          this.sumAmountCounter += order.amount
+        })
+        orders.forEach(order => {
+          this.IDCounter++
+        })
+      }
+    )
+  }
 
   sortKey: string = '';
   sortDirection: string = 'A...Z';
@@ -41,19 +52,28 @@ export class OrdersComponent implements OnInit {
 
   clearKeyword(): void {
     this.keyword = ''
+    this.total()
   }
 
   clearKeywordMinMax(): void {
     this.keywordMin = ''
     this.keywordMax = ''
+    this.total()
+  }
+
+  total(): void {
+    this.sumAmount()
+    this.countID()
   }
 
   sumAmountCounter: number = 0
   sumAmount(): void {
     this.allOrders$.subscribe(
       orders => {
-        orders.forEach(order => {
-          this.sumAmountCounter += order.amount
+        this.sumAmountCounter = 0
+        let amountTds = document.querySelectorAll('.amount')
+        amountTds.forEach(td => {
+          this.sumAmountCounter += Number(td.innerHTML)
         })
       }
     )
@@ -63,9 +83,12 @@ export class OrdersComponent implements OnInit {
   countID(): void {
     this.allOrders$.subscribe(
       orders => {
-        orders.forEach(order => {
-          this.IDCounter ++
+        this.IDCounter = 0
+        let tds = document.querySelectorAll('tr')
+        tds.forEach(td => {
+          this.IDCounter++
         })
+        this.IDCounter = this.IDCounter - 2
       }
     )
   }

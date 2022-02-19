@@ -20,14 +20,24 @@ export class ProductsComponent implements OnInit {
 
   constructor(
     private pService: ProductService, private router: Router) {
-      this.sumPrice()
-      this.countID()
-      console.log(this.productKeys)
-    }
+    this.sumPrice()
+    this.countID()
+  }
 
   ngOnInit(): void {
     this.productKeys[3] = 'category name';
     this.productKeys.length = 8;
+    //total numbers in initialization
+    this.allProducts$.subscribe(
+      products => {
+        products.forEach(product => {
+          this.sumPriceCounter += product.price
+        })
+        products.forEach(product => {
+          this.IDCounter++
+        })
+      }
+    )
   }
 
   sortKey: string = '';
@@ -42,19 +52,81 @@ export class ProductsComponent implements OnInit {
 
   clearKeyword(): void {
     this.keyword = ''
-    console.log(this.productKeys)
+    this.total()
   }
 
   clearKeywordMinMax(): void {
     this.keywordMin = ''
     this.keywordMax = ''
+    this.total()
+  }
+
+  total():void {
+    this.sumPrice()
+    this.countID()
   }
 
   sumPriceCounter: number = 0
   sumPrice(): void {
+    this.allProducts$.subscribe(
+      products => {
+        this.sumPriceCounter = 0
+        let priceTds = document.querySelectorAll('.price')
+        priceTds.forEach(td => {
+          this.sumPriceCounter += Number(td.innerHTML)
+        })
+      }
+    )
+  }
 
-    /*
-    // Select the node that will be observed for mutations
+  IDCounter: number = 0
+  countID(): void {
+    this.allProducts$.subscribe(
+      products => {
+        this.IDCounter = 0
+        let tds = document.querySelectorAll('tr')
+        tds.forEach(td => {
+          this.IDCounter++
+        })
+        this.IDCounter = this.IDCounter - 2
+      }
+    )
+  }
+
+  onDelete(productID: number): void {
+    if (!confirm('Are you sure?')) { return }
+
+    this.pService.delete(productID).subscribe(() => {
+      this.allProducts$ = this.pService.getAll()
+    })
+  }
+
+}
+
+
+//How ID nav works GERGO ADDED
+/*
+addProduct() {
+  this.router.navigate(['/edit-products', 0]);
+
+}
+CORRESPONDING HTML SNIPPET
+(click)="createProduct()
+
+deleteProduct(id: number) {
+  this.pService.delete(id).subscribe(() => {
+    this.allProducts$ = this.pService.getAll();
+  });
+}
+CORRESPONDING HTML SNIPPET
+ <button (click)="deleteProduct(product.id)"
+ Edit button is the same
+*/
+
+
+//LAZY LOADING próbálkozások - Gabi
+/*
+// Select the node that will be observed for mutations
 const targetNode = document.getElementById('some-id');
 
 // Options for the observer (which mutations to observe)
@@ -62,30 +134,30 @@ const config = { attributes: true, childList: true, subtree: true };
 
 // Callback function to execute when mutations are observed
 const callback = function(mutationsList, observer) {
-    // Use traditional 'for loops' for IE 11
-    for(const mutation of mutationsList) {
-        if (mutation.type === 'childList') {
-            console.log('A child node has been added or removed.');
-        }
-        else if (mutation.type === 'attributes') {
-            console.log('The ' + mutation.attributeName + ' attribute was modified.');
-        }
+// Use traditional 'for loops' for IE 11
+for(const mutation of mutationsList) {
+    if (mutation.type === 'childList') {
+        console.log('A child node has been added or removed.');
     }
+    else if (mutation.type === 'attributes') {
+        console.log('The ' + mutation.attributeName + ' attribute was modified.');
+    }
+}
 };
 
-    let observer = new MutationObserver((mutations) => {
-      console.log(observer)
-      mutations.forEach((mutation) => {
-        console.log(observer)
-        if (!mutation.addedNodes) return
+let observer = new MutationObserver((mutations) => {
+  console.log(observer)
+  mutations.forEach((mutation) => {
+    console.log(observer)
+    if (!mutation.addedNodes) return
 
-        for (let i = 0; i < mutation.addedNodes.length; i++) {
-          let node = mutation.addedNodes[i]
-          console.log(observer)
-          console.log(node)
-        }
-      })
-    })
+    for (let i = 0; i < mutation.addedNodes.length; i++) {
+      let node = mutation.addedNodes[i]
+      console.log(observer)
+      console.log(node)
+    }
+  })
+})
 */
 
 /*
@@ -108,55 +180,4 @@ return new Promise((resolve, reject) => {
       subtree: true
     })
 })
-*/
-
-    this.allProducts$.subscribe(
-      products => {
-
-        let priceTds = document.querySelectorAll('#price')
-        console.log(priceTds)
-
-      }
-    )
-  }
-
-  IDCounter: number = 0
-  countID(): void {
-    this.allProducts$.subscribe(
-      products => {
-        products.forEach(product => {
-          this.IDCounter ++
-        })
-      }
-    )
-  }
-
-  onDelete(productID: number): void {
-    if (!confirm('Are you sure?')) { return }
-
-    this.pService.delete(productID).subscribe(() => {
-      this.allProducts$ = this.pService.getAll()
-    })
-  }
-
-}
-
-
-  //How ID nav works GERGO ADDED
-/*
-addProduct() {
-  this.router.navigate(['/edit-products', 0]);
-
-}
-CORRESPONDING HTML SNIPPET
-(click)="createProduct()
-
-deleteProduct(id: number) {
-  this.pService.delete(id).subscribe(() => {
-    this.allProducts$ = this.pService.getAll();
-  });
-}
-CORRESPONDING HTML SNIPPET
- <button (click)="deleteProduct(product.id)"
- Edit button is the same
 */

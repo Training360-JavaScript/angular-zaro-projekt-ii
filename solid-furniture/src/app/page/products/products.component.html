@@ -27,7 +27,7 @@
     </select>
   </div>
   <div *ngIf="searchKey === 'name' || searchKey === 'type' || searchKey === 'description'" class="col-2 mt-1">
-    <input type="text" class="form-control mt-2" [(ngModel)]="keyword" placeholder="Search">
+    <input type="text" class="form-control mt-2" [(ngModel)]="keyword" placeholder="Search" (keydown)="total()">
   </div>
   <div *ngIf="searchKey === 'id' || searchKey === 'price'" class="col-2 mt-2">
     <input style="width: 25%" type="text" class="form-control float-left" [(ngModel)]="keyword" placeholder="Search"
@@ -38,13 +38,13 @@
       placeholder="Max" (keydown)="clearKeyword()">
   </div>
   <div *ngIf="searchKey === 'featured' || searchKey === 'active'" class="col-2">
-    <select class="form-control mt-2 text-center" [(ngModel)]="keyword">
+    <select class="form-control mt-2 text-center" [(ngModel)]="keyword" (change)="total()">
       <option [value]=true>True</option>
       <option [value]=false>False</option>
     </select>
   </div>
   <div *ngIf="searchKey === 'category name'" class="col-2">
-    <select class="form-control mt-2 text-center" [(ngModel)]="keyword">
+    <select class="form-control mt-2 text-center" [(ngModel)]="keyword" (change)="total()">
       <option [value]=1>Living room</option>
       <option [value]=2>Bedroom</option>
       <option [value]=3>Bathroom</option>
@@ -120,7 +120,7 @@
                     <td>{{ product.type }}</td>
                     <td>{{ product.catID }} ({{ product.category.name }})</td>
                     <td>{{ product.description | textcutter:60}}</td>
-                    <td class="text-center" id="price">{{ product.price }}</td>
+                    <td class="text-center price">{{ product.price }} €</td>
                     <td class="text-center"><i *ngIf="product.featured" style="color: rgb(48, 180, 48)!important;" class="fa fa-check"></i><i *ngIf="!product.featured" style="color: red!important" class="fa fa-times"></i></td>
                     <td class="text-center"><i *ngIf="product.active" style="color: rgb(48, 180, 48)!important;" class="fa fa-check"></i><i *ngIf="!product.active" style="color: red!important" class="fa fa-times"></i></td>
                     <td class="text-center">

@@ -22,7 +22,15 @@ export class CustomersComponent implements OnInit {
     this.countID()
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.allCustomers$.subscribe(
+      customers => {
+        customers.forEach(customer => {
+          this.IDCounter++
+        })
+      }
+    )
+  }
 
   sortKey: string = '';
   sortDirection: string = 'A...Z';
@@ -36,6 +44,7 @@ export class CustomersComponent implements OnInit {
 
   clearKeyword(): void {
     this.keyword = ''
+    this.countID()
   }
 
   /*
@@ -56,9 +65,12 @@ export class CustomersComponent implements OnInit {
   countID(): void {
     this.allCustomers$.subscribe(
       customers => {
-        customers.forEach(customer => {
+        this.IDCounter = 0
+        let tds = document.querySelectorAll('tr')
+        tds.forEach(td => {
           this.IDCounter++
         })
+        this.IDCounter = this.IDCounter - 2
       }
     )
   }

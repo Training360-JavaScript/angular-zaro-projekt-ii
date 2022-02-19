@@ -18,15 +18,27 @@ export class BillsComponent implements OnInit {
   keyword: string = ''
   keywordMin: string = ''
   keywordMax: string = ''
+  showBillDetail: boolean = false
+  myBill!: Bill
 
   constructor(
     private bService: BillService, private router: Router) {
-      this.sumAmount()
-      this.countID()
-    }
+    this.sumAmount()
+    this.countID()
+  }
 
   ngOnInit(): void {
     this.billKeys.length = 4;
+    this.allBills$.subscribe(
+      bills => {
+        bills.forEach(bill => {
+          this.sumAmountCounter += bill.amount
+        })
+        bills.forEach(bill => {
+          this.IDCounter++
+        })
+      }
+    )
   }
 
   sortKey: string = '';
@@ -41,19 +53,28 @@ export class BillsComponent implements OnInit {
 
   clearKeyword(): void {
     this.keyword = ''
+    this.total()
   }
 
   clearKeywordMinMax(): void {
     this.keywordMin = ''
     this.keywordMax = ''
+    this.total()
+  }
+
+  total(): void {
+    this.sumAmount()
+    this.countID()
   }
 
   sumAmountCounter: number = 0
   sumAmount(): void {
     this.allBills$.subscribe(
       bills => {
-        bills.forEach(bill => {
-          this.sumAmountCounter += bill.amount
+        this.sumAmountCounter = 0
+        let amountTds = document.querySelectorAll('.amount')
+        amountTds.forEach(td => {
+          this.sumAmountCounter += Number(td.innerHTML)
         })
       }
     )
@@ -63,9 +84,12 @@ export class BillsComponent implements OnInit {
   countID(): void {
     this.allBills$.subscribe(
       bills => {
-        bills.forEach(bill => {
-          this.IDCounter ++
+        this.IDCounter = 0
+        let tds = document.querySelectorAll('tr')
+        tds.forEach(td => {
+          this.IDCounter++
         })
+        this.IDCounter = this.IDCounter - 2
       }
     )
   }
@@ -77,5 +101,18 @@ export class BillsComponent implements OnInit {
       this.allBills$ = this.bService.getAll()
     })
   }
+
+  billDetail(billID: number): void {
+    console.log(this.myBill)
+    this.showBillDetail = true
+    this.bService.get(billID).subscribe(
+      bill => {
+        this.myBill = bill
+      }
+    )
+      console.log('itt van:')
+      console.log(this.myBill.order?.amount)
+  }
+
 
 }
