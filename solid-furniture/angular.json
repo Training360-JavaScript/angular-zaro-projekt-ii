@@ -34,10 +34,33 @@
               "src/assets"
             ],
             "styles": [
+              "src/assets/scss/material-dashboard.scss",
               "src/styles.scss",
               "node_modules/font-awesome/css/font-awesome.min.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/js/core/jquery.min.js",
+              "src/assets/js/core/popper.min.js",
+              "src/assets/js/core/bootstrap-material-design.min.js",
+              "src/assets/js/plugins/perfect-scrollbar.jquery.min.js",
+              "src/assets/js/plugins/moment.min.js",
+              "src/assets/js/plugins/sweetalert2.js",
+              "src/assets/js/plugins/jquery.validate.min.js",
+              "src/assets/js/plugins/jquery.bootstrap-wizard.js",
+              "src/assets/js/plugins/bootstrap-selectpicker.js",
+              "src/assets/js/plugins/bootstrap-datetimepicker.min.js",
+              "src/assets/js/plugins/jquery.dataTables.min.js",
+              "src/assets/js/plugins/bootstrap-tagsinput.js",
+              "src/assets/js/plugins/jasny-bootstrap.min.js",
+              "src/assets/js/plugins/fullcalendar.min.js",
+              "src/assets/js/plugins/jquery-jvectormap.js",
+              "src/assets/js/plugins/nouislider.min.js",
+              "src/assets/js/plugins/arrive.min.js",
+              "src/assets/js/plugins/bootstrap-notify.js",
+              "src/assets/js/material-dashboard.js",
+              "src/assets/js/plugins/chartist.min.js"
+
+            ]
           },
           "configurations": {
             "production": {
