@@ -1,3 +1,7 @@
-li>a:hover {
-  background-color: rgba($color: #9c27b0, $alpha: 0.2)
+li > a:hover {
+  background-color: rgba($color: #9c27b0, $alpha: 0.2);
+}
+
+.active a:hover {
+  background-color: rgba($color: #9c27b0, $alpha: 1);
 }
