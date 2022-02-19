@@ -28,7 +28,6 @@ export class FilterPipe implements PipeTransform {
 
     //search in number types in an intervall
     if ((phraseMin || phraseMax) || ((phraseMin && phraseMax) && (phraseMin < phraseMax))) {
-      console.log('na nézzük')
       if (phraseMin && !phraseMax)
       {
         return value.filter(item =>
