@@ -28,7 +28,7 @@ export class EditProductsComponent implements OnInit {
       [Validators.required, Validators.minLength(3), Validators.maxLength(25)],
     ],
     type: ['', [Validators.required, Validators.maxLength(25)]],
-    catID: [Math.floor(Math.random() * 10e10)],
+    catID: [Math.floor(Math.random() * 5) + 1],
     description: ['', [Validators.required, Validators.maxLength(250)]],
     price: ['', [Validators.required, Validators.pattern(/^[1-9][0-9]*$/)]],
     featured: [true],
@@ -54,6 +54,9 @@ export class EditProductsComponent implements OnInit {
   }
 
   onDelete() {
+    if (!confirm('Are you sure?')) {
+      return;
+    }
     let id = this.productForm.value.id;
     if (id) {
       this.productService.delete(id).subscribe(() => {

@@ -13,6 +13,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { FilterPipe } from './pipe/filter.pipe';
 import { ToastrModule } from 'ngx-toastr';
 import { SorterPipe } from './pipe/sorter.pipe';
+import { TextcutterPipe } from './pipe/textcutter.pipe';
+
+import { LoadPipe } from './pipe/load.pipe';
 
 @NgModule({
   declarations: [
@@ -23,6 +26,8 @@ import { SorterPipe } from './pipe/sorter.pipe';
     TestComponent,
     FilterPipe,
     SorterPipe,
+    TextcutterPipe,
+    LoadPipe,
   ],
   imports: [
     BrowserModule,
@@ -32,7 +37,7 @@ import { SorterPipe } from './pipe/sorter.pipe';
     CommonModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

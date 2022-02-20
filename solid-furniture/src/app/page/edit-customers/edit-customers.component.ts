@@ -30,10 +30,41 @@ export class EditCustomersComponent implements OnInit {
       [Validators.required, Validators.minLength(3), Validators.maxLength(25)],
     ],
     email: ['', [Validators.required, Validators.email]],
-    address: [
-      '',
-      [Validators.required, Validators.minLength(5), Validators.maxLength(100)],
-    ],
+    address: this.formBuilder.group({
+      city: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(50),
+        ],
+      ],
+      country: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(50),
+        ],
+      ],
+      notes: [''],
+      street: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(50),
+        ],
+      ],
+      zip: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(4),
+          Validators.maxLength(10),
+        ],
+      ],
+    }),
     active: [true],
   });
 
@@ -58,6 +89,9 @@ export class EditCustomersComponent implements OnInit {
   }
 
   onDelete() {
+    if (!confirm('Are you sure?')) {
+      return;
+    }
     let id = this.customerForm.value.id;
     if (id) {
       this.customerService.delete(id).subscribe(() => {
@@ -70,6 +104,7 @@ export class EditCustomersComponent implements OnInit {
   }
 
   onUpdate() {
+    console.log(this.customerForm);
     if (this.customerForm.value.id) {
       this.customerService.update(this.customerForm.value).subscribe(() => {
         this.router.navigate(['/customers']);
@@ -100,5 +135,17 @@ export class EditCustomersComponent implements OnInit {
   }
   get address() {
     return this.customerForm.get('address');
+  }
+  get city() {
+    return this.customerForm.get('address.city');
+  }
+  get country() {
+    return this.customerForm.get('address.country');
+  }
+  get street() {
+    return this.customerForm.get('address.street');
+  }
+  get zip() {
+    return this.customerForm.get('address.zip');
   }
 }
