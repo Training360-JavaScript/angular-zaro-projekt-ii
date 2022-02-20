@@ -25,6 +25,7 @@ export class OrdersComponent implements OnInit {
   allOrdersForTotal$: Observable<Order[]> = this.orderService.getAll()
   scrollObserver: IntersectionObserver | undefined;
   loadedElements: number = 10;
+  stillLoading: boolean = true
 
   allOrders$: Observable<Order[]> = this.orderService.getAll().pipe(
     tap((orders) => {
@@ -61,6 +62,7 @@ export class OrdersComponent implements OnInit {
           this.sumAmountCounter += order.amount
           this.IDCounter++
         })
+        this.stillLoading = false
       }
     )
   }

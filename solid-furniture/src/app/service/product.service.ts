@@ -64,6 +64,7 @@ export class ProductService extends BaseService<Product> {
       newProduct[key] = product[key];
     }
     newProduct.catID = newProduct.catID * 1;
+    newProduct.price = newProduct.price * 1;
     return newProduct;
   }
 

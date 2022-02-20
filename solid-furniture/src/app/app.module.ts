@@ -16,6 +16,7 @@ import { SorterPipe } from './pipe/sorter.pipe';
 import { TextcutterPipe } from './pipe/textcutter.pipe';
 
 import { LoadPipe } from './pipe/load.pipe';
+import { LoadingComponent } from './common/loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { LoadPipe } from './pipe/load.pipe';
     SorterPipe,
     TextcutterPipe,
     LoadPipe,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,
