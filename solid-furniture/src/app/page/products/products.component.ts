@@ -12,18 +12,19 @@ import { Observable, tap } from 'rxjs';
 export class ProductsComponent implements OnInit {
 
   productKeys: string[] = Object.keys(new Product());
-  searchKey: string = 'name';
-  keyword: string = '';
-  keywordMin: string = '';
-  keywordMax: string = '';
-  sortKey: string = '';
-  sortDirection: string = 'A...Z';
-  clickCounter: number = 0;
+  searchKey: string = 'name'
+  keyword: string = ''
+  keywordMin: string = ''
+  keywordMax: string = ''
+  sortKey: string = ''
+  sortDirection: string = 'A...Z'
+  clickCounter: number = 0
   IDCounter: number = 0
   sumPriceCounter: number = 0
   allProductsForTotal$: Observable<Product[]> = this.productService.getAll()
   scrollObserver: IntersectionObserver | undefined;
   loadedElements: number = 10;
+  stillLoading: boolean = true
 
   allProducts$: Observable<Product[]> = this.productService.getAll().pipe(
     tap((products) => {
@@ -61,6 +62,7 @@ export class ProductsComponent implements OnInit {
           this.sumPriceCounter += product.price
           this.IDCounter++
         })
+        this.stillLoading = false
       }
     )
   }
@@ -97,7 +99,7 @@ export class ProductsComponent implements OnInit {
 
   onDelete(productID: number): void {
     if (!confirm('Are you sure?')) {
-      return;
+      return
     }
 
     this.productService.delete(productID).subscribe(() => {
