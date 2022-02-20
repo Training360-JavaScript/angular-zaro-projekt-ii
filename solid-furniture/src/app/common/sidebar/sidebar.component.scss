@@ -1,11 +1,24 @@
 li > a:hover {
-  background-color: rgba($color: #9c27b0, $alpha: 0.2);
+  background-color: rgba($color: #87B3CC, $alpha: 0.3);
 }
 
 .active a:hover {
-  background-color: rgba($color: #9c27b0, $alpha: 1);
+  background-color: rgba($color: #87B3CC, $alpha: 1);
 }
 
-.active a:hover {
-  background-color: rgba($color: #9c27b0, $alpha: 1);
+.sidebar {
+  background-image: url('/assets/img/bg/istockphoto-1031917290-170667a.jpg');
+  background-size: cover;
+}
+
+.logo-mini {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.sidebar-wrapper {
+  background-color: rgba($color: #ffffff, $alpha: 0.3);
+}
+
+.active {
+  background-color: #87B3CC;
 }

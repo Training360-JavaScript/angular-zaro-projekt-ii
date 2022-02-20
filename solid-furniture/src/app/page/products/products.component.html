@@ -61,8 +61,8 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-primary">
-            <h4 class="card-title ">Products</h4>
-            <p class="card-category">All available product listed here</p>
+            <h4 class="card-title py-2">All available product listed here</h4>
+            <!--<p class="card-category">All available product listed here</p>-->
           </div>
           <div class="card-body">
             <div class="table-responsive" style="overflow: unset;">
@@ -73,38 +73,38 @@
                   <tr class="sticky-top bg-white">
 
                     <th (click)="sorting('id')" style="cursor: pointer;">Id
-                      <i *ngIf="sortKey == 'id' && sortDirection  == 'A...Z'"class="fa fa-arrow-up"></i>
-                      <i *ngIf="sortKey == 'id' && sortDirection  == 'Z...A'"class="fa fa-arrow-down"></i>
+                      <i *ngIf="sortKey == 'id' && sortDirection  == 'A...Z'"class="fa fa-caret-up"></i>
+                      <i *ngIf="sortKey == 'id' && sortDirection  == 'Z...A'"class="fa fa-caret-down"></i>
                     </th>
                     <th (click)="sorting('name')" style="cursor: pointer;">Name
-                      <i *ngIf="sortKey == 'name' && sortDirection  == 'A...Z'"class="fa fa-arrow-up"></i>
-                      <i *ngIf="sortKey == 'name' && sortDirection  == 'Z...A'"class="fa fa-arrow-down"></i>
+                      <i *ngIf="sortKey == 'name' && sortDirection  == 'A...Z'"class="fa fa-caret-up"></i>
+                      <i *ngIf="sortKey == 'name' && sortDirection  == 'Z...A'"class="fa fa-caret-down"></i>
                     </th>
                     <th (click)="sorting('type')" style="cursor: pointer;">Type
-                      <i *ngIf="sortKey == 'type' && sortDirection  == 'A...Z'"class="fa fa-arrow-up"></i>
-                      <i *ngIf="sortKey == 'type' && sortDirection  == 'Z...A'"class="fa fa-arrow-down"></i>
+                      <i *ngIf="sortKey == 'type' && sortDirection  == 'A...Z'"class="fa fa-caret-up"></i>
+                      <i *ngIf="sortKey == 'type' && sortDirection  == 'Z...A'"class="fa fa-caret-down"></i>
                     </th>
                     <th (click)="sorting('category name')" style="width: 200px; cursor: pointer;">Category
-                      <i *ngIf="sortKey == 'category name' && sortDirection  == 'A...Z'"class="fa fa-arrow-up"></i>
-                      <i *ngIf="sortKey == 'category name' && sortDirection  == 'Z...A'"class="fa fa-arrow-down"></i>
+                      <i *ngIf="sortKey == 'category name' && sortDirection  == 'A...Z'"class="fa fa-caret-up"></i>
+                      <i *ngIf="sortKey == 'category name' && sortDirection  == 'Z...A'"class="fa fa-caret-down"></i>
                     </th>
                     <th (click)="sorting('description')" style="cursor: pointer;">Description
-                      <i *ngIf="sortKey == 'description' && sortDirection  == 'A...Z'"class="fa fa-arrow-up"></i>
-                      <i *ngIf="sortKey == 'description' && sortDirection  == 'Z...A'"class="fa fa-arrow-down"></i>
+                      <i *ngIf="sortKey == 'description' && sortDirection  == 'A...Z'"class="fa fa-caret-up"></i>
+                      <i *ngIf="sortKey == 'description' && sortDirection  == 'Z...A'"class="fa fa-caret-down"></i>
                     </th>
                     <th (click)="sorting('price')" style="cursor: pointer;">Price
-                      <i *ngIf="sortKey == 'price' && sortDirection  == 'A...Z'"class="fa fa-arrow-up"></i>
-                      <i *ngIf="sortKey == 'price' && sortDirection  == 'Z...A'"class="fa fa-arrow-down"></i>
+                      <i *ngIf="sortKey == 'price' && sortDirection  == 'A...Z'"class="fa fa-caret-up"></i>
+                      <i *ngIf="sortKey == 'price' && sortDirection  == 'Z...A'"class="fa fa-caret-down"></i>
                     </th>
                     <th (click)="sorting('featured')" style="cursor: pointer;">Featured
-                      <i *ngIf="sortKey == 'featured' && sortDirection  == 'A...Z'"class="fa fa-arrow-up"></i>
-                      <i *ngIf="sortKey == 'featured' && sortDirection  == 'Z...A'"class="fa fa-arrow-down"></i>
+                      <i *ngIf="sortKey == 'featured' && sortDirection  == 'A...Z'"class="fa fa-caret-up"></i>
+                      <i *ngIf="sortKey == 'featured' && sortDirection  == 'Z...A'"class="fa fa-caret-down"></i>
                     </th>
                     <th (click)="sorting('active')" style="cursor: pointer;">Active
-                      <i *ngIf="sortKey == 'active' && sortDirection  == 'A...Z'"class="fa fa-arrow-up"></i>
-                      <i *ngIf="sortKey == 'active' && sortDirection  == 'Z...A'"class="fa fa-arrow-down"></i>
+                      <i *ngIf="sortKey == 'active' && sortDirection  == 'A...Z'"class="fa fa-caret-up"></i>
+                      <i *ngIf="sortKey == 'active' && sortDirection  == 'Z...A'"class="fa fa-caret-down"></i>
                     </th>
-                    <th>
+                    <th id="th-btn">
                       <button routerLink="/edit-products/0" class="btn btn-success btn-block"><i
                         class="fa fa-plus"></i></button>
                       </th>
