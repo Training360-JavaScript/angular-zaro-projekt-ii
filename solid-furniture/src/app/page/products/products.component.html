@@ -1,5 +1,4 @@
 <div class="row text-primary">
-
   <!-- title -->
   <div class="col-6">
     <h2 class="text-center font-weight-bold">Products</h2>
@@ -15,7 +14,8 @@
     </select>
   </div> -->
   <div class="col-1">
-    <select class="form-control mt-2 text-center" required [(ngModel)]="searchKey" (change)="clearKeyword()" (change)="clearKeywordMinMax()">
+    <select class="form-control mt-2 text-center" required [(ngModel)]="searchKey" (change)="clearKeyword()"
+      (change)="clearKeywordMinMax()">
       <option [value]="productKeys[0]">Id</option>
       <option [value]="productKeys[1]">Name</option>
       <option [value]="productKeys[2]">Type</option>
@@ -27,24 +27,25 @@
     </select>
   </div>
   <div *ngIf="searchKey === 'name' || searchKey === 'type' || searchKey === 'description'" class="col-2 mt-1">
-    <input type="text" class="form-control mt-2" [(ngModel)]="keyword" placeholder="Search">
+    <input type="text" class="form-control mt-2" [(ngModel)]="keyword" placeholder="Search" (keydown)="total()">
   </div>
   <div *ngIf="searchKey === 'id' || searchKey === 'price'" class="col-2 mt-2">
     <input style="width: 25%" type="text" class="form-control float-left" [(ngModel)]="keyword" placeholder="Search"
-      (keydown)="clearKeywordMinMax()">
+      (keydown)="clearKeywordMinMax()" />
     <input style="width: 25%" type="text" class="form-control ml-3 float-left" [(ngModel)]="keywordMin"
-      placeholder="Min" (keydown)="clearKeyword()"> <span class="float-left mt-2">-</span>
+      placeholder="Min" (keydown)="clearKeyword()" />
+    <span class="float-left mt-2">-</span>
     <input style="width: 25%" type="text" class="form-control ml-2 float-left" [(ngModel)]="keywordMax"
-      placeholder="Max" (keydown)="clearKeyword()">
+      placeholder="Max" (keydown)="clearKeyword()" />
   </div>
   <div *ngIf="searchKey === 'featured' || searchKey === 'active'" class="col-2">
-    <select class="form-control mt-2 text-center" [(ngModel)]="keyword">
+    <select class="form-control mt-2 text-center" [(ngModel)]="keyword" (change)="total()">
       <option [value]=true>True</option>
       <option [value]=false>False</option>
     </select>
   </div>
-  <div *ngIf="searchKey === 'catID'" class="col-2">
-    <select class="form-control mt-2 text-center" [(ngModel)]="keyword">
+  <div *ngIf="searchKey === 'category name'" class="col-2">
+    <select class="form-control mt-2 text-center" [(ngModel)]="keyword" (change)="total()">
       <option [value]=1>Living room</option>
       <option [value]=2>Bedroom</option>
       <option [value]=3>Bathroom</option>
@@ -61,66 +62,114 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-primary">
-            <h4 class="card-title ">Products</h4>
-            <p class="card-category">All available product listed here</p>
+            <h4 class="card-title py-2">All available product listed here</h4>
+            <!--<p class="card-category">All available product listed here</p>-->
+
           </div>
           <div class="card-body">
-            <div class="table-responsive" style="overflow: unset;">
+            <div class="table-responsive" style="overflow: unset">
               <table class="table">
-
                 <!-- table head -->
-                <thead class=" text-primary text-center">
+                <thead class="text-primary text-center">
                   <tr class="sticky-top bg-white">
-                    <th *ngFor="let key of productKeys" (click)="sorting(key)" style="cursor: pointer;">
-                      {{ key | titlecase}}
-                        <i *ngIf="sortKey == key && sortDirection  == 'A...Z'"class="fa fa-arrow-up"></i>
-                        <i *ngIf="sortKey == key && sortDirection  == 'Z...A'"class="fa fa-arrow-down"></i>
+
+                    <th (click)="sorting('id')" style="cursor: pointer;">Id
+                      <i *ngIf="sortKey == 'id' && sortDirection  == 'A...Z'"class="fa fa-caret-up"></i>
+                      <i *ngIf="sortKey == 'id' && sortDirection  == 'Z...A'"class="fa fa-caret-down"></i>
                     </th>
-                    <th>
+                    <th (click)="sorting('name')" style="cursor: pointer;">Name
+                      <i *ngIf="sortKey == 'name' && sortDirection  == 'A...Z'"class="fa fa-caret-up"></i>
+                      <i *ngIf="sortKey == 'name' && sortDirection  == 'Z...A'"class="fa fa-caret-down"></i>
+                    </th>
+                    <th (click)="sorting('type')" style="cursor: pointer;">Type
+                      <i *ngIf="sortKey == 'type' && sortDirection  == 'A...Z'"class="fa fa-caret-up"></i>
+                      <i *ngIf="sortKey == 'type' && sortDirection  == 'Z...A'"class="fa fa-caret-down"></i>
+                    </th>
+                    <th (click)="sorting('category name')" style="width: 200px; cursor: pointer;">Category
+                      <i *ngIf="sortKey == 'category name' && sortDirection  == 'A...Z'"class="fa fa-caret-up"></i>
+                      <i *ngIf="sortKey == 'category name' && sortDirection  == 'Z...A'"class="fa fa-caret-down"></i>
+                    </th>
+                    <th (click)="sorting('description')" style="cursor: pointer;">Description
+                      <i *ngIf="sortKey == 'description' && sortDirection  == 'A...Z'"class="fa fa-caret-up"></i>
+                      <i *ngIf="sortKey == 'description' && sortDirection  == 'Z...A'"class="fa fa-caret-down"></i>
+                    </th>
+                    <th (click)="sorting('price')" style="cursor: pointer;">Price
+                      <i *ngIf="sortKey == 'price' && sortDirection  == 'A...Z'"class="fa fa-caret-up"></i>
+                      <i *ngIf="sortKey == 'price' && sortDirection  == 'Z...A'"class="fa fa-caret-down"></i>
+                    </th>
+                    <th (click)="sorting('featured')" style="cursor: pointer;">Featured
+                      <i *ngIf="sortKey == 'featured' && sortDirection  == 'A...Z'"class="fa fa-caret-up"></i>
+                      <i *ngIf="sortKey == 'featured' && sortDirection  == 'Z...A'"class="fa fa-caret-down"></i>
+                    </th>
+                    <th (click)="sorting('active')" style="cursor: pointer;">Active
+                      <i *ngIf="sortKey == 'active' && sortDirection  == 'A...Z'"class="fa fa-caret-up"></i>
+                      <i *ngIf="sortKey == 'active' && sortDirection  == 'Z...A'"class="fa fa-caret-down"></i>
+                    </th>
+                    <th id="th-btn">
                       <button routerLink="/edit-products/0" class="btn btn-success btn-block"><i
                         class="fa fa-plus"></i></button>
                       </th>
                     </tr>
                   </thead>
-
-                  <!-- table body -->
+            
+                <!-- table body -->
                 <tbody>
-                  <tr
-                    *ngFor="let product of allProducts$ | async | filter: searchKey:keyword:keywordMin:keywordMax | sorter: sortKey:sortDirection">
-                    <td class="text-center">{{ product.id }}</td>
-                    <td>{{ product.name }}</td>
-                    <td>{{ product.type }}</td>
-                    <td>{{ product.category.name }}</td>
-                    <td>{{ product.description }}</td>
-                    <td class="text-center" id="price">{{ product.price }}</td>
-                    <td class="text-center"><i *ngIf="product.featured" style="color: rgb(48, 180, 48)!important;" class="fa fa-check"></i><i *ngIf="!product.featured" style="color: red!important" class="fa fa-times"></i></td>
-                    <td class="text-center"><i *ngIf="product.active" style="color: rgb(48, 180, 48)!important;" class="fa fa-check"></i><i *ngIf="!product.active" style="color: red!important" class="fa fa-times"></i></td>
-                    <td class="text-center">
-                      <div class="btn-group">
-                        <button [routerLink]="['/edit-products', product.id]" class="btn btn-info"><i
-                            class="fa fa-pencil"></i></button>
-                        <button (click)="onDelete(product.id)" class="btn btn-danger"><i
-                            class="fa fa-trash"></i></button>
-                      </div>
-                    </td>
-                  </tr>
                   <tr class="font-weight-bold">
-                    <td class="h4 font-weight-bold text-center">{{ IDCounter }}</td>
+                    <td class="h4 font-weight-bold text-center">
+                      {{ IDCounter }}
+                    </td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td class="h4 font-weight-bold text-center">{{ sumPriceCounter }}</td>
+                    <td class="h4 font-weight-bold text-center">
+                      {{ sumPriceCounter }}
+                    </td>
                     <td></td>
                     <td></td>
                     <td class="h3 font-weight-bold text-center">Total</td>
+                  </tr>
+                  <h3 class="loadingLogo" *ngIf="stillLoading">
+                    LOADING
+                  </h3>
+                  <tr *ngFor="
+                      let product of allProducts$
+                        | async
+                        | filter: searchKey:keyword:keywordMin:keywordMax
+                        | sorter: sortKey:sortDirection
+                        | load: loadedElements
+                    ">
+                    <td class="text-center">{{ product.id }}</td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.type }}</td>
+                    <td>{{ product.catID }} ({{ product.category.name }})</td>
+                    <td>{{ product.description | textcutter:60}}</td>
+                    <td class="text-center price">{{ product.price }} €</td>
+                    <td class="text-center"><i *ngIf="product.featured" style="color: rgb(48, 180, 48)!important;"
+                        class="fa fa-check"></i><i *ngIf="!product.featured" style="color: red!important"
+                        class="fa fa-times"></i></td>
+                    <td class="text-center"><i *ngIf="product.active" style="color: rgb(48, 180, 48)!important;"
+                        class="fa fa-check"></i><i *ngIf="!product.active" style="color: red!important"
+                        class="fa fa-times"></i></td>
+                    <td class="text-center">
+                      <div class="btn-group">
+                        <button [routerLink]="['/edit-products', product.id]" class="btn btn-info">
+                          <i class="fa fa-pencil"></i>
+                        </button>
+                        <button (click)="onDelete(product.id)" class="btn btn-danger">
+                          <i class="fa fa-trash"></i>
+                        </button>
+                      </div>
+                    </td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
+          <div id="scrollAnchor"></div>
         </div>
       </div>
     </div>
   </div>
 </div>
+

@@ -1,7 +1,56 @@
 th:hover {
-  background-color: rgba($color: #9c27b0, $alpha: 0.2)
+  background-color: rgba($color: #EAC692, $alpha: 0.2)
 }
 
 tr:hover {
-  background-color: rgba($color: #9c27b0, $alpha: 0.2)
+  background-color: rgba($color: #EAC692, $alpha: 0.2)
+}
+
+.card-header {
+  background: linear-gradient(60deg, #FCF9F1, #F4E0C3) !important;
+}
+
+.card-header h4 {
+  color: #5D5B6A;
+}
+
+.card-header p {
+  color: #5D5B6A;
+}
+
+h2, p {
+  color: #5D5B6A;
+}
+
+th {
+  color: #87B3CC;
+  text-align: left;
+}
+
+.btn-success {
+  background-color: #BDDB91;
+}
+
+.btn-success:hover {
+  background-color: #8ABF4D;
+}
+
+.btn-info {
+  background-color: #87B3CC;
+}
+
+.btn-info:hover {
+  background-color: #43758A;
+}
+
+.btn-danger {
+  background-color: #F0805D;
+}
+
+.btn-danger:hover {
+  background-color: #E84A20;
+}
+
+#th-btn:hover {
+  background-color: white;
 }
