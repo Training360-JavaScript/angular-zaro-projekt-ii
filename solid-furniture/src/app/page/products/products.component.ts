@@ -44,10 +44,26 @@ export class ProductsComponent implements OnInit {
     private productService: ProductService,
     private toastr: ToastrService
   ) {}
+  /*constructor(
+    private pService: ProductService, private router: Router) {
+    this.sumPrice()
+    this.countID()
+  }*/
 
   ngOnInit(): void {
     this.productKeys[3] = 'category name';
     this.productKeys.length = 8;
+    //total numbers in initialization
+    this.allProducts$.subscribe(
+      products => {
+        products.forEach(product => {
+          this.sumPriceCounter += product.price
+        })
+        products.forEach(product => {
+          this.IDCounter++
+        })
+      }
+    )
   }
 
   sortKey: string = '';
@@ -62,77 +78,44 @@ export class ProductsComponent implements OnInit {
 
   clearKeyword(): void {
     this.keyword = '';
-    console.log(this.productKeys);
   }
 
   clearKeywordMinMax(): void {
-    this.keywordMin = '';
-    this.keywordMax = '';
+    this.keywordMin = ''
+    this.keywordMax = ''
+    //this.total()
   }
 
-  sumPriceCounter: number = 0;
+  total():void {
+    this.sumPrice()
+    this.countID()
+  }
+
+  sumPriceCounter: number = 0
   sumPrice(): void {
-    /*
-    // Select the node that will be observed for mutations
-const targetNode = document.getElementById('some-id');
-
-// Options for the observer (which mutations to observe)
-const config = { attributes: true, childList: true, subtree: true };
-
-// Callback function to execute when mutations are observed
-const callback = function(mutationsList, observer) {
-    // Use traditional 'for loops' for IE 11
-    for(const mutation of mutationsList) {
-        if (mutation.type === 'childList') {
-            console.log('A child node has been added or removed.');
-        }
-        else if (mutation.type === 'attributes') {
-            console.log('The ' + mutation.attributeName + ' attribute was modified.');
-        }
-    }
-};
-
-    let observer = new MutationObserver((mutations) => {
-      console.log(observer)
-      mutations.forEach((mutation) => {
-        console.log(observer)
-        if (!mutation.addedNodes) return
-
-        for (let i = 0; i < mutation.addedNodes.length; i++) {
-          let node = mutation.addedNodes[i]
-          console.log(observer)
-          console.log(node)
-        }
-      })
-    })
-*/
-
-    /*
-return new Promise((resolve, reject) => {
-  let el = document.querySelector(selector);
-  if (el) {
-    resolve(el);
-    return
+    this.allProducts$.subscribe(
+      products => {
+        this.sumPriceCounter = 0
+        let priceTds = document.querySelectorAll('.price')
+        priceTds.forEach(td => {
+          this.sumPriceCounter += Number(td.innerHTML)
+        })
+      }
+    )
   }
-  new MutationObserver((mutationRecords, observer) => {
-    // Query for elements matching the specified selector
-    Array.from(document.querySelectorAll(selector)).forEach((element) => {
-      resolve(element);
-      //Once we have resolved we don't need the observer anymore.
-      observer.disconnect();
-    });
-  })
-    .observe(document.documentElement, {
-      childList: true,
-      subtree: true
-    })
-})
-*/
 
-    this.allProducts$.subscribe((products) => {
-      let priceTds = document.querySelectorAll('#price');
-      console.log(priceTds);
-    });
+  IDCounter: number = 0
+  countID(): void {
+    this.allProducts$.subscribe(
+      products => {
+        this.IDCounter = 0
+        let tds = document.querySelectorAll('tr')
+        tds.forEach(td => {
+          this.IDCounter++
+        })
+        this.IDCounter = this.IDCounter - 2
+      }
+    )
   }
 
   onDelete(productID: number): void {
@@ -148,3 +131,4 @@ return new Promise((resolve, reject) => {
     });
   }
 }
+

@@ -50,6 +50,16 @@ export class BillsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.billKeys.length = 4;
+    this.allBills$.subscribe(
+      bills => {
+        bills.forEach(bill => {
+          this.sumAmountCounter += bill.amount
+        })
+        bills.forEach(bill => {
+          this.IDCounter++
+        })
+      }
+    )
   }
 
   ngOnDestroy(): void {
@@ -73,8 +83,41 @@ export class BillsComponent implements OnInit, OnDestroy {
   clearKeywordMinMax(): void {
     this.keywordMin = '';
     this.keywordMax = '';
+    this.total()
   }
 
+  total(): void {
+    this.sumAmount()
+    this.countID()
+  }
+/*
+  sumAmountCounter: number = 0
+  sumAmount(): void {
+    this.allBills$.subscribe(
+      bills => {
+        this.sumAmountCounter = 0
+        let amountTds = document.querySelectorAll('.amount')
+        amountTds.forEach(td => {
+          this.sumAmountCounter += Number(td.innerHTML)
+        })
+      }
+    )
+  }
+
+  IDCounter: number = 0
+  countID(): void {
+    this.allBills$.subscribe(
+      bills => {
+        this.IDCounter = 0
+        let tds = document.querySelectorAll('tr')
+        tds.forEach(td => {
+          this.IDCounter++
+        })
+        this.IDCounter = this.IDCounter - 2
+      }
+    )
+  }
+*/
   onDelete(billID: number): void {
     if (!confirm('Are you sure?')) {
       return;
@@ -87,4 +130,17 @@ export class BillsComponent implements OnInit, OnDestroy {
       this.allBills$ = this.billService.getAll();
     });
   }
+
+  billDetail(billID: number): void {
+    console.log(this.myBill)
+    this.showBillDetail = true
+    this.bService.get(billID).subscribe(
+      bill => {
+        this.myBill = bill
+      }
+    )
+      console.log('itt van:')
+      console.log(this.myBill.order?.amount)
+  }
+
 }

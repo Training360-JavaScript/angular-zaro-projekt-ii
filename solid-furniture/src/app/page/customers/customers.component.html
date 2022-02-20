@@ -30,25 +30,14 @@
     </select>
   </div>
   <div
-    *ngIf="
-      searchKey === 'id' ||
-      searchKey === 'firstName' ||
-      searchKey === 'email' ||
-      searchKey === 'address'
-    "
-    class="col-2 mt-1"
-  >
-    <input
-      type="text"
-      class="form-control mt-2"
-      [(ngModel)]="keyword"
-      placeholder="Search"
-    />
+    *ngIf="searchKey === 'id' || searchKey === 'firstName' || searchKey === 'email' || searchKey === 'address'"
+    class="col-2 mt-1">
+    <input type="text" class="form-control mt-2" [(ngModel)]="keyword" placeholder="Search" (keydown)=" countID()">
   </div>
   <div *ngIf="searchKey === 'active'" class="col-2">
-    <select class="form-control mt-2 text-center" [(ngModel)]="keyword">
-      <option [value]="true">Active</option>
-      <option [value]="false">Inactive</option>
+    <select class="form-control mt-2 text-center" [(ngModel)]="keyword" (change)=" countID()">
+      <option [value]=true>Active</option>
+      <option [value]=false>Inactive</option>
     </select>
   </div>
 </div>
