@@ -80,6 +80,7 @@
                     <td></td>
                     <td class="h3 font-weight-bold text-center">Total</td>
                   </tr>
+                  <app-loading *ngIf="stillLoading"></app-loading>
                   <tr *ngFor="
                       let order of allOrders$
                         | async

@@ -10,6 +10,7 @@ import { OrderService } from 'src/app/service/order.service';
 import { Bill } from 'src/app/model/bill';
 import * as Chartist from 'chartist';
 
+
 @Component({
   selector: 'app-home',
   encapsulation: ViewEncapsulation.None,
@@ -179,11 +180,55 @@ export class HomeComponent implements OnInit {
       //console.log(newObj)
 
       this.lastFiveOrderArray = lastFiveOrderArray;
-      console.log(lastFiveOrderArray);
+      //console.log(lastFiveOrderArray);
 
 
       this.newOrder_data$ = newObj;
+    });
+
+
+    this.listBill$.subscribe(list => {
+      const billObj = {
+        new: 0,
+        paid: 0,
+      };
+      list.forEach(bill => {
+        if (bill.status === 'new') {
+          billObj.new = billObj.new + (bill.amount || 0) * (bill.order?.amount || 0) * (bill.order?.product?.price || 0)
+        }
+        if (bill.status === 'paid') {
+          billObj.paid = billObj.new + (bill.amount || 0) * (bill.order?.amount || 0) * (bill.order?.product?.price || 0)
+        }
+      })
+      // console.log(list)
+      // console.log(billObj)
+
+      this.newBillSum = billObj.new;
+      this.incomeBillSum = billObj.paid;
+      this.allBillSum = billObj.new + billObj.paid;
     })
+
+
+    this.listProduct$.subscribe(list => {
+      // let newList = list.filter(x => x.catID > 4);
+      // console.log(list)
+      // console.log(newList)
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   }
@@ -192,6 +237,10 @@ export class HomeComponent implements OnInit {
   // Számértékek a Dashboard-ra
   orderNumberByStatus_data$: any;
   lastFiveOrderArray: any;
+
+  incomeBillSum: any;
+  newBillSum: any;
+  allBillSum: any;
 
 
   newOrder_data$: any;
@@ -490,6 +539,7 @@ export class HomeComponent implements OnInit {
       });
     });
     //console.log(resultObj)
+
     return (resultObj);
   }
 
