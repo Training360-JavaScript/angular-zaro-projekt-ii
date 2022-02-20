@@ -163,8 +163,12 @@ export class HomeComponent implements OnInit {
       this.showLastOrderIncome(observedIntevallum, lastIncome)
       this.showLastOrderCumulativeSum(observedIntevallum, cumulativeSum)
 
-      // console.log(cumulativeSum)
-      // console.log(lastIncome)
+      this.increasePercent = ~~((cumulativeSum[9] - cumulativeSum[0]) / cumulativeSum[0] * 100)
+
+
+      console.log(cumulativeSum)
+      console.log(lastIncome)
+
 
       let lastFiveOrderArray = allOrderArray.slice(-5).reverse();
       const newTampe = { id: 0, fullName: '', income: '', country: '' }
@@ -238,9 +242,13 @@ export class HomeComponent implements OnInit {
   orderNumberByStatus_data$: any;
   lastFiveOrderArray: any;
 
+  increasePercent: number = 0;
+
   incomeBillSum: any;
   newBillSum: any;
   allBillSum: any;
+
+
 
 
   newOrder_data$: any;
@@ -284,7 +292,8 @@ export class HomeComponent implements OnInit {
       }]
     ];
     const lastOrderIncome = new Chartist.Bar('#lastOrderIncome', data, optionslastOrderIncome, responsiveOptions);
-    this.startAnimationForBarChart(lastOrderIncome);
+    lastOrderIncome;
+    //this.startAnimationForBarChart(lastOrderIncome);
   }
 
   // showLastOrderDetail
@@ -312,8 +321,8 @@ export class HomeComponent implements OnInit {
 
     const lastOrderCumulativeSum = new Chartist.Line('#lastOrderCumulativeSum', data, optionsOrderCumulativeSum);
 
-    //lastOrderCumulativeSum;
-    this.startAnimationForLineChart(lastOrderCumulativeSum);
+    lastOrderCumulativeSum;
+    //this.startAnimationForLineChart(lastOrderCumulativeSum);
   }
 
 
@@ -354,7 +363,7 @@ export class HomeComponent implements OnInit {
       chartPadding: { top: 20, right: 15, bottom: -5, left: 0 }
     };
 
-    const productRangeBarCart = new Chartist.Bar('#productRangeBarCart', data, options);
+    new Chartist.Bar('#productRangeBarCart', data, options);
   }
 
 
@@ -542,15 +551,5 @@ export class HomeComponent implements OnInit {
 
     return (resultObj);
   }
-
-
-
-
-  valtozo: any
-
-
-
-
-
 
 }
