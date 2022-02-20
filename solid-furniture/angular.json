@@ -34,6 +34,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/assets/scss/material-dashboard.scss",
               "src/styles.scss",
               "node_modules/font-awesome/css/font-awesome.min.css"
@@ -126,6 +127,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
             "scripts": []
