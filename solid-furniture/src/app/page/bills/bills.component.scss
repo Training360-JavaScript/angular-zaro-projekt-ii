@@ -1,19 +1,30 @@
-th:hover {
-  background-color: rgba($color: #9c27b0, $alpha: 0.2)
+th {
+  text-align: center;
 }
 
-tr:hover {
-  background-color: rgba($color: #9c27b0, $alpha: 0.2)
+.total-tr th {
+  pointer-events: none;
+}
+
+.total-tr:hover {
+  background-color: rgba($color: #87B3CC, $alpha: 0.2)
 }
 
 .billDetailModal {
   position: fixed!important;
-  z-index: 5;
-  top: 15%;
+  z-index: 500;
+  top: 10%;
   left: 30%;
   width: 55%;
-  border: 2px solid black;
+ max-height: 80%;
+  border: 1px solid #5e5b6a;
   background-color: white;
+}
+
+.billContent {
+    max-height: 100%;
+    overflow-y: auto;
+    overflow-x:unset;
 }
 
 .billDetailModal button {
@@ -43,4 +54,17 @@ tr:hover {
 
 .buyer p {
   margin-bottom: 0;
+}
+
+@media screen and (max-width: 992px) {
+  .billDetailModal {
+    width: 80%;
+    height: 90%;
+    left: 10%;
+    top: 10%;
+  }
+
+  th {
+    font-size: 0.8rem !important;
+  }
 }
