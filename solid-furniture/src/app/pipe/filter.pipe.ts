@@ -45,7 +45,7 @@ export class FilterPipe implements PipeTransform {
       }
     }
 
-    //search in string types
+    //search in customer name
     phrase = phrase.toLowerCase();
     if (key === 'firstName') {
       return value.filter((item) => {
@@ -55,6 +55,21 @@ export class FilterPipe implements PipeTransform {
         return data.includes(String(phrase));
       });
     }
+
+    //search in customer address
+    if (key === 'address') {
+      return value.filter((item) => {
+        const data = String(item.address.zip)
+          .concat(' ', String(item.address.country))
+          .concat(' ', String(item.address.city))
+          .concat(' ', String(item.address.street))
+          .concat(' ', String(item.address.notes))
+          .toLowerCase()
+        return data.includes(String(phrase))
+      });
+    }
+
+    //search in every other types
     return value.filter((item) => {
       const data = String(item[key]).toLowerCase();
       return data.includes(String(phrase));

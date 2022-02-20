@@ -18,31 +18,13 @@
     <input type="text" class="form-control mt-2" [(ngModel)]="keyword" placeholder="Search" (keydown)="total()">
   </div>
   <div *ngIf="searchKey === 'amount'" class="col-2 mt-2">
-    <input
-      style="width: 25%"
-      type="text"
-      class="form-control float-left"
-      [(ngModel)]="keyword"
-      placeholder="Search"
-      (keydown)="clearKeywordMinMax()"
-    />
-    <input
-      style="width: 25%"
-      type="text"
-      class="form-control ml-3 float-left"
-      [(ngModel)]="keywordMin"
-      placeholder="Min"
-      (keydown)="clearKeyword()"
-    />
+    <input style="width: 25%" type="text" class="form-control float-left" [(ngModel)]="keyword" placeholder="Search"
+      (keydown)="clearKeywordMinMax()" />
+    <input style="width: 25%" type="text" class="form-control ml-3 float-left" [(ngModel)]="keywordMin"
+      placeholder="Min" (keydown)="clearKeyword()" />
     <span class="float-left mt-2">-</span>
-    <input
-      style="width: 25%"
-      type="text"
-      class="form-control ml-2 float-left"
-      [(ngModel)]="keywordMax"
-      placeholder="Max"
-      (keydown)="clearKeyword()"
-    />
+    <input style="width: 25%" type="text" class="form-control ml-2 float-left" [(ngModel)]="keywordMax"
+      placeholder="Max" (keydown)="clearKeyword()" />
   </div>
   <div *ngIf="searchKey === 'status'" class="col-2">
     <select class="form-control mt-2 text-center" [(ngModel)]="keyword" (change)="total()">
@@ -93,15 +75,13 @@
                     <th></th>
                     <th class="h3 font-weight-bold text-center">Total</th>
                   </tr>
-                  <tr
-                    *ngFor="
+                  <tr *ngFor="
                       let bill of allBills$
                         | async
                         | filter: searchKey:keyword:keywordMin:keywordMax
                         | sorter: sortKey:sortDirection
                         | load: loadedElements
-                    "
-                  >
+                    ">
                     <td class="text-center">{{ bill.id }}</td>
                     <td class="text-center">{{ bill.orderID }}</td>
                     <td class="text-center amount">{{ bill.amount }}</td>
@@ -117,7 +97,8 @@
                     <td class="text-center">
                       <div class="btn-group">
                         <button (click)="billDetail(bill.id)" class="btn btn-success"><i class="fa fa-eye"></i></button>
-                        <button [routerLink]="['/edit-bills', bill.id]" class="btn btn-info"><i class="fa fa-pencil"></i></button>
+                        <button [routerLink]="['/edit-bills', bill.id]" class="btn btn-info"><i
+                            class="fa fa-pencil"></i></button>
                         <button (click)="onDelete(bill.id)" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                       </div>
                     </td>
@@ -216,8 +197,10 @@
     <div class="col-3">
       <p class="font-weight-bold">{{ myBill.order?.amount }}</p>
       <p *ngIf="myBill.order?.status == 'new'" class="font-weight-bold" style="color: dodgerblue!important;">New</p>
-      <p *ngIf="myBill.order?.status == 'paid'" class="font-weight-bold" style="color: darkgoldenrod!important;">Paid</p>
-      <p *ngIf="myBill.order?.status == 'shipped'" class="font-weight-bold" style="color: rgb(48, 180, 48)!important;">Shipped</p>
+      <p *ngIf="myBill.order?.status == 'paid'" class="font-weight-bold" style="color: darkgoldenrod!important;">Paid
+      </p>
+      <p *ngIf="myBill.order?.status == 'shipped'" class="font-weight-bold" style="color: rgb(48, 180, 48)!important;">
+        Shipped</p>
 
       <p class="font-weight-bold">{{ myBill.amount }}</p>
       <p *ngIf="myBill.status == 'new'" class="font-weight-bold" style="color: dodgerblue!important;">New</p>
@@ -225,8 +208,8 @@
     </div>
   </div>
 
-<div class="dropdown-divider"></div>
+  <div class="dropdown-divider"></div>
 
-<h2 class="text-right">Total: {{ myBill.order?.product?.price }} €</h2>
+  <h2 class="text-right">Total: {{ myBill.order?.product?.price }} €</h2>
 
 </div>

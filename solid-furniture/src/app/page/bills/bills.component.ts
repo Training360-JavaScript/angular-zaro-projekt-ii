@@ -1,7 +1,6 @@
 import { ToastrService } from 'ngx-toastr';
 import { Observable, take, tap, last, map } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
 
 import { Bill } from './../../model/bill';
 import { BillService } from 'src/app/service/bill.service';
@@ -11,13 +10,32 @@ import { BillService } from 'src/app/service/bill.service';
   templateUrl: './bills.component.html',
   styleUrls: ['./bills.component.scss'],
 })
-export class BillsComponent implements OnInit, OnDestroy {
+export class BillsComponent implements OnInit
+//, OnDestroy
+{
+
+  billKeys: string[] = Object.keys(new Bill());
+  searchKey: string = 'id';
+  keyword: string = '';
+  keywordMin: string = '';
+  keywordMax: string = '';
+  sortKey: string = '';
+  sortDirection: string = 'A...Z';
+  clickCounter: number = 0;
+  IDCounter: number = 0
+  sumAmountCounter: number = 0
+  allBillsForTotal$: Observable<Bill[]> = this.billService.getAll()
+  showBillDetail: boolean = false
+  myBill!: Bill
+  loadedElements: number = 10;
+  scrollObserver: IntersectionObserver | undefined;
+
   allBills$: Observable<Bill[]> = this.billService.getAll().pipe(
     tap((bills) => {
-      bills.forEach((bill) => {
+      /*bills.forEach((bill) => {
         this.sumAmountCounter += bill.amount;
         this.IDCounter++; // this.IDCounter = bills.length
-      });
+      });*/
 
       this.scrollObserver = new IntersectionObserver(
         ([entry]: IntersectionObserverEntry[]) => {
@@ -32,46 +50,29 @@ export class BillsComponent implements OnInit, OnDestroy {
       );
       this.scrollObserver.observe(document.querySelector('#scrollAnchor')!);
     })
-    );
-  billKeys: string[] = Object.keys(new Bill());
-  searchKey: string = 'id';
-  keyword: string = '';
-  keywordMin: string = '';
-  keywordMax: string = '';
-  loadedElements: number = 10;
-  scrollObserver: IntersectionObserver | undefined;
-  IDCounter: number = 0
-sumAmountCounter: number = 0
-showBillDetail: boolean = false
-myBill!: Bill
-
+  )
 
   constructor(
     private billService: BillService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
-  ngOnInit(): void {/*
+  ngOnInit(): void {
     this.billKeys.length = 4;
-    this.allBills$.subscribe(
+    this.allBillsForTotal$.subscribe(
       bills => {
         bills.forEach(bill => {
           this.sumAmountCounter += bill.amount
-        })
-        bills.forEach(bill => {
           this.IDCounter++
         })
       }
-      )*/
-    }
-
+    )
+  }
+  /*
     ngOnDestroy(): void {
       this.scrollObserver?.disconnect();
     }
-
-    sortKey: string = '';
-    sortDirection: string = 'A...Z';
-    clickCounter: number = 0;
+  */
 
   sorting(key: string): void {
     key === this.sortKey ? this.clickCounter++ : (this.clickCounter = 0);
@@ -81,44 +82,28 @@ myBill!: Bill
 
   clearKeyword(): void {
     this.keyword = '';
+    this.total()
   }
 
   clearKeywordMinMax(): void {
     this.keywordMin = '';
     this.keywordMax = '';
-    //this.total()
+    this.total()
   }
 
   total(): void {
-    //this.sumAmount()
-    //this.countID()
-  }
-/*
-  sumAmount(): void {
-    this.allBills$.subscribe(
+    this.allBillsForTotal$.subscribe(
       bills => {
         this.sumAmountCounter = 0
         let amountTds = document.querySelectorAll('.amount')
         amountTds.forEach(td => {
           this.sumAmountCounter += Number(td.innerHTML)
+          this.IDCounter++
         })
       }
     )
   }
 
-  countID(): void {
-    this.allBills$.subscribe(
-      bills => {
-        this.IDCounter = 0
-        let tds = document.querySelectorAll('tr')
-        tds.forEach(td => {
-          this.IDCounter++
-        })
-        this.IDCounter = this.IDCounter - 2
-      }
-    )
-  }
-*/
   onDelete(billID: number): void {
     if (!confirm('Are you sure?')) {
       return;
@@ -139,8 +124,6 @@ myBill!: Bill
         this.myBill = bill
       }
     )
-      console.log('itt van:')
-      console.log(this.myBill.order?.amount)
   }
 
 }

@@ -1,7 +1,6 @@
 import { ToastrService } from 'ngx-toastr';
 import { Observable, tap } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 
 import { CustomerService } from './../../service/customer.service';
 import { Customer } from 'src/app/model/customer';
@@ -12,17 +11,25 @@ import { Customer } from 'src/app/model/customer';
   styleUrls: ['./customers.component.scss'],
 })
 export class CustomersComponent implements OnInit {
-  scrollObserver: IntersectionObserver | undefined;
+
   customerKeys: string[] = Object.keys(new Customer());
   searchKey: string = 'firstName';
   keyword: string = '';
+  sortKey: string = '';
+  sortDirection: string = 'A...Z';
+  clickCounter: number = 0;
   loadedElements: number = 10;
+  scrollObserver: IntersectionObserver | undefined;
+  IDCounter: number = 0
+  allCustomersForTotal$: Observable<Customer[]> = this.customerService.getAll()
 
   allCustomers$: Observable<Customer[]> = this.customerService.getAll().pipe(
+
     tap((customers) => {
+      /*
       customers.forEach((customer) => {
         this.IDCounter = customers.length;
-      });
+      });*/
 
       this.scrollObserver = new IntersectionObserver(
         ([entry]: IntersectionObserverEntry[]) => {
@@ -43,21 +50,16 @@ export class CustomersComponent implements OnInit {
     private toastr: ToastrService
   ) {}
 
-  ngOnInit(): void {}
-    /*
   ngOnInit(): void {
-    this.allCustomers$.subscribe(
+    this. allCustomersForTotal$.subscribe(
       customers => {
         customers.forEach(customer => {
           this.IDCounter++
         })
       }
     )
-  }*/
+  }
 
-  sortKey: string = '';
-  sortDirection: string = 'A...Z';
-  clickCounter: number = 0;
 
   sorting(key: string): void {
     key === this.sortKey ? this.clickCounter++ : (this.clickCounter = 0);
@@ -67,7 +69,7 @@ export class CustomersComponent implements OnInit {
 
   clearKeyword(): void {
     this.keyword = ''
-    //this.countID()
+    this.total()
   }
 
   /*
@@ -86,10 +88,8 @@ export class CustomersComponent implements OnInit {
 */
 
 
-  IDCounter: number = 0
-  countID(): void {
-    /*
-    this.allCustomers$.subscribe(
+  total(): void {
+    this. allCustomersForTotal$.subscribe(
       customers => {
         this.IDCounter = 0
         let tds = document.querySelectorAll('tr')
@@ -98,7 +98,7 @@ export class CustomersComponent implements OnInit {
         })
         this.IDCounter = this.IDCounter - 2
       }
-    )*/
+    )
   }
 
   onDelete(customerID: number): void {

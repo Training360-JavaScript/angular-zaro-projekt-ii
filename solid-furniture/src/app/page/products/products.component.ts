@@ -1,5 +1,4 @@
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
 import { ProductService } from './../../service/product.service';
 import { Product } from 'src/app/model/product';
 import { Component, OnInit } from '@angular/core';
@@ -11,18 +10,27 @@ import { Observable, tap } from 'rxjs';
   styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent implements OnInit {
-  scrollObserver: IntersectionObserver | undefined;
-  loadedElements: number = 10;
+
+  productKeys: string[] = Object.keys(new Product());
   searchKey: string = 'name';
   keyword: string = '';
   keywordMin: string = '';
   keywordMax: string = '';
+  sortKey: string = '';
+  sortDirection: string = 'A...Z';
+  clickCounter: number = 0;
+  IDCounter: number = 0
+  sumPriceCounter: number = 0
+  allProductsForTotal$: Observable<Product[]> = this.productService.getAll()
+  scrollObserver: IntersectionObserver | undefined;
+  loadedElements: number = 10;
 
   allProducts$: Observable<Product[]> = this.productService.getAll().pipe(
     tap((products) => {
-      products.forEach((product) => {
-        this.IDCounter = products.length;
-      });
+      /*
+      customers.forEach((customer) => {
+        this.IDCounter = customers.length;
+      });*/
 
       this.scrollObserver = new IntersectionObserver(
         ([entry]: IntersectionObserverEntry[]) => {
@@ -37,37 +45,25 @@ export class ProductsComponent implements OnInit {
       this.scrollObserver.observe(document.querySelector('#scrollAnchor')!);
     })
   );
-  productKeys: string[] = Object.keys(new Product());
 
   constructor(
     private productService: ProductService,
     private toastr: ToastrService
   ) {}
-  /*constructor(
-    private pService: ProductService, private router: Router) {
-    this.sumPrice()
-    this.countID()
-  }*/
 
   ngOnInit(): void {
     this.productKeys[3] = 'category name';
     this.productKeys.length = 8;
     //total numbers in initialization
-    this.allProducts$.subscribe(
+    this.allProductsForTotal$.subscribe(
       products => {
         products.forEach(product => {
           this.sumPriceCounter += product.price
-        })
-        products.forEach(product => {
           this.IDCounter++
         })
       }
     )
   }
-
-  sortKey: string = '';
-  sortDirection: string = 'A...Z';
-  clickCounter: number = 0;
 
   sorting(key: string): void {
     key === this.sortKey ? this.clickCounter++ : (this.clickCounter = 0);
@@ -77,42 +73,24 @@ export class ProductsComponent implements OnInit {
 
   clearKeyword(): void {
     this.keyword = '';
+    this.total()
   }
 
   clearKeywordMinMax(): void {
     this.keywordMin = ''
     this.keywordMax = ''
-    //this.total()
+    this.total()
   }
 
-  total():void {
-    this.sumPrice()
-    this.countID()
-  }
-
-  sumPriceCounter: number = 0
-  sumPrice(): void {
-    this.allProducts$.subscribe(
+ total(): void {
+    this.allProductsForTotal$.subscribe(
       products => {
         this.sumPriceCounter = 0
         let priceTds = document.querySelectorAll('.price')
         priceTds.forEach(td => {
           this.sumPriceCounter += Number(td.innerHTML)
-        })
-      }
-    )
-  }
-
-  IDCounter: number = 0
-  countID(): void {
-    this.allProducts$.subscribe(
-      products => {
-        this.IDCounter = 0
-        let tds = document.querySelectorAll('tr')
-        tds.forEach(td => {
           this.IDCounter++
         })
-        this.IDCounter = this.IDCounter - 2
       }
     )
   }
