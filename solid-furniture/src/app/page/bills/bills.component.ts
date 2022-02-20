@@ -29,6 +29,7 @@ export class BillsComponent implements OnInit
   myBill!: Bill
   loadedElements: number = 10;
   scrollObserver: IntersectionObserver | undefined;
+  stillLoading: boolean = true
 
   allBills$: Observable<Bill[]> = this.billService.getAll().pipe(
     tap((bills) => {
@@ -65,6 +66,7 @@ export class BillsComponent implements OnInit
           this.sumAmountCounter += bill.amount
           this.IDCounter++
         })
+        this.stillLoading = false
       }
     )
   }

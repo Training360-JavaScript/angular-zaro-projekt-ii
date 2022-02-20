@@ -57,9 +57,10 @@ export class ProductsComponent implements OnInit {
     this.productKeys.length = 8;
     //total numbers in initialization
     this.allProductsForTotal$.subscribe(
-      products => {
+products => {
         products.forEach(product => {
-          this.sumPriceCounter += product.price
+            this.sumPriceCounter += product.price
+            console.log(this.sumPriceCounter)
           this.IDCounter++
         })
         this.stillLoading = false

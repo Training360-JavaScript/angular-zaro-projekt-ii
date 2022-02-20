@@ -22,6 +22,7 @@ export class CustomersComponent implements OnInit {
   scrollObserver: IntersectionObserver | undefined;
   IDCounter: number = 0
   allCustomersForTotal$: Observable<Customer[]> = this.customerService.getAll()
+  stillLoading: boolean = true
 
   allCustomers$: Observable<Customer[]> = this.customerService.getAll().pipe(
 
@@ -56,6 +57,7 @@ export class CustomersComponent implements OnInit {
         customers.forEach(customer => {
           this.IDCounter++
         })
+        this.stillLoading = false
       }
     )
   }
