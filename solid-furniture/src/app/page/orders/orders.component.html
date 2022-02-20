@@ -44,22 +44,22 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-primary">
-            <h4 class="card-title">Orders</h4>
-            <p class="card-category">All order listed here</p>
+            <h4 class="card-title py-2">All order listed here</h4>
+            <!--<p class="card-category">All order listed here</p>-->
           </div>
           <div class="card-body">
-            <div class="table-responsive" style="overflow: unset">
+            <div class="table-responsive">
               <table class="table">
                 <!-- table head -->
                 <thead class="text-primary text-center">
                   <tr class="sticky-top bg-white">
-                    <th *ngFor="let key of orderKeys" (click)="sorting(key)" style="cursor: pointer">
+                    <th *ngFor="let key of orderKeys" (click)="sorting(key)" style="cursor: pointer; width: 16%;">
                       {{ key | titlecase }}
-                      <i *ngIf="sortKey == key && sortDirection == 'A...Z'" class="fa fa-arrow-up"></i>
-                      <i *ngIf="sortKey == key && sortDirection == 'Z...A'" class="fa fa-arrow-down"></i>
+                      <i *ngIf="sortKey == key && sortDirection == 'A...Z'" class="fa fa-caret-up ml-2"></i>
+                      <i *ngIf="sortKey == key && sortDirection == 'Z...A'" class="fa fa-caret-down ml-2"></i>
                     </th>
-                    <th>
-                      <button routerLink="/edit-orders/0" class="btn btn-success" style="width: 150px !important">
+                    <th id="th-btn" style="width: 20%;">
+                      <button routerLink="/edit-orders/0" class="btn btn-success" style="width: 150px">
                         <i class="fa fa-plus"></i>
                       </button>
                     </th>
@@ -97,16 +97,13 @@
                     <td *ngIf=" !order.product.name" class="text-center">{{ order.productID }} (Not found)</td>
                     <td class="text-center amount">{{ order.amount }}</td>
                     <td class="text-center">
-                      <p *ngIf="order.status == 'new'" class="font-weight-bold pt-3"
-                        style="color: dodgerblue !important">
+                      <p *ngIf="order.status == 'new'" class="font-weight-bold pt-3 new">
                         New
                       </p>
-                      <p *ngIf="order.status == 'paid'" class="font-weight-bold pt-3"
-                        style="color: darkgoldenrod !important">
+                      <p *ngIf="order.status == 'paid'" class="font-weight-bold pt-3 paid">
                         Paid
                       </p>
-                      <p *ngIf="order.status == 'shipped'" class="font-weight-bold pt-3"
-                        style="color: rgb(48, 180, 48) !important">
+                      <p *ngIf="order.status == 'shipped'" class="font-weight-bold pt-3 shipped">
                         Shipped
                       </p>
                     </td>

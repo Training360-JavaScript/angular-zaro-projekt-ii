@@ -1,57 +1,46 @@
-th:hover {
-  background-color: rgba($color: #EAC692, $alpha: 0.2)
+.th-id {
+  cursor: pointer;
+  width: 8%;
+  text-align: center;
 }
 
-tr:hover {
-  background-color: rgba($color: #EAC692, $alpha: 0.2)
+.th-name {
+  cursor: pointer;
+  width: 11%;
 }
 
-.card-header {
-  background: linear-gradient(60deg, #FCF9F1, #F4E0C3) !important;
+.th-type {
+  cursor: pointer;
+  width: 11%;
 }
 
-.card-header h4 {
-  color: #5D5B6A;
+.th-cat {
+  cursor: pointer;
+  width: 12%;
 }
 
-.card-header p {
-  color: #5D5B6A;
+.th-descr {
+  cursor: pointer;
+  width: 15%;
 }
 
-h2,
-p {
-  color: #5D5B6A;
+.th-price {
+  cursor: pointer;
+  width: 8%;
 }
 
-th {
-  color: #87B3CC;
-  text-align: left;
+.th-featured {
+  cursor: pointer;
+  width: 12%;
 }
 
-.btn-success {
-  background-color: #BDDB91;
+.th-active {
+  cursor: pointer;
+  width: 8%;
 }
 
-.btn-success:hover {
-  background-color: #8ABF4D;
-}
-
-.btn-info {
-  background-color: #87B3CC;
-}
-
-.btn-info:hover {
-  background-color: #43758A;
-}
-
-.btn-danger {
-  background-color: #F0805D;
-}
-
-.btn-danger:hover {
-  background-color: #E84A20;
-}
-
-#th-btn:hover {
-  background-color: white;
+@media screen and (max-width: 992px) {
+  th {
+    font-size: 0.8rem !important;
+  }
 }
