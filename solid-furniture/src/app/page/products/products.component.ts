@@ -17,7 +17,6 @@ export class ProductsComponent implements OnInit {
   keyword: string = '';
   keywordMin: string = '';
   keywordMax: string = '';
-  IDCounter: number = 0;
 
   allProducts$: Observable<Product[]> = this.productService.getAll().pipe(
     tap((products) => {
@@ -38,7 +37,7 @@ export class ProductsComponent implements OnInit {
       this.scrollObserver.observe(document.querySelector('#scrollAnchor')!);
     })
   );
-  productKeys: string[] = Object.keys(new Product()); // Inkább manuálisan vidd be, mert van egy új ?-es kúlcs is a Product()-ban, amit nem kellene megjeleníteni. És a catID helyett most a kategórianevek szerepelnek.
+  productKeys: string[] = Object.keys(new Product());
 
   constructor(
     private productService: ProductService,

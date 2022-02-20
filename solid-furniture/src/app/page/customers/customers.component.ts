@@ -12,7 +12,6 @@ import { Customer } from 'src/app/model/customer';
   styleUrls: ['./customers.component.scss'],
 })
 export class CustomersComponent implements OnInit {
-  IDCounter: number = 0;
   scrollObserver: IntersectionObserver | undefined;
   customerKeys: string[] = Object.keys(new Customer());
   searchKey: string = 'firstName';
@@ -68,7 +67,7 @@ export class CustomersComponent implements OnInit {
 
   clearKeyword(): void {
     this.keyword = ''
-    this.countID()
+    //this.countID()
   }
 
   /*
@@ -85,10 +84,11 @@ export class CustomersComponent implements OnInit {
     }
   }
 */
-  
-  /*
+
+
   IDCounter: number = 0
   countID(): void {
+    /*
     this.allCustomers$.subscribe(
       customers => {
         this.IDCounter = 0
@@ -98,9 +98,9 @@ export class CustomersComponent implements OnInit {
         })
         this.IDCounter = this.IDCounter - 2
       }
-    )
+    )*/
   }
-*/
+
   onDelete(customerID: number): void {
     if (!confirm('Are you sure?')) {
       return;

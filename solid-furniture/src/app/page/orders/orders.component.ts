@@ -50,6 +50,7 @@ export class OrdersComponent implements OnInit {
 
   ngOnInit(): void {
     this.orderKeys.length = 5;
+
     /*constructor(
     private oService: OrderService, private router: Router) {
     this.sumAmount()
@@ -90,12 +91,12 @@ export class OrdersComponent implements OnInit {
     this.keywordMax = ''
     //this.total()
   }
-/*
-  total(): void {
-    this.sumAmount()
-    this.countID()
-  }
 
+  total(): void {
+    //this.sumAmount()
+    //this.countID()
+  }
+/*
   sumAmountCounter: number = 0
   sumAmount(): void {
     this.allOrders$.subscribe(
