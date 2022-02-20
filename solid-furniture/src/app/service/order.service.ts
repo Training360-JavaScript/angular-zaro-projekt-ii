@@ -99,6 +99,9 @@ export class OrderService extends BaseService<Order> {
 
   override create(entity: Order): Observable<Order> {
     const newOrder = this.createOrderObject(entity);
+
+    //return this.http.patch<Order>(`${this.apiUrl}${this.entityName}/${entity.id}`, newOrder);
+
     return super.create(newOrder);
   }
 }

@@ -74,6 +74,9 @@ export class ProductService extends BaseService<Product> {
 
   override create(entity: Product): Observable<Product> {
     const newProduct = this.createProductObject(entity);
+
+    //return this.http.patch<Product>(`${this.apiUrl}${this.entityName}/${entity.id}`, newProduct);
+
     return super.create(newProduct);
   }
 

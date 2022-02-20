@@ -34,7 +34,7 @@ export class TestComponent implements OnInit {
 
 
   startAnimationForLineChart(chart: any) {
-    var seq: any, delays: any, durations: any;
+    let seq: any, delays: any, durations: any;
     seq = 0;
     delays = 80;
     durations = 500;
@@ -69,7 +69,7 @@ export class TestComponent implements OnInit {
 
 
   startAnimationForBarChart(chart: any) {
-    var seq2: any, delays2: any, durations2: any;
+    let seq2: any, delays2: any, durations2: any;
 
     seq2 = 0;
     delays2 = 80;
@@ -261,7 +261,9 @@ export class TestComponent implements OnInit {
     this.billByStatus = this.getBillByStatus(this.listBill$);
 
     //* Rendelések száma és mennyiségük összege státuszuk szerint
+    //this.orderByStatus = this.getOrderByStatus(this.listOrder$).new;
     this.orderByStatus = this.getOrderByStatus(this.listOrder$);
+
 
 
     // Grafikonok rajzolása -----------------------------------------------
@@ -276,66 +278,257 @@ export class TestComponent implements OnInit {
 
     //const obsof = of([1, 2, 5])
     // Működik
+    //this.orderNumberByStatus_data$ = this.getOrderNumberByStatus(this.listOrder$)
+
+    //this.newOrder_data$=this.getOrderNumberByStatus(this.listOrder$);
+
+
     this.getOrderNumberByStatus(this.listOrder$).subscribe((orderNumberByStatus: number[]) => {
-      this.showOrderPieChart(orderNumberByStatus)
+      this.showOrderPieChart(orderNumberByStatus);
       this.showOrderBarCart(orderNumberByStatus);
+      this.orderNumberByStatus_data$ = orderNumberByStatus;
+      //console.log(orderNumberByStatus)
     });
 
+    this.getProductNumberByCategory(this.listProduct$).subscribe((productNumberByCategory: number[]) => {
+      //console.log(productNumberByCategory);
+      this.showProductRangePieChart(productNumberByCategory);
+      this.showProductRangeBarCart(productNumberByCategory);
+    });
+
+    this.listOrder$.subscribe(allOrderArray => {
+      let observedIntevallum = allOrderArray.slice(-10).map(item => item.id);
+      allOrderArray = allOrderArray.slice(-10);
+      let lastIncome = allOrderArray.map(item => (item.amount * Number(item.product?.price)));
+      let cumulativeSum = [0];
+      lastIncome.forEach((val, i) => (cumulativeSum[i] = Number(val) + cumulativeSum[i - 1] || Number(val)));
+      this.showLastOrderIncome(observedIntevallum,lastIncome)
+      this.showLastOrderCumulativeSum(observedIntevallum, cumulativeSum)
+
+      // console.log(cumulativeSum)
+      // console.log(lastIncome)
+
+
+
+      var arr = [{
+        id: 1,
+        name: 'bill'
+      }, {
+        id: 2,
+        name: 'ted'
+      }]
+
+      var result = arr.map(person => ({ value: person.id, text: person.name }));
+      console.log(result)
+
+
+
+      let lastFiveOrderArray = allOrderArray.slice(-5).reverse();
+      const newTampe = {id:0, fullName: '', income: '', country: ''}
+
+      let newObj = lastFiveOrderArray.map(x =>  ({
+        id: x.id,
+        fullName: `${x.customer?.firstName} ${x.customer?.lastName}`,
+        income: x.amount * Number(x.product?.price),
+        country: x.customer?.address.country
+      })
+      )
+
+      console.log(newObj)
+
+      this.lastFiveOrderArray = lastFiveOrderArray;
+      console.log(lastFiveOrderArray);
+
+
+      this.newOrder_data$ = newObj;
+    })
+
+
+  }
+  //onInit -----------------------------------------------------------------------
+
+  // Számértékek a Dashboard-ra
+  orderNumberByStatus_data$: any;
+  lastFiveOrderArray: any;
+
+
+  newOrder_data$: any;
+  shippedOrder_data: any;
+  paidOrder_data: any;
+  orderSum_data: any;
 
 
 
 
 
+  // showLastOrderIncome
+  showLastOrderIncome(dataX?: any, dataY?: any) {
+    const data: any = {
+      labels: dataX,
+      series: [dataY]
+    };
+
+    const optionslastOrderIncome = {
+      axisX: {
+        showGrid: false
+      },
+      axisY: {
+        offset: 80,
+        labelInterpolationFnc: function (value: any) {
+          return value / 1000 + 'k EUR'
+        },
+        scaleMinSpace: 15
+      },
+      low: 0,
+      chartPadding: { top: 25, right: 0, bottom: 0, left: 0 },
+    };
+    const responsiveOptions: any[] = [
+      ['screen and (max-width: 640px)', {
+        seriesBarDistance: 5,
+        axisX: {
+          labelInterpolationFnc: function (value: any) {
+            return value[0];
+          }
+        }
+      }]
+    ];
+    const lastOrderIncome = new Chartist.Bar('#lastOrderIncome', data, optionslastOrderIncome, responsiveOptions);
+    this.startAnimationForBarChart(lastOrderIncome);
+  }
+
+  // showLastOrderDetail
+  showLastOrderCumulativeSum(dataX?: any, dataY?: any) {
+    const data: any = {
+      labels: dataX,
+      series: [dataY]
+    };
+
+    const optionsOrderCumulativeSum: any = {
+      lineSmooth: Chartist.Interpolation.cardinal({
+        tension: 2
+      }),
+      low: 0,
+      chartPadding: { top: 25, right: 0, bottom: 0, left: 0 },
+
+      axisY: {
+        offset: 80,
+        labelInterpolationFnc: function (value: any) {
+          return value / 1000 + 'k EUR'
+        },
+        scaleMinSpace: 15
+      }
+    }
+
+    const lastOrderCumulativeSum = new Chartist.Line('#lastOrderCumulativeSum', data, optionsOrderCumulativeSum);
+
+    //lastOrderCumulativeSum;
+    this.startAnimationForLineChart(lastOrderCumulativeSum);
+  }
+
+
+  //----------------------------------------------------------------------------
+  showProductRangePieChart(orderData: number[]) {
+    const data = {
+      series: [orderData[0], orderData[1], orderData[2], orderData[3], orderData[4]]
+    };
+
+    const options = {
+      labelInterpolationFnc: function (value: any, idx: any) {
+        return Math.round(data.series[idx] / data.series.reduce((a, b) => a + b) * 100) + '%';
+      }
+    };
+
+    new Chartist.Pie('#productRangePieChart', data, options);
+  }
+
+
+  showProductRangeBarCart(orderData: number[]) {
+    const data = {
+      labels: ['Living room', 'Bedroom', 'Bathroom', 'Home office', 'Dining room'],
+      series: [[orderData[0], orderData[1], orderData[2], orderData[3], orderData[4]]]
+    };
+
+    const options = {
+      seriesBarDistance: 15,
+      reverseData: true,
+      horizontalBars: true,
+      axisX: {
+        labelInterpolationFnc: function (value: any, index: number) {
+          return index % 1 === 0 ? value : null;
+        },
+      },
+      axisY: {
+        offset: 90
+      },
+      chartPadding: { top: 20, right: 15, bottom: -5, left: 0 }
+    };
+
+    const productRangeBarCart = new Chartist.Bar('#productRangeBarCart', data, options);
   }
 
 
 
   showOrderPieChart(orderData: number[]) {
     const data = {
-      //series: [5, 3, 4]
-      //series: 'new', 'hipped', 'paid'
+      labels: ['new', 'shipped', 'paid'],
       series: [orderData[0], orderData[1], orderData[2]]
     };
 
-    //console.log(orderData)
-    //const sum = (a: any, b: any) => a + b;
-
-    new Chartist.Pie('#OrderNumberByStatusPieChart', data, {
-      labelInterpolationFnc: function (value: any) {
-        return Math.round(value / data.series.reduce((a, b) => a + b) * 100) + '%';
+    const options = {
+      chartPadding: 15,
+      labelOffset: 45,
+      labelInterpolationFnc: function (value: any, idx: any) {
+        return value + " - " + Math.round(data.series[idx] / data.series.reduce((a, b) => a + b) * 100) + '%';
       }
-    });
+    };
+    new Chartist.Pie('#OrderNumberByStatusPieChart', data, options);
   }
 
 
   showOrderBarCart(orderData: any) {
     const data = {
       labels: ['new', 'shipped', 'paid'],
-      // series: [
-      //   [10, 10, 18]
-      // ],
-      series: [ [orderData[0], orderData[1], orderData[2]] ]
+      series: [[orderData[0], orderData[1], orderData[2]]]
     };
 
     const options = {
-      high: 20,
-      low: 0,
-      seriesBarDistance: 1,
+      seriesBarDistance: 10,
+      reverseData: true,
+      horizontalBars: true,
       axisX: {
-        labelInterpolationFnc: function (value: any) {
-          return value;
-        }
+        labelInterpolationFnc: function (value: any, index: number) {
+          return index % 2 === 0 ? value : null;
+        },
       },
-      // axisX: {
-      //   labelInterpolationFnc: function(value: any, index: number) {
-      //     return index % 1 === 0 ? value : null;
-      //   },
-      // },
-      chartPadding: { top: 20, right: 5, bottom: 0, left: 0 }
+      axisY: {
+        offset: 60
+      },
+      chartPadding: { top: 20, right: 15, bottom: -5, left: 0 }
     };
-
     new Chartist.Bar('#orderByStatus', data, options);
+  }
 
+
+
+
+
+
+
+  getProductNumberByCategory(allProduct$: Observable<Product[]>): any {
+    const result = [0, 0, 0, 0, 0];
+    return allProduct$.pipe(
+      map((list: Product[]) => list.map(
+        product => {
+          if (product.catID === 1) result[0]++;
+          if (product.catID === 2) result[1]++;
+          if (product.catID === 3) result[2]++;
+          if (product.catID === 4) result[3]++;
+          if (product.catID === 5) result[4]++;
+          return result
+        }
+      )[0])
+    )
+    //.subscribe(console.log)
   }
 
 
@@ -347,17 +540,17 @@ export class TestComponent implements OnInit {
   }
 
   getOrderNumberByStatus(order$: Observable<Order[]>): Observable<any> {
-    let result = [0, 0, 0];
+    const result = [0, 0, 0];
     return order$.pipe(
       map((list: Order[]) => list.map(
         order => {
-          if (order.status==='new') result[0]++;
-          if (order.status==='shipped') result[1]++;
-          if (order.status==='paid') result[2]++;
+          if (order.status === 'new') result[0]++;
+          if (order.status === 'shipped') result[1]++;
+          if (order.status === 'paid') result[2]++;
           return result
         }
-      )[0])
-    )
+      )[0]),
+    );
     //.subscribe(console.log)
   }
 
@@ -422,8 +615,8 @@ export class TestComponent implements OnInit {
   billByStatus: {} = {};
   getBillByStatus(bill$: Observable<Bill[]>): any {
     const orderObj = {
-      'new': 0,
-      'paid': 0,
+      new: 0,
+      paid: 0,
     };
     bill$.forEach((billArray) => {
       billArray.forEach(bill => {
@@ -444,9 +637,9 @@ export class TestComponent implements OnInit {
   getOrderByStatus(order$: Observable<Order[]>): any {
     const innerObj = { orderNumber: 0, amountSum: 0 };
     const resultObj = {
-      'new': { ...innerObj },
-      'shipped': { ...innerObj },
-      'paid': { ...innerObj },
+      new: { ...innerObj },
+      shipped: { ...innerObj },
+      paid: { ...innerObj },
     };
     order$.forEach((orderArray) => {
       orderArray.forEach(order => {
@@ -464,7 +657,8 @@ export class TestComponent implements OnInit {
         }
       });
     });
-    return resultObj;
+    //console.log(resultObj)
+    return (resultObj);
   }
 
 
@@ -515,7 +709,7 @@ export class TestComponent implements OnInit {
   selectedProductID: number = 4;
   selectedProduct$: Observable<Product> = this.productService.get(this.selectedProductID);
   onUpdateProductForm(id?: any) {
-    console.log(id);
+    //console.log(id);
     this.selectedProduct$ = this.productService.get(id)
   }
 
