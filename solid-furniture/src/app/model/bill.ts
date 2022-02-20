@@ -1,3 +1,5 @@
+import { Product } from 'src/app/model/product';
+import { Customer } from 'src/app/model/customer';
 import { Order } from "./order";
 
 export class Bill {

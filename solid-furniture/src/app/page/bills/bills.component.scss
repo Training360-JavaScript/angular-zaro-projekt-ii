@@ -5,3 +5,42 @@ th:hover {
 tr:hover {
   background-color: rgba($color: #9c27b0, $alpha: 0.2)
 }
+
+.billDetailModal {
+  position: fixed!important;
+  z-index: 5;
+  top: 15%;
+  left: 30%;
+  width: 55%;
+  border: 2px solid black;
+  background-color: white;
+}
+
+.billDetailModal button {
+  float: right;
+  width: 30px!important;
+  height: 30px!important;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.billDetailModal tr:hover, .billDetailModal th:hover{
+  background-color: white!important;
+}
+
+.billDetailModal th, .billDetailModal td {
+  border: 1px solid black;
+}
+
+.billDetailModal th {
+  font-style: italic;
+}
+
+.seller p {
+  margin-bottom: 0;
+}
+
+.buyer p {
+  margin-bottom: 0;
+}

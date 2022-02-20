@@ -32,7 +32,7 @@ export class BillsComponent implements OnInit, OnDestroy {
       );
       this.scrollObserver.observe(document.querySelector('#scrollAnchor')!);
     })
-  );
+    );
   billKeys: string[] = Object.keys(new Bill());
   searchKey: string = 'id';
   keyword: string = '';
@@ -40,25 +40,38 @@ export class BillsComponent implements OnInit, OnDestroy {
   keywordMax: string = '';
   loadedElements: number = 10;
   scrollObserver: IntersectionObserver | undefined;
-  sumAmountCounter: number = 0;
-  IDCounter: number = 0;
+  IDCounter: number = 0
+sumAmountCounter: number = 0
+showBillDetail: boolean = false
+myBill!: Bill
+
 
   constructor(
     private billService: BillService,
     private toastr: ToastrService
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {/*
     this.billKeys.length = 4;
-  }
+    this.allBills$.subscribe(
+      bills => {
+        bills.forEach(bill => {
+          this.sumAmountCounter += bill.amount
+        })
+        bills.forEach(bill => {
+          this.IDCounter++
+        })
+      }
+      )*/
+    }
 
-  ngOnDestroy(): void {
-    this.scrollObserver?.disconnect();
-  }
+    ngOnDestroy(): void {
+      this.scrollObserver?.disconnect();
+    }
 
-  sortKey: string = '';
-  sortDirection: string = 'A...Z';
-  clickCounter: number = 0;
+    sortKey: string = '';
+    sortDirection: string = 'A...Z';
+    clickCounter: number = 0;
 
   sorting(key: string): void {
     key === this.sortKey ? this.clickCounter++ : (this.clickCounter = 0);
@@ -73,8 +86,39 @@ export class BillsComponent implements OnInit, OnDestroy {
   clearKeywordMinMax(): void {
     this.keywordMin = '';
     this.keywordMax = '';
+    //this.total()
   }
 
+  total(): void {
+    //this.sumAmount()
+    //this.countID()
+  }
+/*
+  sumAmount(): void {
+    this.allBills$.subscribe(
+      bills => {
+        this.sumAmountCounter = 0
+        let amountTds = document.querySelectorAll('.amount')
+        amountTds.forEach(td => {
+          this.sumAmountCounter += Number(td.innerHTML)
+        })
+      }
+    )
+  }
+
+  countID(): void {
+    this.allBills$.subscribe(
+      bills => {
+        this.IDCounter = 0
+        let tds = document.querySelectorAll('tr')
+        tds.forEach(td => {
+          this.IDCounter++
+        })
+        this.IDCounter = this.IDCounter - 2
+      }
+    )
+  }
+*/
   onDelete(billID: number): void {
     if (!confirm('Are you sure?')) {
       return;
@@ -87,4 +131,16 @@ export class BillsComponent implements OnInit, OnDestroy {
       this.allBills$ = this.billService.getAll();
     });
   }
+
+  billDetail(billID: number): void {
+    this.showBillDetail = true
+    this.billService.get(billID).subscribe(
+      bill => {
+        this.myBill = bill
+      }
+    )
+      console.log('itt van:')
+      console.log(this.myBill.order?.amount)
+  }
+
 }

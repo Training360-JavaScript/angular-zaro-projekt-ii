@@ -12,7 +12,6 @@ import { Customer } from 'src/app/model/customer';
   styleUrls: ['./customers.component.scss'],
 })
 export class CustomersComponent implements OnInit {
-  IDCounter: number = 0;
   scrollObserver: IntersectionObserver | undefined;
   customerKeys: string[] = Object.keys(new Customer());
   searchKey: string = 'firstName';
@@ -45,6 +44,16 @@ export class CustomersComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {}
+    /*
+  ngOnInit(): void {
+    this.allCustomers$.subscribe(
+      customers => {
+        customers.forEach(customer => {
+          this.IDCounter++
+        })
+      }
+    )
+  }*/
 
   sortKey: string = '';
   sortDirection: string = 'A...Z';
@@ -57,7 +66,8 @@ export class CustomersComponent implements OnInit {
   }
 
   clearKeyword(): void {
-    this.keyword = '';
+    this.keyword = ''
+    //this.countID()
   }
 
   /*
@@ -74,6 +84,22 @@ export class CustomersComponent implements OnInit {
     }
   }
 */
+
+
+  IDCounter: number = 0
+  countID(): void {
+    /*
+    this.allCustomers$.subscribe(
+      customers => {
+        this.IDCounter = 0
+        let tds = document.querySelectorAll('tr')
+        tds.forEach(td => {
+          this.IDCounter++
+        })
+        this.IDCounter = this.IDCounter - 2
+      }
+    )*/
+  }
 
   onDelete(customerID: number): void {
     if (!confirm('Are you sure?')) {
