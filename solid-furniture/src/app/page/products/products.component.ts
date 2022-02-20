@@ -22,7 +22,7 @@ export class ProductsComponent implements OnInit {
     private pService: ProductService, private router: Router) {
       this.sumPrice()
       this.countID()
-      console.log(this.productKeys)
+      //console.log(this.productKeys)
     }
 
   ngOnInit(): void {
@@ -113,7 +113,7 @@ return new Promise((resolve, reject) => {
       products => {
 
         let priceTds = document.querySelectorAll('#price')
-        console.log(priceTds)
+        //console.log(priceTds)
 
       }
     )
