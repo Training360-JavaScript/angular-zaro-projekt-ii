@@ -1,5 +1,4 @@
 <div class="row text-primary">
-
   <!-- title -->
   <div class="col-6">
     <h2 class="text-center font-weight-bold">Orders</h2>
@@ -10,25 +9,27 @@
     <p class="text-right font-weight-bold pt-4">Search orders:</p>
   </div>
   <div class="col-1">
-    <select class="form-control mt-2 text-center" required [(ngModel)]="searchKey" (change)="clearKeyword()" (change)="clearKeywordMinMax()">
-      <option *ngFor="let key of orderKeys" [value]="key">{{key | titlecase}}</option>
+    <select class="form-control mt-2 text-center" required [(ngModel)]="searchKey" (change)="clearKeyword()"
+      (change)="clearKeywordMinMax()">
+      <option *ngFor="let key of orderKeys" [value]="key">
+        {{ key | titlecase }}
+      </option>
     </select>
   </div>
-  <div
-    *ngIf="searchKey === 'id' || searchKey === 'customerID' || searchKey === 'productID'"
-    class="col-2 mt-1">
-    <input type="text" class="form-control mt-2" [(ngModel)]="keyword" placeholder="Search">
+  <div *ngIf="searchKey === 'id' || searchKey === 'customerID' || searchKey === 'productID'" class="col-2 mt-1">
+    <input type="text" class="form-control mt-2" [(ngModel)]="keyword" placeholder="Search" (keydown)="total()">
   </div>
   <div *ngIf="searchKey === 'amount'" class="col-2 mt-2">
     <input style="width: 25%" type="text" class="form-control float-left" [(ngModel)]="keyword" placeholder="Search"
-      (keydown)="clearKeywordMinMax()">
+      (keydown)="clearKeywordMinMax()" />
     <input style="width: 25%" type="text" class="form-control ml-3 float-left" [(ngModel)]="keywordMin"
-      placeholder="Min" (keydown)="clearKeyword()"> <span class="float-left mt-2">-</span>
+      placeholder="Min" (keydown)="clearKeyword()" />
+    <span class="float-left mt-2">-</span>
     <input style="width: 25%" type="text" class="form-control ml-2 float-left" [(ngModel)]="keywordMax"
-      placeholder="Max" (keydown)="clearKeyword()">
+      placeholder="Max" (keydown)="clearKeyword()" />
   </div>
   <div *ngIf="searchKey === 'status'" class="col-2">
-    <select class="form-control mt-2 text-center" [(ngModel)]="keyword">
+    <select class="form-control mt-2 text-center" [(ngModel)]="keyword" (change)="total()">
       <option [value]="'new'">New</option>
       <option [value]="'paid'">Paid</option>
       <option [value]="'shipped'">Shipped</option>
@@ -43,65 +44,88 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-primary">
-            <h4 class="card-title ">Orders</h4>
+            <h4 class="card-title">Orders</h4>
             <p class="card-category">All order listed here</p>
           </div>
           <div class="card-body">
-            <div class="table-responsive" style="overflow: unset;">
+            <div class="table-responsive" style="overflow: unset">
               <table class="table">
-
                 <!-- table head -->
-                <thead class=" text-primary text-center">
+                <thead class="text-primary text-center">
                   <tr class="sticky-top bg-white">
-                    <th *ngFor="let key of orderKeys" (click)="sorting(key)" style="cursor: pointer;">
-                      {{ key | titlecase}}
-                        <i *ngIf="sortKey == key && sortDirection  == 'A...Z'"class="fa fa-arrow-up"></i>
-                        <i *ngIf="sortKey == key && sortDirection  == 'Z...A'"class="fa fa-arrow-down"></i>
+                    <th *ngFor="let key of orderKeys" (click)="sorting(key)" style="cursor: pointer">
+                      {{ key | titlecase }}
+                      <i *ngIf="sortKey == key && sortDirection == 'A...Z'" class="fa fa-arrow-up"></i>
+                      <i *ngIf="sortKey == key && sortDirection == 'Z...A'" class="fa fa-arrow-down"></i>
                     </th>
                     <th>
-                      <button routerLink="/edit-orders/0" class="btn btn-success" style="width: 150px!important;"><i
-                        class="fa fa-plus"></i></button>
-                      </th>
-                    </tr>
-                  </thead>
+                      <button routerLink="/edit-orders/0" class="btn btn-success" style="width: 150px !important">
+                        <i class="fa fa-plus"></i>
+                      </button>
+                    </th>
+                  </tr>
+                </thead>
 
-                  <!-- table body -->
+                <!-- table body -->
                 <tbody>
-                  <tr
-                    *ngFor="let order of allOrders$ | async | filter: searchKey:keyword:keywordMin:keywordMax | sorter: sortKey:sortDirection">
+                  <tr class="font-weight-bold">
+                    <td class="h4 font-weight-bold text-center">
+                      {{ IDCounter }}
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td class="h4 font-weight-bold text-center">
+                      {{ sumAmountCounter }}
+                    </td>
+                    <td></td>
+                    <td class="h3 font-weight-bold text-center">Total</td>
+                  </tr>
+                  <tr *ngFor="
+                      let order of allOrders$
+                        | async
+                        | filter: searchKey:keyword:keywordMin:keywordMax
+                        | sorter: sortKey:sortDirection
+                        | load: loadedElements
+                    ">
                     <td class="text-center">{{ order.id }}</td>
-                    <td *ngIf="order.customer.firstName" class="text-center">{{ order.customerID }} ({{ order.customer.show('firstName', 'lastName') }})</td>
+                    <td *ngIf="order.customer.firstName" class="text-center">{{ order.customerID }}
+                      ({{ order.customer.show('firstName', 'lastName') }})</td>
                     <td *ngIf="!order.customer.firstName" class="text-center">{{ order.customerID }} (Not found)</td>
-                    <td *ngIf=" order.product.name" class="text-center">{{ order.productID }} ({{ order.product.name }})</td>
+                    <td *ngIf=" order.product.name" class="text-center">{{ order.productID }} ({{ order.product.name }})
+                    </td>
                     <td *ngIf=" !order.product.name" class="text-center">{{ order.productID }} (Not found)</td>
-                    <td class="text-center">{{ order.amount }}</td>
+                    <td class="text-center amount">{{ order.amount }}</td>
                     <td class="text-center">
-                      <p *ngIf="order.status == 'new'" class="font-weight-bold pt-3" style="color: dodgerblue!important;">New</p>
-                      <p *ngIf="order.status == 'paid'" class="font-weight-bold pt-3" style="color: darkgoldenrod!important;">Paid</p>
-                      <p *ngIf="order.status == 'shipped'" class="font-weight-bold pt-3" style="color: rgb(48, 180, 48)!important;">Shipped</p>
+                      <p *ngIf="order.status == 'new'" class="font-weight-bold pt-3"
+                        style="color: dodgerblue !important">
+                        New
+                      </p>
+                      <p *ngIf="order.status == 'paid'" class="font-weight-bold pt-3"
+                        style="color: darkgoldenrod !important">
+                        Paid
+                      </p>
+                      <p *ngIf="order.status == 'shipped'" class="font-weight-bold pt-3"
+                        style="color: rgb(48, 180, 48) !important">
+                        Shipped
+                      </p>
                     </td>
 
                     <td class="text-center">
                       <div class="btn-group">
-                        <button [routerLink]="['/edit-orders', order.id]" class="btn btn-info"><i
-                            class="fa fa-pencil"></i></button>
-                        <button (click)="onDelete(order.id)" class="btn btn-danger"><i
-                            class="fa fa-trash"></i></button>
+                        <button [routerLink]="['/edit-orders', order.id]" class="btn btn-info">
+                          <i class="fa fa-pencil"></i>
+                        </button>
+                        <button (click)="onDelete(order.id)" class="btn btn-danger">
+                          <i class="fa fa-trash"></i>
+                        </button>
                       </div>
                     </td>
-                  </tr>
-                  <tr class="font-weight-bold">
-                    <td class="h4 font-weight-bold text-center">{{ IDCounter }}</td>
-                    <td></td>
-                    <td></td>
-                    <td class="h4 font-weight-bold text-center">{{ sumAmountCounter }}</td>
-                    <td></td>
-                    <td class="h3 font-weight-bold text-center">Total</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
+          <div id="scrollAnchor"></div>
         </div>
       </div>
     </div>

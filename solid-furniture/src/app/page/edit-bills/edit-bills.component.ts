@@ -43,11 +43,14 @@ export class EditBillsComponent implements OnInit {
         })
       )
       .subscribe((bill) => {
-        delete bill.order
+        delete bill.order;
         this.billForm.setValue(bill);
       });
   }
   onDelete() {
+    if (!confirm('Are you sure?')) {
+      return;
+    }
     let id = this.billForm.value.id;
     if (id) {
       this.billService.delete(id).subscribe(() => {
@@ -58,14 +61,25 @@ export class EditBillsComponent implements OnInit {
       });
     }
   }
+
   onUpdate() {
-    this.billService.create(this.billForm.value).subscribe(() => {
-      this.router.navigate(['/bills']);
-      this.toastr.success('Bill has been added!', 'Success', {
-        timeOut: 3000,
+    if (this.billForm.value.id) {
+      this.billService.update(this.billForm.value).subscribe(() => {
+        this.router.navigate(['/bills']);
+        this.toastr.success('Bill has been updated!', 'Success', {
+          timeOut: 3000,
+        });
       });
-    });
+    } else {
+      this.billService.create(this.billForm.value).subscribe(() => {
+        this.router.navigate(['/bills']);
+        this.toastr.success('Bill has been added!', 'Success', {
+          timeOut: 3000,
+        });
+      });
+    }
   }
+
   goBack() {
     this.router.navigate(['/bills']);
   }

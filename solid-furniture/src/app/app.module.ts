@@ -15,6 +15,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { SorterPipe } from './pipe/sorter.pipe';
 import { TextcutterPipe } from './pipe/textcutter.pipe';
 
+import { LoadPipe } from './pipe/load.pipe';
+
 @NgModule({
   declarations: [
     routerComponents,
@@ -25,6 +27,7 @@ import { TextcutterPipe } from './pipe/textcutter.pipe';
     FilterPipe,
     SorterPipe,
     TextcutterPipe,
+    LoadPipe,
   ],
   imports: [
     BrowserModule,
@@ -34,7 +37,7 @@ import { TextcutterPipe } from './pipe/textcutter.pipe';
     CommonModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
