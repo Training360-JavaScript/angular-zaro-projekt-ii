@@ -1,1 +1,273 @@
 <p>home works!</p>
+
+
+
+<div class="col-lg-6 col-md-12">
+  <div class="card">
+    <div class="card-header card-header-warning">
+      <h4 class="card-title">Friss megrendelések</h4>
+      <p class="card-category">Legutóbbi 5 megrendelés</p>
+    </div>
+    <div class="card-body table-responsive">
+      <table class="table table-hover">
+        <thead class="text-warning">
+          <th>ID</th>
+          <th>Name</th>
+          <th>Income</th>
+          <th>Country</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of newOrder_data$">
+            <td>{{order.id}}</td>
+            <td>{{order.fullName}}</td>
+            <td>{{order.income | currency:'EUR':'symbol':'1.0-0' }}</td>
+            <td>{{order.country}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<div class="conatiner">
+  <div class="row  border">
+
+    <div class="col-lg-3 col-md-6 col-sm-6 mt-4">
+      <div class="card card-stats h-100 my-0">
+        <div class="card-header card-header-Secondary card-header-icon">
+          <div class="card-icon">
+            <i class="material-icons">weekend</i>
+          </div>
+          <p class="card-category ">Aktív termékek száma</p>
+          <h3 class="card-title ">{{ activeProductNumber }}</h3>
+        </div>
+        <div class="card-footer mt-auto">
+          <div class="stats">
+            <i class="material-icons">date_range</i> Last 24 Hours
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-6 mt-4">
+      <div class="card card-stats h-100 my-0">
+        <div class="card-header card-header-info card-header-icon">
+          <div class="card-icon">
+            <i class="material-icons">groups</i>
+          </div>
+          <p class="card-category ">Aktív vásárlók száma</p>
+          <h3 class="card-title ">{{ activeCustomerNumber }}</h3>
+        </div>
+        <div class="card-footer mt-auto">
+          <div class="stats">
+            <i class="material-icons">update</i> Just Updated
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-6 mt-4">
+      <div class="card card-stats h-100 my-0">
+        <div class="card-header card-header-warning card-header-icon">
+          <div class="card-icon">
+            <i class="material-icons">assignment_late</i>
+          </div>
+          <p class="card-category">Még nem fizetett rendelések száma</p>
+          <h3 class="card-title">{{ unpaidOrderNumber }}</h3>
+        </div>
+        <div class="card-footer mt-auto">
+          <div class="stats">
+            <i class="material-icons">update</i> Just Updated
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-6 mt-4">
+      <div class="card card-stats h-100 my-0">
+        <div class="card-header card-header-danger card-header-icon">
+          <div class="card-icon">
+            <i class="material-icons">receipt_long</i>
+          </div>
+          <p class="card-category">Még nem fizetett számlák összege</p>
+          <h3 class="card-title">{{ unpaidBillSum | currency:'EUR':'symbol':'1.0-0' }}</h3>
+        </div>
+        <div class="card-footer mt-auto">
+          <div class="stats">
+            <i class="material-icons">update</i> Just Updated
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+<div class="row">
+  <!-- <pre *ngIf="orderByStatus as order">
+    - *Rendelések száma és mennyiségük összege státuszuk szerint:
+    {{order | json}}
+    {{order}}
+  </pre> -->
+
+  <div class="col-md-4">
+    <div class="card card-chart">
+      <div class="card-header card-header-info" style="background-color: #c0c0c0;">
+        <div class="ct-chart" id="OrderNumberByStatusPieChart"></div>
+      </div>
+      <div class="card-body">
+        <h4 class="card-title">Rendelések státusz szerinti megoszlása</h4>
+        <p class="card-category">
+          <span class="text-success"><i class="fa fa-long-arrow-up"></i> --- </span> --------------- </p>
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <i class="material-icons">access_time</i> updated 4 minutes ago
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card card-chart">
+      <div class="card-header card-header-info">
+        <div class="ct-chart" id="orderByStatus"></div>
+      </div>
+      <div class="card-body">
+        <h4 class="card-title">Rendelések száma státuszuk szerint</h4>
+        <p class="card-category">
+          <span class="text-success">
+            {{ orderNumberByStatus_data$ | slice:0:1 }} - new |
+            {{ orderNumberByStatus_data$ | slice:1:2 }} - shipped |
+            {{ orderNumberByStatus_data$ | slice:2:3 }} - paid
+          </span>
+        </p>
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <i class="material-icons">access_time</i> updated 4 minutes ago
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="row">
+
+  <div class="col-md-4">
+    <div class="card card-chart">
+      <div class="card-header card-header-success">
+        <div class="ct-chart" id="productRangePieChart"></div>
+      </div>
+      <div class="card-body">
+        <h4 class="card-title">Termékek kategóriák szerinti aránya</h4>
+        <p class="card-category">
+          <span class="text-success"><i class="fa fa-long-arrow-up"></i> --- </span> --------------- </p>
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <i class="material-icons">update</i> Just Updated
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card card-chart">
+      <div class="card-header card-header-success">
+        <div class="ct-chart" id="productRangeBarCart"></div>
+      </div>
+      <div class="card-body">
+        <h4 class="card-title">Termékek kategóriák szerinti száma</h4>
+        <p class="card-category">
+          <span class="text-success"><i class="fa fa-long-arrow-up"></i> --- </span> ||||||||| </p>
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <i class="material-icons">update</i> Just Updated
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+
+  <div class="col-md-4">
+    <div class="card card-chart">
+      <div class="card-header card-header-warning">
+        <div class="ct-chart" id="lastOrderIncome"></div>
+      </div>
+      <div class="card-body">
+        <h4 class="card-title">Bevételek</h4>
+        <p class="card-category">Az utolsó 10 értékesítésére vonatkozóan.</p>
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <i class="material-icons">update</i> Just Updated
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card card-chart">
+      <div class="card-header card-header-warning">
+        <div class="ct-chart" id="lastOrderCumulativeSum"></div>
+      </div>
+      <div class="card-body">
+        <h4 class="card-title">Bevétel kommulált összegének alkulása</h4>
+        <p class="card-category">Az utolsó 10 értékesítésére vonatkozóan.</p>
+      </div>
+      <div class="card-footer">
+        <div class="stats">
+          <i class="material-icons">update</i> Just Updated
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>
+
+
+
+
+
+
+- Aktív termékek száma: {{ activeProductNumber }}
+<br>
+<br>
+- Aktív vásárlók száma: {{ activeCustomerNumber }}
+<br>
+<br>
+- Még nem fizetett rendelések száma: {{ unpaidOrderNumber }}
+<br>
+<br>
+- Még nem fizetett számlák összege: {{ unpaidBillSum | currency:'EUR' }}
+<br>
+<br>
+- *Rendelések száma és mennyiségük összege státuszuk szerint:
+<pre>
+  {{orderByStatus | json }}
+</pre>
+<br>
+<br>
+- *Számlák összege státuszuk szerint
+<pre>
+  {{ billByStatus | json }}
+</pre>
+

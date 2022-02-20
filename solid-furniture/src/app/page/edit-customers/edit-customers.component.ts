@@ -51,7 +51,10 @@ export class EditCustomersComponent implements OnInit {
           }
         })
       )
-      .subscribe((customer) => this.customerForm.setValue(customer));
+      .subscribe((customer) => {
+        console.log(customer)
+        this.customerForm.setValue(customer)
+      });
   }
 
   onDelete() {
