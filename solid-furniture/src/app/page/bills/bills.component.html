@@ -117,15 +117,15 @@
                   "
                 >
                   <tr class="font-weight-bold total-tr">
-                    <th class="h4 font-weight-bold text-center">
+                    <td class="h4 font-weight-bold text-center">
                       {{ filteredBills.length }}
-                    </th>
-                    <th></th>
-                    <th class="h4 font-weight-bold text-center">
+                    </td>
+                    <td></td>
+                    <td class="h4 font-weight-bold text-center">
                       {{ filteredBills | sum: "amount" }}
-                    </th>
-                    <th></th>
-                    <th class="h3 font-weight-bold text-center">Total</th>
+                    </td>
+                    <td></td>
+                    <td class="h3 font-weight-bold text-center">Total</td>
                   </tr>
 
                   <tr *ngFor="let bill of filteredBills | load: loadedElements">

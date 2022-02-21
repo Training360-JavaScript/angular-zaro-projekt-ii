@@ -28,6 +28,10 @@ th {
   width: 10%;
 }
 
+.total-tr:hover {
+  background-color: rgba($color: #87B3CC, $alpha: 0.2)
+}
+
 @media screen and (max-width: 992px) {
   th {
     font-size: 0.8rem !important;
