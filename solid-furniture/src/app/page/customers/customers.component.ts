@@ -1,6 +1,6 @@
 import { ToastrService } from 'ngx-toastr';
 import { Observable, tap } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { CustomerService } from './../../service/customer.service';
 import { Customer } from 'src/app/model/customer';
@@ -10,8 +10,7 @@ import { Customer } from 'src/app/model/customer';
   templateUrl: './customers.component.html',
   styleUrls: ['./customers.component.scss'],
 })
-export class CustomersComponent implements OnInit {
-
+export class CustomersComponent implements OnInit, OnDestroy {
   customerKeys: string[] = Object.keys(new Customer());
   searchKey: string = 'firstName';
   keyword: string = '';
@@ -20,18 +19,13 @@ export class CustomersComponent implements OnInit {
   clickCounter: number = 0;
   loadedElements: number = 10;
   scrollObserver: IntersectionObserver | undefined;
-  IDCounter: number = 0
-  allCustomersForTotal$: Observable<Customer[]> = this.customerService.getAll()
-  stillLoading: boolean = true
+  IDCounter: number = 0;
+  allCustomersForTotal$: Observable<Customer[]> = this.customerService.getAll();
+  stillLoading: boolean = true;
 
   allCustomers$: Observable<Customer[]> = this.customerService.getAll().pipe(
-
     tap((customers) => {
-      /*
-      customers.forEach((customer) => {
-        this.IDCounter = customers.length;
-      });*/
-
+      this.stillLoading = false;
       this.scrollObserver = new IntersectionObserver(
         ([entry]: IntersectionObserverEntry[]) => {
           if (entry.isIntersecting) {
@@ -51,17 +45,11 @@ export class CustomersComponent implements OnInit {
     private toastr: ToastrService
   ) {}
 
-  ngOnInit(): void {
-    this. allCustomersForTotal$.subscribe(
-      customers => {
-        customers.forEach(customer => {
-          this.IDCounter++
-        })
-        this.stillLoading = false
-      }
-    )
-  }
+  ngOnInit(): void {}
 
+  ngOnDestroy(): void {
+    this.scrollObserver?.disconnect();
+  }
 
   sorting(key: string): void {
     key === this.sortKey ? this.clickCounter++ : (this.clickCounter = 0);
@@ -70,37 +58,7 @@ export class CustomersComponent implements OnInit {
   }
 
   clearKeyword(): void {
-    this.keyword = ''
-    this.total()
-  }
-
-  /*
-  add300(): void {
-    for (let i = 0; i < 300; i++) {
-      this.customerService.create({
-        id: 0,
-        firstName: 'A 300 spártai',
-        lastName: 'katona egyike',
-        email: 'thisis@sparta.com',
-        address: 'G-3000|-|Greece|-|Sparta|-|Thermopülai-szoros|-|1/A',
-        active: false
-      })
-    }
-  }
-*/
-
-
-  total(): void {
-    this. allCustomersForTotal$.subscribe(
-      customers => {
-        this.IDCounter = 0
-        let tds = document.querySelectorAll('tr')
-        tds.forEach(td => {
-          this.IDCounter++
-        })
-        this.IDCounter = this.IDCounter - 2
-      }
-    )
+    this.keyword = '';
   }
 
   onDelete(customerID: number): void {

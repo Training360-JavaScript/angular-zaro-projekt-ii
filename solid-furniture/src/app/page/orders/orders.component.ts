@@ -1,6 +1,6 @@
 import { ToastrService } from 'ngx-toastr';
 import { Observable, tap } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Order } from 'src/app/model/order';
 import { OrderService } from 'src/app/service/order.service';
@@ -10,8 +10,7 @@ import { OrderService } from 'src/app/service/order.service';
   templateUrl: './orders.component.html',
   styleUrls: ['./orders.component.scss'],
 })
-export class OrdersComponent implements OnInit {
-
+export class OrdersComponent implements OnInit, OnDestroy {
   orderKeys: string[] = Object.keys(new Order());
   searchKey: string = 'id';
   keyword: string = '';
@@ -22,18 +21,14 @@ export class OrdersComponent implements OnInit {
   clickCounter: number = 0;
   IDCounter: number = 0;
   sumAmountCounter: number = 0;
-  allOrdersForTotal$: Observable<Order[]> = this.orderService.getAll()
+  allOrdersForTotal$: Observable<Order[]> = this.orderService.getAll();
   scrollObserver: IntersectionObserver | undefined;
   loadedElements: number = 10;
-  stillLoading: boolean = true
+  stillLoading: boolean = true;
 
   allOrders$: Observable<Order[]> = this.orderService.getAll().pipe(
     tap((orders) => {
-      /*orders.forEach((order) => {
-        this.sumAmountCounter += order.amount;
-        this.IDCounter = orders.length;
-      });*/
-
+      this.stillLoading = false;
       this.scrollObserver = new IntersectionObserver(
         ([entry]: IntersectionObserverEntry[]) => {
           if (entry.isIntersecting) {
@@ -55,16 +50,10 @@ export class OrdersComponent implements OnInit {
 
   ngOnInit(): void {
     this.orderKeys.length = 5;
-    //total numbers in initialization
-    this.allOrdersForTotal$.subscribe(
-      orders => {
-        orders.forEach(order => {
-          this.sumAmountCounter += order.amount
-          this.IDCounter++
-        })
-        this.stillLoading = false
-      }
-    )
+  }
+
+  ngOnDestroy(): void {
+    this.scrollObserver?.disconnect();
   }
 
   sorting(key: string): void {
@@ -74,27 +63,12 @@ export class OrdersComponent implements OnInit {
   }
 
   clearKeyword(): void {
-    this.keyword = ''
-    this.total()
+    this.keyword = '';
   }
 
   clearKeywordMinMax(): void {
-    this.keywordMin = ''
-    this.keywordMax = ''
-    this.total()
-  }
-
-  total(): void {
-    this.allOrdersForTotal$.subscribe(
-      orders => {
-        this.sumAmountCounter = 0
-        let amountTds = document.querySelectorAll('.amount')
-        amountTds.forEach(td => {
-          this.sumAmountCounter += Number(td.innerHTML)
-          this.IDCounter++
-        })
-      }
-    )
+    this.keywordMin = '';
+    this.keywordMax = '';
   }
 
   onDelete(orderID: number): void {

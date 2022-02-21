@@ -9,25 +9,55 @@
     <p class="text-right font-weight-bold pt-4">Search bills:</p>
   </div>
   <div class="col-1">
-    <select class="form-control mt-2 text-center" required [(ngModel)]="searchKey" (change)="clearKeyword()"
-      (change)="clearKeywordMinMax()">
-      <option *ngFor="let key of billKeys" [value]="key">{{key | titlecase}}</option>
+    <select
+      class="form-control mt-2 text-center"
+      required
+      [(ngModel)]="searchKey"
+      (change)="clearKeyword()"
+      (change)="clearKeywordMinMax()"
+    >
+      <option *ngFor="let key of billKeys" [value]="key">
+        {{ key | titlecase }}
+      </option>
     </select>
   </div>
   <div *ngIf="searchKey === 'id' || searchKey === 'orderID'" class="col-2 mt-1">
-    <input type="text" class="form-control mt-2" [(ngModel)]="keyword" placeholder="Search" (keydown)="total()">
+    <input
+      type="text"
+      class="form-control mt-2"
+      [(ngModel)]="keyword"
+      placeholder="Search"
+    />
   </div>
   <div *ngIf="searchKey === 'amount'" class="col-2 mt-2">
-    <input style="width: 25%" type="text" class="form-control float-left" [(ngModel)]="keyword" placeholder="Search"
-      (keydown)="clearKeywordMinMax()" />
-    <input style="width: 25%" type="text" class="form-control ml-3 float-left" [(ngModel)]="keywordMin"
-      placeholder="Min" (keydown)="clearKeyword()" />
+    <input
+      style="width: 25%"
+      type="text"
+      class="form-control float-left"
+      [(ngModel)]="keyword"
+      placeholder="Search"
+      (keydown)="clearKeywordMinMax()"
+    />
+    <input
+      style="width: 25%"
+      type="text"
+      class="form-control ml-3 float-left"
+      [(ngModel)]="keywordMin"
+      placeholder="Min"
+      (keydown)="clearKeyword()"
+    />
     <span class="float-left mt-2">-</span>
-    <input style="width: 25%" type="text" class="form-control ml-2 float-left" [(ngModel)]="keywordMax"
-      placeholder="Max" (keydown)="clearKeyword()" />
+    <input
+      style="width: 25%"
+      type="text"
+      class="form-control ml-2 float-left"
+      [(ngModel)]="keywordMax"
+      placeholder="Max"
+      (keydown)="clearKeyword()"
+    />
   </div>
   <div *ngIf="searchKey === 'status'" class="col-2">
-    <select class="form-control mt-2 text-center" [(ngModel)]="keyword" (change)="total()">
+    <select class="form-control mt-2 text-center" [(ngModel)]="keyword">
       <option [value]="'new'">New</option>
       <option [value]="'paid'">Paid</option>
     </select>
@@ -48,56 +78,101 @@
             <div class="table-responsive">
               <table class="table">
                 <!-- table head -->
-                <thead class=" text-primary text-center">
-                  <tr class="sticky-top bg-white" style="z-index: 1;">
-                    <th *ngFor="let key of billKeys" (click)="sorting(key)" style="cursor: pointer; width: 20%;">
-                      {{ key | titlecase}}
-                      <i *ngIf="sortKey == key && sortDirection  == 'A...Z'" class="fa fa-caret-up ml-2"></i>
-                      <i *ngIf="sortKey == key && sortDirection  == 'Z...A'" class="fa fa-caret-down ml-2"></i>
+                <thead class="text-primary text-center">
+                  <tr class="sticky-top bg-white" style="z-index: 1">
+                    <th
+                      *ngFor="let key of billKeys"
+                      (click)="sorting(key)"
+                      style="cursor: pointer; width: 20%"
+                    >
+                      {{ key | titlecase }}
+                      <i
+                        *ngIf="sortKey == key && sortDirection == 'A...Z'"
+                        class="fa fa-caret-up ml-2"
+                      ></i>
+                      <i
+                        *ngIf="sortKey == key && sortDirection == 'Z...A'"
+                        class="fa fa-caret-down ml-2"
+                      ></i>
                     </th>
-                    <th id="th-btn" style="width: 20%;">
-                      <button routerLink="/edit-bills/0" class="btn btn-success" style="width: 225px!important;"><i
-                          class="fa fa-plus"></i></button>
+                    <th id="th-btn" style="width: 20%">
+                      <button
+                        routerLink="/edit-bills/0"
+                        class="btn btn-success"
+                        style="width: 225px !important"
+                      >
+                        <i class="fa fa-plus"></i>
+                      </button>
                     </th>
                   </tr>
                 </thead>
 
                 <!-- table body -->
-                <tbody>
+                <tbody
+                  *ngIf="
+                    allBills$
+                      | async
+                      | filter: searchKey:keyword:keywordMin:keywordMax
+                      | sorter: sortKey:sortDirection as filteredBills
+                  "
+                >
                   <tr class="font-weight-bold total-tr">
                     <th class="h4 font-weight-bold text-center">
-                      {{ IDCounter }}
+                      {{ filteredBills.length }}
                     </th>
                     <th></th>
                     <th class="h4 font-weight-bold text-center">
-                      {{ sumAmountCounter }}
+                      {{ filteredBills | sum: "amount" }}
                     </th>
                     <th></th>
                     <th class="h3 font-weight-bold text-center">Total</th>
                   </tr>
-                  <app-loading *ngIf="stillLoading"></app-loading>
-                  <tr *ngFor="
-                      let bill of allBills$
-                        | async
-                        | filter: searchKey:keyword:keywordMin:keywordMax
-                        | sorter: sortKey:sortDirection
-                        | load: loadedElements
-                    ">
+
+                  <tr *ngFor="let bill of filteredBills | load: loadedElements">
                     <td class="text-center">{{ bill.id }}</td>
                     <td class="text-center">{{ bill.orderID }}</td>
                     <td class="text-center amount">{{ bill.amount }}</td>
                     <td class="text-center">
-                      <p *ngIf="bill.status == 'new'" class="font-weight-bold pt-3 new">New</p>
-                      <p *ngIf="bill.status == 'paid'" class="font-weight-bold pt-3 paid">Paid</p>
-                      <p *ngIf="bill.status == 'shipped'" class="font-weight-bold pt-3 shipped">Shipped</p>
+                      <p
+                        *ngIf="bill.status == 'new'"
+                        class="font-weight-bold pt-3 new"
+                      >
+                        New
+                      </p>
+                      <p
+                        *ngIf="bill.status == 'paid'"
+                        class="font-weight-bold pt-3 paid"
+                      >
+                        Paid
+                      </p>
+                      <p
+                        *ngIf="bill.status == 'shipped'"
+                        class="font-weight-bold pt-3 shipped"
+                      >
+                        Shipped
+                      </p>
                     </td>
 
                     <td class="text-center">
                       <div class="btn-group">
-                        <button (click)="billDetail(bill.id)" class="btn btn-success"><i class="fa fa-eye"></i></button>
-                        <button [routerLink]="['/edit-bills', bill.id]" class="btn btn-info"><i
-                            class="fa fa-pencil"></i></button>
-                        <button (click)="onDelete(bill.id)" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                        <button
+                          (click)="billDetail(bill.id)"
+                          class="btn btn-success"
+                        >
+                          <i class="fa fa-eye"></i>
+                        </button>
+                        <button
+                          [routerLink]="['/edit-bills', bill.id]"
+                          class="btn btn-info"
+                        >
+                          <i class="fa fa-pencil"></i>
+                        </button>
+                        <button
+                          (click)="onDelete(bill.id)"
+                          class="btn btn-danger"
+                        >
+                          <i class="fa fa-trash"></i>
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -114,8 +189,9 @@
 
 <div *ngIf="showBillDetail" class="billDetailModal p-4">
   <div class="billContent">
-
-    <button (click)="showBillDetail=false" class="btn-danger"><i class="fa fa-times"></i></button>
+    <button (click)="showBillDetail = false" class="btn-danger">
+      <i class="fa fa-times"></i>
+    </button>
 
     <h2 class="text-center font-weight-bold">Bill Details</h2>
     <div class="dropdown-divider my-3"></div>
@@ -123,28 +199,33 @@
     <!-- Seller and buyer details -->
     <div class="row">
       <div class="col-6 seller">
-        <p class="font-weight-bold"> Solid-Furniture Kft.</p>
+        <p class="font-weight-bold">Solid-Furniture Kft.</p>
         <p>Hungary</p>
         <p>Budapest V.</p>
         <p>Jópofa kanapék street 55.</p>
         <p>1111</p>
       </div>
       <div class="col-6 buyer">
-
         <div *ngIf="!myBill.order?.customer?.firstName">
           <p class="font-weight-bold">Customer not found</p>
         </div>
 
         <div *ngIf="myBill.order?.customer?.firstName">
-          <p class="font-weight-bold">{{ myBill.order?.customer?.firstName }} {{ myBill.order?.customer?.lastName }}</p>
+          <p class="font-weight-bold">
+            {{ myBill.order?.customer?.firstName }}
+            {{ myBill.order?.customer?.lastName }}
+          </p>
           <p>{{ myBill.order?.customer?.address?.country }}</p>
           <p>{{ myBill.order?.customer?.address?.city }}</p>
-          <p>{{ myBill.order?.customer?.address?.street }} <span *ngIf="myBill.order?.customer?.address?.notes">({{
-              myBill.order?.customer?.address?.notes }})</span></p>
+          <p>
+            {{ myBill.order?.customer?.address?.street }}
+            <span *ngIf="myBill.order?.customer?.address?.notes"
+              >({{ myBill.order?.customer?.address?.notes }})</span
+            >
+          </p>
           <p>{{ myBill.order?.customer?.address?.zip }}</p>
           <p>Contact: {{ myBill.order?.customer?.email }}</p>
         </div>
-
       </div>
     </div>
     <div class="dropdown-divider"></div>
@@ -170,12 +251,13 @@
             <td class="font-weight-bold">{{ myBill.order?.product?.name }}</td>
             <td>{{ myBill.order?.product?.type }}</td>
             <td>{{ myBill.order?.product?.category?.name }}</td>
-            <td>{{ myBill.order?.product?.description | textcutter:50 }}</td>
-            <td class="font-weight-bold">{{ myBill.order?.product?.price }} €</td>
+            <td>{{ myBill.order?.product?.description | textcutter: 50 }}</td>
+            <td class="font-weight-bold">
+              {{ myBill.order?.product?.price }} €
+            </td>
           </tr>
         </tbody>
       </table>
-
     </div>
     <div class="dropdown-divider"></div>
 
@@ -187,29 +269,38 @@
 
     <div *ngIf="myBill.order?.id" class="row">
       <div class="col-3">
-        <p>Total ordered amount: </p>
-        <p>Order status: </p>
+        <p>Total ordered amount:</p>
+        <p>Order status:</p>
 
-        <p>Bill amount: </p>
-        <p>Bill status: </p>
+        <p>Bill amount:</p>
+        <p>Bill status:</p>
       </div>
       <div class="col-3">
         <p class="font-weight-bold">{{ myBill.order?.amount }}</p>
-        <p *ngIf="myBill.order?.status == 'new'" class="font-weight-bold new">New</p>
-        <p *ngIf="myBill.order?.status == 'paid'" class="font-weight-bold paid">Paid
+        <p *ngIf="myBill.order?.status == 'new'" class="font-weight-bold new">
+          New
         </p>
-        <p *ngIf="myBill.order?.status == 'shipped'" class="font-weight-bold shipped">
-          Shipped</p>
+        <p *ngIf="myBill.order?.status == 'paid'" class="font-weight-bold paid">
+          Paid
+        </p>
+        <p
+          *ngIf="myBill.order?.status == 'shipped'"
+          class="font-weight-bold shipped"
+        >
+          Shipped
+        </p>
 
         <p class="font-weight-bold">{{ myBill.amount }}</p>
         <p *ngIf="myBill.status == 'new'" class="font-weight-bold new">New</p>
-        <p *ngIf="myBill.status == 'paid'" class="font-weight-bold paid">Paid</p>
+        <p *ngIf="myBill.status == 'paid'" class="font-weight-bold paid">
+          Paid
+        </p>
       </div>
     </div>
 
     <div class="dropdown-divider"></div>
 
     <h2 class="text-right">Total: {{ myBill.order?.product?.price }} €</h2>
-
   </div>
 </div>
+<app-loading *ngIf="stillLoading"></app-loading>

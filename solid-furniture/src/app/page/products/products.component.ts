@@ -1,7 +1,7 @@
 import { ToastrService } from 'ngx-toastr';
 import { ProductService } from './../../service/product.service';
 import { Product } from 'src/app/model/product';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 
 @Component({
@@ -9,30 +9,25 @@ import { Observable, tap } from 'rxjs';
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss'],
 })
-export class ProductsComponent implements OnInit {
-
+export class ProductsComponent implements OnInit, OnDestroy {
   productKeys: string[] = Object.keys(new Product());
-  searchKey: string = 'name'
-  keyword: string = ''
-  keywordMin: string = ''
-  keywordMax: string = ''
-  sortKey: string = ''
-  sortDirection: string = 'A...Z'
-  clickCounter: number = 0
-  IDCounter: number = 0
-  sumPriceCounter: number = 0
-  allProductsForTotal$: Observable<Product[]> = this.productService.getAll()
+  searchKey: string = 'name';
+  keyword: string = '';
+  keywordMin: string = '';
+  keywordMax: string = '';
+  sortKey: string = '';
+  sortDirection: string = 'A...Z';
+  clickCounter: number = 0;
+  IDCounter: number = 0;
+  sumPriceCounter: number = 0;
+  allProductsForTotal$: Observable<Product[]> = this.productService.getAll();
   scrollObserver: IntersectionObserver | undefined;
   loadedElements: number = 10;
-  stillLoading: boolean = true
+  stillLoading: boolean = true;
 
   allProducts$: Observable<Product[]> = this.productService.getAll().pipe(
     tap((products) => {
-      /*
-      customers.forEach((customer) => {
-        this.IDCounter = customers.length;
-      });*/
-
+      this.stillLoading = false;
       this.scrollObserver = new IntersectionObserver(
         ([entry]: IntersectionObserverEntry[]) => {
           if (entry.isIntersecting) {
@@ -55,17 +50,10 @@ export class ProductsComponent implements OnInit {
   ngOnInit(): void {
     this.productKeys[3] = 'category name';
     this.productKeys.length = 8;
-    //total numbers in initialization
-    this.allProductsForTotal$.subscribe(
-products => {
-        products.forEach(product => {
-            this.sumPriceCounter += product.price
-            console.log(this.sumPriceCounter)
-          this.IDCounter++
-        })
-        this.stillLoading = false
-      }
-    )
+  }
+
+  ngOnDestroy(): void {
+    this.scrollObserver?.disconnect();
   }
 
   sorting(key: string): void {
@@ -76,31 +64,16 @@ products => {
 
   clearKeyword(): void {
     this.keyword = '';
-    this.total()
   }
 
   clearKeywordMinMax(): void {
-    this.keywordMin = ''
-    this.keywordMax = ''
-    this.total()
-  }
-
- total(): void {
-    this.allProductsForTotal$.subscribe(
-      products => {
-        this.sumPriceCounter = 0
-        let priceTds = document.querySelectorAll('.price')
-        priceTds.forEach(td => {
-          this.sumPriceCounter += Number(td.innerHTML)
-          this.IDCounter++
-        })
-      }
-    )
+    this.keywordMin = '';
+    this.keywordMax = '';
   }
 
   onDelete(productID: number): void {
     if (!confirm('Are you sure?')) {
-      return
+      return;
     }
 
     this.productService.delete(productID).subscribe(() => {
@@ -111,4 +84,3 @@ products => {
     });
   }
 }
-
