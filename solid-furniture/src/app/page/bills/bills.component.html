@@ -187,7 +187,7 @@
   </div>
 </div>
 
-<div *ngIf="showBillDetail" class="billDetailModal p-4">
+<div *ngIf="showBillDetail && myBill" class="billDetailModal p-4">
   <div class="billContent">
     <button (click)="showBillDetail = false" class="btn-danger">
       <i class="fa fa-times"></i>

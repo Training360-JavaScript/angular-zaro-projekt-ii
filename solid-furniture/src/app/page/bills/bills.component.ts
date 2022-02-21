@@ -1,5 +1,5 @@
 import { ToastrService } from 'ngx-toastr';
-import { Observable, take, tap, last, map } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Bill } from './../../model/bill';
