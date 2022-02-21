@@ -57,7 +57,7 @@ export class EditOrdersComponent implements OnInit {
     if (id) {
       this.orderService.delete(id).subscribe(() => {
         this.router.navigate(['/orders']);
-        this.toastr.success('Order has been removed!', 'Success', {
+        this.toastr.error('Order has been removed!', 'Success', {
           timeOut: 3000,
         });
       });
@@ -68,7 +68,7 @@ export class EditOrdersComponent implements OnInit {
     if (this.orderForm.value.id) {
       this.orderService.update(this.orderForm.value).subscribe(() => {
         this.router.navigate(['/orders']);
-        this.toastr.success('Order has been updated!', 'Success', {
+        this.toastr.warning('Order has been updated!', 'Success', {
           timeOut: 3000,
         });
       });

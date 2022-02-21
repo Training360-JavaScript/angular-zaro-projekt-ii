@@ -77,7 +77,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
     }
 
     this.productService.delete(productID).subscribe(() => {
-      this.toastr.success('Product has been removed!', 'Success', {
+      this.toastr.error('Product has been removed!', 'Success', {
         timeOut: 3000,
       });
       this.allProducts$ = this.productService.getAll();
