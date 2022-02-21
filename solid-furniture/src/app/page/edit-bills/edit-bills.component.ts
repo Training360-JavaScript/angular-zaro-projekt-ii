@@ -55,7 +55,7 @@ export class EditBillsComponent implements OnInit {
     if (id) {
       this.billService.delete(id).subscribe(() => {
         this.router.navigate(['/bills']);
-        this.toastr.success('Bill has been removed!', 'Success', {
+        this.toastr.error('Bill has been removed!', 'Success', {
           timeOut: 3000,
         });
       });
@@ -66,7 +66,7 @@ export class EditBillsComponent implements OnInit {
     if (this.billForm.value.id) {
       this.billService.update(this.billForm.value).subscribe(() => {
         this.router.navigate(['/bills']);
-        this.toastr.success('Bill has been updated!', 'Success', {
+        this.toastr.warning('Bill has been updated!', 'Success', {
           timeOut: 3000,
         });
       });

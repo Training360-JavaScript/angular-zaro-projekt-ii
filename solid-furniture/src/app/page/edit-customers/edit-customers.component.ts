@@ -83,8 +83,8 @@ export class EditCustomersComponent implements OnInit {
         })
       )
       .subscribe((customer) => {
-        console.log(customer)
-        this.customerForm.setValue(customer)
+        console.log(customer);
+        this.customerForm.setValue(customer);
       });
   }
 
@@ -96,7 +96,7 @@ export class EditCustomersComponent implements OnInit {
     if (id) {
       this.customerService.delete(id).subscribe(() => {
         this.router.navigate(['/customers']);
-        this.toastr.success('Customer has been removed!', 'Success', {
+        this.toastr.error('Customer has been removed!', 'Success', {
           timeOut: 3000,
         });
       });
@@ -108,7 +108,7 @@ export class EditCustomersComponent implements OnInit {
     if (this.customerForm.value.id) {
       this.customerService.update(this.customerForm.value).subscribe(() => {
         this.router.navigate(['/customers']);
-        this.toastr.success('Customer has been updated!', 'Success', {
+        this.toastr.warning('Customer has been updated!', 'Success', {
           timeOut: 3000,
         });
       });

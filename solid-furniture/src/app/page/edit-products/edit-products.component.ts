@@ -61,7 +61,7 @@ export class EditProductsComponent implements OnInit {
     if (id) {
       this.productService.delete(id).subscribe(() => {
         this.router.navigate(['/products']);
-        this.toastr.success('Product has been removed!', 'Success', {
+        this.toastr.error('Product has been removed!', 'Success', {
           timeOut: 3000,
         });
       });
@@ -72,7 +72,7 @@ export class EditProductsComponent implements OnInit {
     if (this.productForm.value.id) {
       this.productService.update(this.productForm.value).subscribe(() => {
         this.router.navigate(['/products']);
-        this.toastr.success('Product has been updated!', 'Success', {
+        this.toastr.warning('Product has been updated!', 'Success', {
           timeOut: 3000,
         });
       });

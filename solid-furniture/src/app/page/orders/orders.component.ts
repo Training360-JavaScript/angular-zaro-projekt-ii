@@ -77,7 +77,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     }
 
     this.orderService.delete(orderID).subscribe(() => {
-      this.toastr.success('Product has been removed!', 'Success', {
+      this.toastr.error('Product has been removed!', 'Success', {
         timeOut: 3000,
       });
       this.allOrders$ = this.orderService.getAll();

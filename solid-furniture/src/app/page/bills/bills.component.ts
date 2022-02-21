@@ -79,7 +79,7 @@ export class BillsComponent implements OnInit, OnDestroy {
     }
 
     this.billService.delete(billID).subscribe(() => {
-      this.toastr.success('Product has been removed!', 'Success', {
+      this.toastr.error('Product has been removed!', 'Success', {
         timeOut: 3000,
       });
       this.allBills$ = this.billService.getAll();
