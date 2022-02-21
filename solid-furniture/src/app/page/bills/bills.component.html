@@ -83,7 +83,7 @@
                     <th
                       *ngFor="let key of billKeys"
                       (click)="sorting(key)"
-                      style="cursor: pointer; width: 20%"
+                      style="cursor: pointer; width: 20%; user-select: none"
                     >
                       {{ key | titlecase }}
                       <i

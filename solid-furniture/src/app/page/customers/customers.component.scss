@@ -4,6 +4,10 @@
   text-align: center;
 }
 
+th {
+  user-select: none;
+}
+
 .th-name {
   cursor: pointer;
   width: 13%;
