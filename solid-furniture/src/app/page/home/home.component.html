@@ -259,7 +259,7 @@
           <th>Country</th>
         </thead>
         <tbody>
-          <tr *ngFor="let order of newOrder_data$">
+          <tr *ngFor="let order of newOrder_dataObj">
             <td>{{order.id}}</td>
             <td>{{order.fullName}}</td>
             <td>{{order.income | currency:'EUR':'symbol':'1.0-0' }}</td>
