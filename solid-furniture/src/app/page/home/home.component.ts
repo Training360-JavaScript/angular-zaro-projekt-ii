@@ -87,23 +87,11 @@ export class HomeComponent implements OnInit {
     seq2 = 0;
   };
 
-  // listCategory$: Observable<Category[]> = this.categoryService.getAll();
-  //  oneCategory$: Observable<Category> = this.categoryService.get(2);
-
-  //listAddress$: Observable<Address[]> = this.addressService.getAll();
-  //  oneAddress$: Observable<Address> = this.addressService.get(5);
 
   listProduct$: Observable<Product[]> = this.productService.getAll();
-  //  oneProduct$: Observable<Product> = this.productService.get(4);
-
   listCustomer$: Observable<Customer[]> = this.customerService.getAll();
-  //oneCustomer$: Observable<Customer> = this.customerService.get(1);
-
   listOrder$: Observable<Order[]> = this.orderService.getAll();
-  //oneOrder$: Observable<Order> = this.orderService.get(2);
-
   listBill$: Observable<Bill[]> = this.billService.getAll();
-  //eBill$: Observable<Bill> = this.billService.get(15);
 
 
   ngOnInit(): void {
@@ -111,134 +99,134 @@ export class HomeComponent implements OnInit {
     // Aktív termékek száma:
     this.getActiveProductNumber(this.listProduct$).subscribe((active: number) => this.activeProductNumber = active);
 
-
     // Aktív vásárlók száma:
-    this.getActiveCustomerNumber(this.listCustomer$).subscribe((active: number) => {
-      this.activeCustomerNumber = active
-      //console.log(this.activeCustomerNumber)
-    });
-
+    this.getActiveCustomerNumber(this.listCustomer$).subscribe((active: number) => this.activeCustomerNumber = active);
 
     // Még nem fizetett rendelések száma:
-    this.getUnpaidOrderNumber(this.listOrder$).subscribe((unpaid: number) => {
-      this.unpaidOrderNumber = unpaid
-      //console.log(this.unpaidOrderNumber)
-    });
+    this.getUnpaidOrderNumber(this.listOrder$).subscribe((unpaid: number) => this.unpaidOrderNumber = unpaid);
 
 
-    this.getUnpaidBillSum(this.listBill$).subscribe((unpaidBillSum: number) => {
-      this.unpaidBillSum = unpaidBillSum
-      //console.log(this.unpaidBillSum)
-    });
+    this.getUnpaidBillSum(this.listBill$).subscribe((unpaidBillSum: number) => this.unpaidBillSum = unpaidBillSum);
 
-    // *Számlák összege státuszuk szerint
-    this.billByStatus = this.getBillByStatus(this.listBill$);
+    // // *Számlák összege státuszuk szerint
+    // this.billByStatus = this.getBillByStatus(this.listBill$);
 
-    //* Rendelések száma és mennyiségük összege státuszuk szerint
-    this.orderByStatus = this.getOrderByStatus(this.listOrder$);
+    // //* Rendelések száma és mennyiségük összege státuszuk szerint
+    // this.orderByStatus = this.getOrderByStatus(this.listOrder$);
 
 
 
     // Grafikonok rajzolása -----------------------------------------------
 
-    this.getOrderNumberByStatus(this.listOrder$).subscribe((orderNumberByStatus: number[]) => {
-      this.showOrderPieChart(orderNumberByStatus);
-      this.showOrderBarCart(orderNumberByStatus);
-      this.orderNumberByStatus_data$ = orderNumberByStatus;
-      //console.log(orderNumberByStatus)
-    });
 
-    this.getProductNumberByCategory(this.listProduct$).subscribe((productNumberByCategory: number[]) => {
-      //console.log(productNumberByCategory);
-      this.showProductRangePieChart(productNumberByCategory);
-      this.showProductRangeBarCart(productNumberByCategory);
-    });
+    this.listOrder$.subscribe((allOrderArray: Order[]) => {
 
-    this.listOrder$.subscribe(allOrderArray => {
-      let observedIntevallum = allOrderArray.slice(-10).map(item => item.id);
-      allOrderArray = allOrderArray.slice(-10);
-      let lastIncome = allOrderArray.map(item => (item.amount * Number(item.product?.price)));
-      let cumulativeSum = [0];
+      // Rendelések státusz szerinti száma és megoszlása
+      const orderNumberByStatusObj: any = {};
+      allOrderArray.map((order: Order) => orderNumberByStatusObj[order.status] = (orderNumberByStatusObj[order.status] || 0) + 1);
+
+      this.showOrderPieChart(orderNumberByStatusObj);
+      this.showOrderBarCart(orderNumberByStatusObj);
+
+
+      // Az utolsó 10 értékesítés bevétele, a bevétel kommulált összege és a százalékos növekedése
+      const observedRange: number = 10;
+      const observedOrderArray = allOrderArray.slice(-observedRange);
+
+      const observedIntevallum = observedOrderArray.map((order: Order) => order.id);
+      const lastIncome = observedOrderArray.map((order: Order) => (order.amount * Number(order.product?.price)));
+
+      const cumulativeSum: number[] = [];
       lastIncome.forEach((val, i) => (cumulativeSum[i] = Number(val) + cumulativeSum[i - 1] || Number(val)));
+
       this.showLastOrderIncome(observedIntevallum, lastIncome)
       this.showLastOrderCumulativeSum(observedIntevallum, cumulativeSum)
 
-      this.increasePercent = ~~((cumulativeSum[9] - cumulativeSum[0]) / cumulativeSum[0] * 100)
+      this.increasePercent = ~~((cumulativeSum[observedRange - 1] - cumulativeSum[0]) / cumulativeSum[0] * 100)
 
 
-      console.log(cumulativeSum)
-      console.log(lastIncome)
+      // A legutolsó 5 megrendelés szűrt adatai
+      this.newOrder_data$ = this.getLatestOrderObj(allOrderArray, 5);
 
-
-      let lastFiveOrderArray = allOrderArray.slice(-5).reverse();
-      const newTampe = { id: 0, fullName: '', income: '', country: '' }
-
-      let newObj = lastFiveOrderArray.map(x => ({
-        id: x.id,
-        fullName: `${x.customer?.firstName} ${x.customer?.lastName}`,
-        income: x.amount * Number(x.product?.price),
-        country: x.customer?.address.country
-      })
-      )
-
-      //console.log(newObj)
-
-      this.lastFiveOrderArray = lastFiveOrderArray;
-      //console.log(lastFiveOrderArray);
-
-
-      this.newOrder_data$ = newObj;
     });
 
 
-    this.listBill$.subscribe(list => {
-      const billObj = {
-        new: 0,
-        paid: 0,
-      };
-      list.forEach(bill => {
-        if (bill.status === 'new') {
-          billObj.new = billObj.new + (bill.amount || 0) * (bill.order?.amount || 0) * (bill.order?.product?.price || 0)
-        }
-        if (bill.status === 'paid') {
-          billObj.paid = billObj.new + (bill.amount || 0) * (bill.order?.amount || 0) * (bill.order?.product?.price || 0)
-        }
-      })
-      // console.log(list)
-      // console.log(billObj)
+    this.listBill$.subscribe((billArray: Bill[]) => {
 
-      this.newBillSum = billObj.new;
-      this.incomeBillSum = billObj.paid;
-      this.allBillSum = billObj.new + billObj.paid;
-    })
+      // Mérlegadatok számítása
+      const billObj = this.getBillObj(billArray);   // Mérlegadatok objektuma.
+      this.incomeBillSum = billObj.paid;            // Kifizetett számlák összege (bevétel).
+      this.newBillSum = billObj.new;                // Új számlák összege (követelés).
+      this.allBillSum = billObj.new + billObj.paid; // Teljes számlázott összeg.
+
+    });
 
 
-    this.listProduct$.subscribe(list => {
-      // let newList = list.filter(x => x.catID > 4);
-      // console.log(list)
-      // console.log(newList)
-    })
+    this.listProduct$.subscribe((allProductArray: Product[]) => {
+      // Aktív termékek száma:
+      //this.activeProductNumber = allProductArray.filter((product: Product) => product.active === true).length;
 
+      // Termékek kategóriák szerinti száma | diagram
+      const productNumberByCategoryObj = this.getProductNumberByCategoryObj(allProductArray);
+      this.showProductRangePieChart(productNumberByCategoryObj);
+      this.showProductRangeBarCart(productNumberByCategoryObj);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    });
 
 
   }
   //onInit -----------------------------------------------------------------------
 
+
+
+
+
+  // Legutolsó megrendelések szűrt adatait tartalmazó objektum
+  private getLatestOrderObj(allOrderArray: Order[], latestRange: number) {
+    return allOrderArray.slice(-latestRange).reverse().map((order: Order) => ({
+      id: order.id,
+      fullName: `${order.customer?.firstName} ${order.customer?.lastName}`,
+      income: order.amount * Number(order.product?.price),
+      country: order.customer?.address.country
+    })
+    );
+  }
+
+
+  // Mérlegadatok számításához a számlák objektuma
+  private getBillObj(billArray: Bill[]): { new: number, paid: number } {
+    const billObj = { new: 0, paid: 0 };
+    billArray.forEach((bill: Bill) => {
+      if (bill.status === 'new') {
+        billObj.new = billObj.new + (bill.amount || 0) * (bill.order?.amount || 0) * (bill.order?.product?.price || 0)
+      }
+      if (bill.status === 'paid') {
+        billObj.paid = billObj.new + (bill.amount || 0) * (bill.order?.amount || 0) * (bill.order?.product?.price || 0)
+      }
+    });
+    return billObj;
+  }
+
+
+  // Termékek kategóriák szerinti számát tartalmazó objaktum
+  private getProductNumberByCategoryObj(allProductArray: Product[]): {} {
+    const productNumberByCategoryObj: any = {};
+    allProductArray.map((product: Product) => product.category?.name.trim()).sort()
+      .map((productCategoryName: any) =>
+        productNumberByCategoryObj[productCategoryName] = (productNumberByCategoryObj[productCategoryName] || 0) + 1);
+    return productNumberByCategoryObj;
+  };
+
+
+
+
+
+
+
   // Számértékek a Dashboard-ra
+  activeProductNumber: number = 0;
+
+
   orderNumberByStatus_data$: any;
   lastFiveOrderArray: any;
 
@@ -327,27 +315,26 @@ export class HomeComponent implements OnInit {
 
 
   //----------------------------------------------------------------------------
-  showProductRangePieChart(orderData: number[]) {
+  showProductRangePieChart(productNumberByCategoryObj: { [key: string]: number }) {
     const data = {
-      series: [orderData[0], orderData[1], orderData[2], orderData[3], orderData[4]]
+      series: Object.values(productNumberByCategoryObj)
     };
-
     const options = {
+      chartPadding: 25,
+      labelOffset: 42,
       labelInterpolationFnc: function (value: any, idx: any) {
         return Math.round(data.series[idx] / data.series.reduce((a, b) => a + b) * 100) + '%';
       }
     };
-
     new Chartist.Pie('#productRangePieChart', data, options);
   }
 
 
-  showProductRangeBarCart(orderData: number[]) {
+  showProductRangeBarCart(productNumberByCategoryObj: { [key: string]: number }) {
     const data = {
-      labels: ['Living room', 'Bedroom', 'Bathroom', 'Home office', 'Dining room'],
-      series: [[orderData[0], orderData[1], orderData[2], orderData[3], orderData[4]]]
+      labels: Object.keys(productNumberByCategoryObj),
+      series: [Object.values(productNumberByCategoryObj)]
     };
-
     const options = {
       seriesBarDistance: 15,
       reverseData: true,
@@ -362,21 +349,19 @@ export class HomeComponent implements OnInit {
       },
       chartPadding: { top: 20, right: 15, bottom: -5, left: 0 }
     };
-
     new Chartist.Bar('#productRangeBarCart', data, options);
   }
 
 
-
-  showOrderPieChart(orderData: number[]) {
+  // Beégetett felíratnevek kiváltava
+  showOrderPieChart(orderNumberByStatusObj: { [key: string]: number }) {
     const data = {
-      labels: ['new', 'shipped', 'paid'],
-      series: [orderData[0], orderData[1], orderData[2]]
+      labels: Object.keys(orderNumberByStatusObj),
+      series: Object.values(orderNumberByStatusObj)
     };
-
     const options = {
-      chartPadding: 15,
-      labelOffset: 45,
+      chartPadding: 25,
+      labelOffset: 50,
       labelInterpolationFnc: function (value: any, idx: any) {
         return value + " - " + Math.round(data.series[idx] / data.series.reduce((a, b) => a + b) * 100) + '%';
       }
@@ -384,13 +369,12 @@ export class HomeComponent implements OnInit {
     new Chartist.Pie('#OrderNumberByStatusPieChart', data, options);
   }
 
-
-  showOrderBarCart(orderData: any) {
+  // Beégetett felíratnevek kiváltava
+  showOrderBarCart(orderNumberByStatusObj: { [key: string]: number }) {
     const data = {
-      labels: ['new', 'shipped', 'paid'],
-      series: [[orderData[0], orderData[1], orderData[2]]]
+      labels: Object.keys(orderNumberByStatusObj),
+      series: [Object.values(orderNumberByStatusObj)]
     };
-
     const options = {
       seriesBarDistance: 10,
       reverseData: true,
@@ -410,49 +394,49 @@ export class HomeComponent implements OnInit {
 
 
 
-  getProductNumberByCategory(allProduct$: Observable<Product[]>): any {
-    const result = [0, 0, 0, 0, 0];
-    return allProduct$.pipe(
-      map((list: Product[]) => list.map(
-        product => {
-          if (product.catID === 1) result[0]++;
-          if (product.catID === 2) result[1]++;
-          if (product.catID === 3) result[2]++;
-          if (product.catID === 4) result[3]++;
-          if (product.catID === 5) result[4]++;
-          return result
-        }
-      )[0])
-    )
-    //.subscribe(console.log)
-  }
+  // getProductNumberByCategory(allProduct$: Observable<Product[]>): any {
+  //   const result = [0, 0, 0, 0, 0];
+  //   return allProduct$.pipe(
+  //     map((list: Product[]) => list.map(
+  //       product => {
+  //         if (product.catID === 1) result[0]++;
+  //         if (product.catID === 2) result[1]++;
+  //         if (product.catID === 3) result[2]++;
+  //         if (product.catID === 4) result[3]++;
+  //         if (product.catID === 5) result[4]++;
+  //         return result
+  //       }
+  //     )[0])
+  //   )
+  //   //.subscribe(console.log)
+  // }
 
 
 
 
-  _getOrderNumberByStatus(orderByStatus: any): any {
+  // _getOrderNumberByStatus(orderByStatus: any): any {
 
-    return [orderByStatus.new.amountSum, orderByStatus.paid.amountSum, orderByStatus.shipped.amountSum]
-  }
+  //   return [orderByStatus.new.amountSum, orderByStatus.paid.amountSum, orderByStatus.shipped.amountSum]
+  // }
 
-  getOrderNumberByStatus(order$: Observable<Order[]>): Observable<any> {
-    const result = [0, 0, 0];
-    return order$.pipe(
-      map((list: Order[]) => list.map(
-        order => {
-          if (order.status === 'new') result[0]++;
-          if (order.status === 'shipped') result[1]++;
-          if (order.status === 'paid') result[2]++;
-          return result
-        }
-      )[0]),
-    );
-    //.subscribe(console.log)
-  }
+  // getOrderNumberByStatus(order$: Observable<Order[]>): Observable<any> {
+  //   const result = [0, 0, 0];
+  //   return order$.pipe(
+  //     map((list: Order[]) => list.map(
+  //       order => {
+  //         if (order.status === 'new') result[0]++;
+  //         if (order.status === 'shipped') result[1]++;
+  //         if (order.status === 'paid') result[2]++;
+  //         return result
+  //       }
+  //     )[0]),
+  //   );
+  //   //.subscribe(console.log)
+  // }
 
 
   // Aktív termékek száma:
-  activeProductNumber: number = 0;
+  //activeProductNumber: number = 0;
   getActiveProductNumber(product$: Observable<Product[]>): any {
     return product$.pipe(
       switchMap((list: Product[]) => list),
@@ -500,56 +484,56 @@ export class HomeComponent implements OnInit {
   }
 
 
-  // *Számlák összege státuszuk szerint
-  // Tovább lehet fejleszteni mélyebb szűréssel.
-  billByStatus: {} = {};
-  getBillByStatus(bill$: Observable<Bill[]>): any {
-    const orderObj = {
-      new: 0,
-      paid: 0,
-    };
-    bill$.forEach((billArray) => {
-      billArray.forEach(bill => {
-        if (bill.status === 'new') {
-          orderObj.new = + (bill.amount || 0) * (bill.order?.amount || 0) * (bill.order?.product?.price || 0)
-        }
-        if (bill.status === 'paid') {
-          orderObj.paid = + (bill.amount || 0) * (bill.order?.amount || 0) * (bill.order?.product?.price || 0)
-        }
-      });
-    });
-    return orderObj;
-  }
+  // // *Számlák összege státuszuk szerint
+  // // Tovább lehet fejleszteni mélyebb szűréssel.
+  // billByStatus: {} = {};
+  // getBillByStatus(bill$: Observable<Bill[]>): any {
+  //   const orderObj = {
+  //     new: 0,
+  //     paid: 0,
+  //   };
+  //   bill$.forEach((billArray) => {
+  //     billArray.forEach(bill => {
+  //       if (bill.status === 'new') {
+  //         orderObj.new = + (bill.amount || 0) * (bill.order?.amount || 0) * (bill.order?.product?.price || 0)
+  //       }
+  //       if (bill.status === 'paid') {
+  //         orderObj.paid = + (bill.amount || 0) * (bill.order?.amount || 0) * (bill.order?.product?.price || 0)
+  //       }
+  //     });
+  //   });
+  //   return orderObj;
+  // }
 
 
-  // *Rendelések száma és mennyiségük összege státuszuk szerint
-  orderByStatus: {} = {};
-  getOrderByStatus(order$: Observable<Order[]>): any {
-    const innerObj = { orderNumber: 0, amountSum: 0 };
-    const resultObj = {
-      new: { ...innerObj },
-      shipped: { ...innerObj },
-      paid: { ...innerObj },
-    };
-    order$.forEach((orderArray) => {
-      orderArray.forEach(order => {
-        if (order.status === 'new') {
-          resultObj.new.orderNumber++;
-          resultObj.new.amountSum += order.amount;
-        }
-        if (order.status === 'shipped') {
-          resultObj.shipped.orderNumber++;
-          resultObj.shipped.amountSum += order.amount;
-        }
-        if (order.status === 'paid') {
-          resultObj.paid.orderNumber++;
-          resultObj.paid.amountSum += order.amount;
-        }
-      });
-    });
-    //console.log(resultObj)
+  // // *Rendelések száma és mennyiségük összege státuszuk szerint
+  // orderByStatus: {} = {};
+  // getOrderByStatus(order$: Observable<Order[]>): any {
+  //   const innerObj = { orderNumber: 0, amountSum: 0 };
+  //   const resultObj = {
+  //     new: { ...innerObj },
+  //     shipped: { ...innerObj },
+  //     paid: { ...innerObj },
+  //   };
+  //   order$.forEach((orderArray) => {
+  //     orderArray.forEach(order => {
+  //       if (order.status === 'new') {
+  //         resultObj.new.orderNumber++;
+  //         resultObj.new.amountSum += order.amount;
+  //       }
+  //       if (order.status === 'shipped') {
+  //         resultObj.shipped.orderNumber++;
+  //         resultObj.shipped.amountSum += order.amount;
+  //       }
+  //       if (order.status === 'paid') {
+  //         resultObj.paid.orderNumber++;
+  //         resultObj.paid.amountSum += order.amount;
+  //       }
+  //     });
+  //   });
+  //   //console.log(resultObj)
 
-    return (resultObj);
-  }
+  //   return (resultObj);
+  // }
 
 }
