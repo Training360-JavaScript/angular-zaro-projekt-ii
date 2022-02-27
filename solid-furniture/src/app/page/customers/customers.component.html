@@ -1,0 +1,231 @@
+<div class="row text-primary">
+  <!-- <button (click)="add300()">Add</button> -->
+
+  <!-- title -->
+  <div class="col-6">
+    <h2 class="text-center font-weight-bold">Customers</h2>
+  </div>
+
+  <!-- search area -->
+  <div class="col-3">
+    <p class="text-right font-weight-bold pt-4">Search customers:</p>
+  </div>
+  <!-- <div class="col-1">
+    <select class="form-control mt-2 text-center" required [(ngModel)]="searchKey" (change)="clearKeyword()">
+      <option *ngFor="let key of customerKeys" [value]="key">{{key | titlecase}}</option>
+    </select>
+  </div> -->
+  <div class="col-1">
+    <select
+      class="form-control mt-2 text-center"
+      required
+      [(ngModel)]="searchKey"
+      (change)="clearKeyword()"
+    >
+      <option [value]="customerKeys[0]">Id</option>
+      <option [value]="customerKeys[1]">Name</option>
+      <option [value]="customerKeys[3]">Email</option>
+      <option [value]="customerKeys[4]">Address</option>
+      <option [value]="customerKeys[5]">Active</option>
+    </select>
+  </div>
+  <div
+    *ngIf="
+      searchKey === 'id' ||
+      searchKey === 'firstName' ||
+      searchKey === 'email' ||
+      searchKey === 'address'
+    "
+    class="col-2 mt-1"
+  >
+    <input
+      type="text"
+      class="form-control mt-2"
+      [(ngModel)]="keyword"
+      placeholder="Search"
+    />
+  </div>
+  <div *ngIf="searchKey === 'active'" class="col-2">
+    <select class="form-control mt-2 text-center" [(ngModel)]="keyword">
+      <option [value]="true">Active</option>
+      <option [value]="false">Inactive</option>
+    </select>
+  </div>
+</div>
+
+<!-- table -->
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-primary">
+            <h4 class="card-title py-2">All of our clients listed here</h4>
+            <!--<p class="card-category">All of our clients listed here</p>-->
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table">
+                <!-- table head -->
+                <thead class="text-primary text-center">
+                  <tr class="sticky-top bg-white">
+                    <!-- <th *ngFor="let key of customerKeys" (click)="sorting(key)" style="cursor: pointer;">
+                      {{ key | titlecase}}
+                      <i *ngIf="sortKey == key && sortDirection  == 'A...Z'" class="fa fa-caret-up"></i>
+                      <i *ngIf="sortKey == key && sortDirection  == 'Z...A'" class="fa fa-caret-down"></i>
+                    </th> -->
+                    <th (click)="sorting(customerKeys[0])" class="th-id">
+                      Id
+                      <i
+                        *ngIf="
+                          sortKey == customerKeys[0] && sortDirection == 'A...Z'
+                        "
+                        class="fa fa-caret-up ml-lg-2"
+                      ></i>
+                      <i
+                        *ngIf="
+                          sortKey == customerKeys[0] && sortDirection == 'Z...A'
+                        "
+                        class="fa fa-caret-down ml-lg-2"
+                      ></i>
+                    </th>
+                    <th (click)="sorting(customerKeys[1])" class="th-name">
+                      Name
+                      <i
+                        *ngIf="
+                          sortKey == customerKeys[1] && sortDirection == 'A...Z'
+                        "
+                        class="fa fa-caret-up ml-2"
+                      ></i>
+                      <i
+                        *ngIf="
+                          sortKey == customerKeys[1] && sortDirection == 'Z...A'
+                        "
+                        class="fa fa-caret-down ml-2"
+                      ></i>
+                    </th>
+                    <th (click)="sorting(customerKeys[3])" class="th-email">
+                      Email
+                      <i
+                        *ngIf="
+                          sortKey == customerKeys[3] && sortDirection == 'A...Z'
+                        "
+                        class="fa fa-caret-up ml-2"
+                      ></i>
+                      <i
+                        *ngIf="
+                          sortKey == customerKeys[3] && sortDirection == 'Z...A'
+                        "
+                        class="fa fa-caret-down ml-2"
+                      ></i>
+                    </th>
+                    <th (click)="sorting(customerKeys[4])" class="th-address">
+                      Address
+                      <i
+                        *ngIf="
+                          sortKey == customerKeys[4] && sortDirection == 'A...Z'
+                        "
+                        class="fa fa-caret-up ml-2"
+                      ></i>
+                      <i
+                        *ngIf="
+                          sortKey == customerKeys[4] && sortDirection == 'Z...A'
+                        "
+                        class="fa fa-caret-down ml-2"
+                      ></i>
+                    </th>
+                    <th (click)="sorting(customerKeys[5])" class="th-active">
+                      Active
+                      <i
+                        *ngIf="
+                          sortKey == customerKeys[5] && sortDirection == 'A...Z'
+                        "
+                        class="fa fa-caret-up ml-2"
+                      ></i>
+                      <i
+                        *ngIf="
+                          sortKey == customerKeys[5] && sortDirection == 'Z...A'
+                        "
+                        class="fa fa-caret-down ml-2"
+                      ></i>
+                    </th>
+                    <th id="th-btn" style="width: 15%">
+                      <button
+                        routerLink="/edit-customers/0"
+                        class="btn btn-success btn-block"
+                      >
+                        <i class="fa fa-plus"></i>
+                      </button>
+                    </th>
+                  </tr>
+                </thead>
+
+                <!-- table body -->
+                <tbody
+                  *ngIf="
+                    allCustomers$
+                      | async
+                      | filter: searchKey:keyword
+                      | sorter: sortKey:sortDirection as filteredCustomers
+                  "
+                >
+                  <tr class="font-weight-bold total-tr">
+                    <td class="h4 font-weight-bold text-center">
+                      {{ filteredCustomers.length }}
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="h3 font-weight-bold text-center">Total</td>
+                  </tr>
+
+                  <tr
+                    *ngFor="
+                      let customer of filteredCustomers | load: loadedElements
+                    "
+                  >
+                    <td class="text-center">{{ customer.id }}</td>
+                    <td>{{ customer.show("firstName", "lastName") }}</td>
+                    <td>{{ customer.email }}</td>
+                    <td>{{ customer.address.full }}</td>
+                    <td class="text-center">
+                      <i
+                        *ngIf="customer.active"
+                        style="color: rgb(48, 180, 48) !important"
+                        class="fa fa-check"
+                      ></i>
+                      <i
+                        *ngIf="!customer.active"
+                        style="color: red !important"
+                        class="fa fa-times"
+                      ></i>
+                    </td>
+                    <td class="text-center">
+                      <div class="btn-group">
+                        <button
+                          [routerLink]="['/edit-customers', customer.id]"
+                          class="btn btn-info"
+                        >
+                          <i class="fa fa-pencil"></i>
+                        </button>
+                        <button
+                          (click)="onDelete(customer.id)"
+                          class="btn btn-danger"
+                        >
+                          <i class="fa fa-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <app-loading *ngIf="stillLoading"></app-loading>
+            </div>
+          </div>
+        </div>
+        <div id="scrollAnchor"></div>
+      </div>
+    </div>
+  </div>
+</div>

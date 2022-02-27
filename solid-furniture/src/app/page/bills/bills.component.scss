@@ -1,0 +1,71 @@
+th {
+  text-align: center;
+}
+
+/*.total-tr th {
+  pointer-events: none;
+}*/
+
+.total-tr:hover {
+  background-color: rgba($color: #87B3CC, $alpha: 0.2)
+}
+
+.billDetailModal {
+  position: fixed!important;
+  z-index: 500;
+  top: 7%;
+  left: 30%;
+  width: 55%;
+ max-height: 100%;
+  border: 1px solid #5e5b6a;
+  background-color: white;
+  line-height: 1.1rem;
+  overflow-y: auto;
+}
+
+.billContent {
+    max-height: 100%;
+    overflow-y: auto;
+}
+
+.billDetailModal button {
+  float: right;
+  width: 30px!important;
+  height: 30px!important;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.billDetailModal tr:hover, .billDetailModal th:hover{
+  background-color: white!important;
+}
+
+.billDetailModal th, .billDetailModal td {
+  border: 1px solid black;
+}
+
+.billDetailModal th {
+  font-style: italic;
+}
+
+.seller p {
+  margin-bottom: 0;
+}
+
+.buyer p {
+  margin-bottom: 0;
+}
+
+@media screen and (max-width: 992px) {
+  .billDetailModal {
+    width: 80%;
+    height: 90%;
+    left: 10%;
+    top: 10%;
+  }
+
+  th {
+    font-size: 0.8rem !important;
+  }
+}

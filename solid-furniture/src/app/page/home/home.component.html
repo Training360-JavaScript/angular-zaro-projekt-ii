@@ -1,0 +1,263 @@
+<div class="container">
+  <div class="row mb-4">
+    <div class="col-xl-3 col-lg-6 col-md-6 mt-4">
+      <div class="card card-stats h-100 my-0">
+        <div
+          class="card-header card-header-Secondary card-header-icon db-small"
+        >
+          <div class="card-icon">
+            <i class="material-icons">weekend</i>
+          </div>
+          <p class="card-category">Number of active products</p>
+          <h3 class="card-title">{{ activeProductNumber }}</h3>
+        </div>
+        <div class="card-footer mt-auto">
+          <div class="stats">
+            <i class="material-icons">update</i> Just Updated
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-lg-6 col-md-6 mt-4">
+      <div class="card card-stats h-100 my-0">
+        <div
+          class="card-header card-header-info card-header-icon db-small db-blue"
+          id="info-bg"
+        >
+          <div class="card-icon">
+            <i class="material-icons">groups</i>
+          </div>
+          <p class="card-category">Number of active customers</p>
+          <h3 class="card-title">{{ activeCustomerNumber }}</h3>
+        </div>
+        <div class="card-footer mt-auto">
+          <div class="stats">
+            <i class="material-icons">update</i> Just Updated
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-lg-6 col-md-6 mt-4">
+      <div class="card card-stats h-100 my-0">
+        <div class="card-header card-header-warning card-header-icon db-small">
+          <div class="card-icon">
+            <i class="material-icons">assignment_late</i>
+          </div>
+          <p class="card-category">Pending orders</p>
+          <h3 class="card-title">{{ unpaidOrderNumber }}</h3>
+        </div>
+        <div class="card-footer mt-auto">
+          <div class="stats">
+            <i class="material-icons">update</i> Just Updated
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-lg-6 col-md-6 mt-4">
+      <div class="card card-stats h-100 my-0">
+        <div class="card-header card-header-danger card-header-icon db-small">
+          <div class="card-icon">
+            <i class="material-icons">receipt_long</i>
+          </div>
+          <p class="card-category">Sum total of bills</p>
+          <h3 class="card-title text-nowrap">
+            {{ unpaidBillSum | currency: "EUR":"symbol":"1.0-0" }}
+          </h3>
+        </div>
+        <div class="card-footer mt-auto">
+          <div class="stats">
+            <i class="material-icons">update</i> Just Updated
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xl-3 col-lg-6 col-md-6 mt-4 my-4">
+    <div class="card card-chart h-100 my-0">
+      <div class="card-header card-header-info db-piegraph">
+        <div class="ct-chart" id="OrderNumberByStatusPieChart"></div>
+      </div>
+      <div class="card-body">
+        <h4 class="card-title">Ratio of orders</h4>
+        <p class="card-category">
+          <span class="text"><i class="fa fa fa-pie-chart"></i> - </span>Orders
+        </p>
+      </div>
+      <div class="card-footer mt-auto">
+        <div class="stats">
+          <i class="material-icons">update</i> Just Updated
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-lg-6 col-md-6 mt-4 my-4">
+    <div class="card card-chart h-100 my-0">
+      <div class="card-header card-header-info db-bargraph">
+        <div class="ct-chart" id="orderByStatus"></div>
+      </div>
+      <div class="card-body">
+        <h4 class="card-title">Sum of orders</h4>
+        <p class="card-category">
+          <span class="text"><i class="fa fa-bar-chart"></i> - </span>Orders
+        </p>
+      </div>
+      <div class="card-footer mt-auto">
+        <div class="stats">
+          <i class="material-icons">update</i> Just Updated
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-lg-6 col-md-6 mt-4 my-4">
+    <div class="card card-chart h-100 my-0">
+      <div class="card-header card-header-success db-piegraph">
+        <div class="ct-chart" id="productRangePieChart"></div>
+      </div>
+      <div class="card-body">
+        <h4 class="card-title">Product cathegory ratios</h4>
+        <p class="card-category">
+          <span class="text"><i class="fa fa fa-pie-chart"></i> - </span
+          >Products
+        </p>
+      </div>
+      <div class="card-footer mt-auto">
+        <div class="stats">
+          <i class="material-icons">update</i> Just Updated
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-lg-6 col-md-6 mt-4 my-4">
+    <div class="card card-chart h-100 my-0">
+      <div class="card-header card-header-success db-bargraph">
+        <div class="ct-chart" id="productRangeBarCart"></div>
+      </div>
+      <div class="card-body">
+        <h4 class="card-title">Number of products per cathegory</h4>
+        <p class="card-category">
+          <span class="text"><i class="fa fa-bar-chart"></i> - </span>Products
+        </p>
+      </div>
+      <div class="card-footer mt-auto">
+        <div class="stats">
+          <i class="material-icons">update</i> Just Updated
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row"></div>
+<div class="row justify-content-md-center">
+  <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-6 my-4">
+    <div class="card card-chart h-100 my-0">
+      <div class="card-header card-header-warning db-income">
+        <div class="ct-chart" id="lastOrderIncome"></div>
+      </div>
+      <div class="card-body">
+        <h4 class="card-title">Income</h4>
+        <p class="card-category">
+          <span class="text"><i class="fa fa-bar-chart"></i> - </span>Order -
+          Based on the ten most recent purchases.
+        </p>
+      </div>
+      <div class="card-footer mt-auto">
+        <div class="stats">
+          <i class="material-icons">update</i> Just Updated
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-6 my-4">
+    <div class="card card-chart h-100 my-0">
+      <div class="card-header card-header-warning db-income">
+        <div class="ct-chart" id="lastOrderCumulativeSum"></div>
+      </div>
+      <div class="card-body">
+        <h4 class="card-title">Income over time</h4>
+        <p class="card-category">
+          <span><i class="fa fa-line-chart"></i> - </span
+          ><span class="text-success"
+            ><i class="fa fa-long-arrow-up"></i> {{ increasePercent }}%
+          </span>
+          - Order - Based on the ten most recent purchases.
+        </p>
+      </div>
+      <div class="card-footer mt-auto">
+        <div class="stats">
+          <i class="material-icons">update</i> Just Updated
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-6 col-md-12">
+    <div class="card">
+      <div class="card-header card-header-info db-bargraph">
+        <h4 class="card-title">Balance</h4>
+        <p class="card-category">Gross sums</p>
+      </div>
+      <div class="card-body table-responsive">
+        <table class="table table-hover">
+          <tbody>
+            <tr>
+              <td>Number of paid invoices:</td>
+              <td class="text-success">
+                {{ incomeBillSum | currency: "EUR":"symbol":"1.0-0" }}
+              </td>
+            </tr>
+            <tr>
+              <td>Outstanding claims</td>
+              <td class="text-danger">
+                {{ newBillSum | currency: "EUR":"symbol":"1.0-0" }}
+              </td>
+            </tr>
+            <tr>
+              <td>Invoiced amount</td>
+              <td style="font-weight: bold">
+                {{ allBillSum | currency: "EUR":"symbol":"1.0-0" }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6 col-md-12">
+    <div class="card">
+      <div class="card-header card-header-warning db-bargraph">
+        <h4 class="card-title">Recent orders</h4>
+        <p class="card-category">Five most recent orders</p>
+      </div>
+      <div class="card-body table-responsive">
+        <table class="table table-hover">
+          <thead class="text-warning">
+            <th>ID</th>
+            <th>Name</th>
+            <th>Income</th>
+            <th>Country</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of newOrder_data$">
+              <td>{{ order.id }}</td>
+              <td>{{ order.fullName }}</td>
+              <td>{{ order.income | currency: "EUR":"symbol":"1.0-0" }}</td>
+              <td>{{ order.country }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

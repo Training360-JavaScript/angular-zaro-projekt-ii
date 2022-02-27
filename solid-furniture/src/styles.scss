@@ -1,0 +1,72 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~ngx-toastr/toastr";
+
+th:hover {
+  background-color: rgba($color: #EAC692, $alpha: 0.2)
+}
+
+tr:hover {
+  background-color: rgba($color: #EAC692, $alpha: 0.2)
+}
+
+.card-header {
+  background: linear-gradient(60deg, #FCF9F1, #F4E0C3) !important;
+  box-shadow: 0 7px 10px -5px rgb(30 30 30 / 40%) !important;
+}
+
+.card-header h4 {
+  color: #5D5B6A !important;
+}
+
+.card-header p {
+  color: #5D5B6A;
+}
+
+h2, p {
+  color: #5D5B6A;
+}
+
+th {
+  color: #87B3CC;
+  text-align: left;
+}
+
+.btn-success {
+  background-color: #BDDB91 !important;
+}
+
+.btn-success:hover {
+  background-color: #8ABF4D !important;
+}
+
+.btn-info {
+  background-color: #87B3CC !important;
+}
+
+.btn-info:hover {
+  background-color: #43758A !important;
+}
+
+.btn-danger {
+  background-color: #F0805D !important;
+}
+
+.btn-danger:hover {
+  background-color: #E84A20 !important;
+}
+
+#th-btn:hover {
+  background-color: white;
+}
+
+.new {
+  color: #87B3CC
+}
+
+.paid {
+  color: #E0B784
+}
+
+.shipped {
+  color: #8abf4d
+}

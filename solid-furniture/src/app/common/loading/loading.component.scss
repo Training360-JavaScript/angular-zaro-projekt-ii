@@ -1,0 +1,52 @@
+
+.loadingLogoDiv {
+  position: fixed !important;
+  z-index: 5;
+  top: 45%;
+  width: 77%;
+  height: 50%;
+  background-color: rgba($color: #5D5B6A, $alpha: 0.2);
+  text-align: center;
+}
+
+.loadingLogo {
+  margin-top: 17%;
+  animation-name: rotating;
+  animation-duration: 10s;
+}
+
+@keyframes rotating {
+  0% {
+    transform: rotate(0deg)
+  }
+  10% {
+    transform: rotate(360deg)
+  }
+  20% {
+    transform: rotate(0deg)
+  }
+  30% {
+    transform: rotate(360deg)
+  }
+  40% {
+    transform: rotate(0deg)
+  }
+  50% {
+    transform: rotate(360deg)
+  }
+  60% {
+    transform: rotate(0deg)
+  }
+  70% {
+    transform: rotate(360deg)
+  }
+  80% {
+    transform: rotate(0deg)
+  }
+  90% {
+    transform: rotate(360deg)
+  }
+  100% {
+    transform: rotate(0deg)
+  }
+}

@@ -1,18 +1,53 @@
 <div class="sidebar" data-color="purple" data-background-color="white">
   <div class="logo">
     <a routerLink="/" class="simple-text logo-mini">
-      Webshop
+      SOLID Furniture
     </a>
   </div>
   <div class="sidebar-wrapper">
     <ul class="nav">
-      <li class="nav-item active  ">
-        <a class="nav-link" href="#0">
+      <li class="nav-item active">
+        <a class="nav-link" routerLink="">
           <i class="material-icons">dashboard</i>
           <p>Dashboard</p>
         </a>
       </li>
-      <!-- your sidebar here -->
+      <li class="nav-item">
+        <a class="nav-link" routerLink="edit-categories">
+          <i class="fa fa-pencil" aria-hidden="true"></i>
+          <p>Edit categories</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="edit-products">
+          <i class="fa fa-bed" aria-hidden="true"></i>
+          <p>Edit products</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="edit-customers">
+          <i class="fa fa-address-card-o" aria-hidden="true"></i>
+          <p>Edit customers, addresses</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="edit-orders">
+          <i class="fa fa-book" aria-hidden="true"></i>
+          <p>Edit orders</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="edit-bills">
+          <i class="fa fa-file-text-o" aria-hidden="true"></i>
+          <p>Edit bills</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link bg-info" routerLink="test">
+          <i class="fa fa-eye text-dark" aria-hidden="true"></i>
+          <p>Test Page</p>
+        </a>
+      </li>
     </ul>
   </div>
 </div>

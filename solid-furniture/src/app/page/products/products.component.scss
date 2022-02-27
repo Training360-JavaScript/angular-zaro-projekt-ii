@@ -1,0 +1,54 @@
+th {
+  user-select: none;
+}
+
+.th-id {
+  cursor: pointer;
+  width: 8%;
+  text-align: center;
+}
+
+.th-name {
+  cursor: pointer;
+  width: 11%;
+}
+
+.th-type {
+  cursor: pointer;
+  width: 11%;
+}
+
+.th-cat {
+  cursor: pointer;
+  width: 12%;
+}
+
+.th-descr {
+  cursor: pointer;
+  width: 15%;
+}
+
+.th-price {
+  cursor: pointer;
+  width: 8%;
+}
+
+.th-featured {
+  cursor: pointer;
+  width: 12%;
+}
+
+.th-active {
+  cursor: pointer;
+  width: 8%;
+}
+
+.total-tr:hover {
+  background-color: rgba($color: #87B3CC, $alpha: 0.2)
+}
+
+@media screen and (max-width: 992px) {
+  th {
+    font-size: 0.8rem !important;
+  }
+}

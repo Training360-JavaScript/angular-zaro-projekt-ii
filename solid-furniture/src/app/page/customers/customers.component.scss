@@ -1,0 +1,39 @@
+.th-id {
+  cursor: pointer;
+  width: 8%;
+  text-align: center;
+}
+
+th {
+  user-select: none;
+}
+
+.th-name {
+  cursor: pointer;
+  width: 13%;
+}
+
+.th-email {
+  cursor: pointer;
+  width: 20%;
+}
+
+.th-address {
+  cursor: pointer;
+  width: 34%;
+}
+
+.th-active {
+  cursor: pointer;
+  width: 10%;
+}
+
+.total-tr:hover {
+  background-color: rgba($color: #87B3CC, $alpha: 0.2)
+}
+
+@media screen and (max-width: 992px) {
+  th {
+    font-size: 0.8rem !important;
+  }
+}

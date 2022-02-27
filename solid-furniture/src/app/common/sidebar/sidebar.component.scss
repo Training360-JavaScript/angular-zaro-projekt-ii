@@ -1,0 +1,35 @@
+
+.sidebar {
+  background-image: url('/assets/img/bg/istockphoto-1031917290-170667a.jpg');
+  background-size: cover;
+}
+
+.logo-mini {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.sidebar-wrapper {
+  background-color: rgba($color: #ffffff, $alpha: 0.4);
+}
+
+.active {
+  background-color: #87B3CC;
+}
+
+.active p {
+  color: #FCF9F1;
+}
+
+.nav-item a:hover {
+  background-color: rgba($color: #87B3CC, $alpha: 0.4);
+}
+
+@media screen and (max-width: 992px) {
+  .sidebar-wrapper {
+    background-color: rgba($color: #ffffff, $alpha: 0.8);
+  }
+
+  .logo-mini {
+    color: #FCF9F1 !important;
+  }
+}
